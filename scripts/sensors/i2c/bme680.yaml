@@ -1,0 +1,109 @@
+################################################################################
+# BME680 Temperature, Pressure, Humidity and Gas Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# -----------------------------------------------------------------------------
+# packages:
+#  bme680: !include 
+#    file: sensors/digital/i2c/bme680.yaml
+#    vars:
+#      i2c_address: 0x77
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/bme680
+# ------------------------------------------------------------------------------
+# Note:
+#       - Untested
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: bme680
+    address: ${i2c_address}
+    temperature:
+      id: ${device_internal_name}_bme680_temperature
+      name: BME680 Temperature
+      icon: mdi:temperature-celsius
+      device_class: temperature
+      oversampling: 16x
+    pressure:
+      id: ${device_internal_name}_bme680_pressure
+      name: BME680 Pressure
+      icon: mdi:gauge
+      device_class: pressure
+    humidity:
+      id: ${device_internal_name}_bme680_humidity
+      name: BME680 Humidity
+      icon: mdi:water-percent
+      device_class: humidity
+    gas_resistance:
+      id: ${device_internal_name}_gas_resistance
+      name: BME680 Gas Resistance
+      disabled_by_default: true
+    on_value:
+      then:
+        - component.update: ${device_internal_name}_bme680_air_quality
+        - component.update: ${device_internal_name}_bme680_temperature_f
+    update_interval: ${device_sampling_time}
+
+  - platform: template
+    name: "BME680 Air Quality"
+    id: ${device_internal_name}_bme680_air_quality
+    icon: "mdi:gauge"
+    lambda: |-
+      return log(id(${device_internal_name}_gas_resistance).state) + 0.04 *  id(${device_internal_name}_bme680_humidity).state;
+    on_value:
+      then:
+        component.update: ${device_internal_name}_human_readable_air_quality
+    state_class: "measurement"
+    update_interval: never
+    disabled_by_default: true
+
+  - platform: template
+    id: ${device_internal_name}_bme680_temperature_f
+    name: BME680 Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_bme680_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: never
+    disabled_by_default: true
+    
+text_sensor:
+  - platform: template
+    id: ${device_internal_name}_human_readable_air_quality
+    name: "BME680 Air Quality Classification"
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if (int(id(${device_internal_name}_bme680_air_quality).state) <= 50) {
+        return {"Excellent"};
+      }
+      else if (int(id(${device_internal_name}_bme680_air_quality).state) <= 100) {
+        return {"Good"};
+      }
+      else if (int(id(${device_internal_name}_bme680_air_quality).state) <= 150) {
+        return {"Lightly polluted"};
+      }
+      else if (int(id(${device_internal_name}_bme680_air_quality).state) <= 200) {
+        return {"Moderately polluted"};
+      }
+      else if (int(id(${device_internal_name}_bme680_air_quality).state) <= 250) {
+        return {"Heavily polluted"};
+      }
+      else if (int(id(${device_internal_name}_bme680_air_quality).state) <= 350) {
+        return {"Severely polluted"};
+      }
+      else if (int(id(${device_internal_name}_bme680_air_quality).state) <= 500) {
+        return {"Extremely polluted"};
+      }
+      else {
+        return {"unknown"};
+      }
+    update_interval: never

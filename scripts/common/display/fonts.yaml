@@ -1,0 +1,82 @@
+################################################################################
+# Commonly used fonts
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   fonts: !include common/fonts.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Use Google Font where possible
+#       - Id naming convention used FontName_SizeInPt_Weight
+#       - Only add fonts that are going to be used in more than 1 project. For
+#         single project use add to the device file. 
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+font:
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_10_bold
+    size: 10
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_15_bold
+    size: 15
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_20_bold
+    size: 20
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_25_bold
+    size: 25
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_30_bold
+    size: 30
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_40_bold
+    size: 40
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_60_bold
+    size: 60
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_80_bold
+    size: 80

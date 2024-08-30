@@ -1,0 +1,75 @@
+################################################################################
+# ESPHome WT32-Eth01 ESP32S with Ethernet
+################################################################################
+# This example was built during the Home Automator "Creating a Room Sensor from 
+# Scratch" tutorial series.
+# Link: https://www.youtube.com/playlist?list=PLJ3MNJX_MOUkHnK4C65lJr4klT58Yi1_W
+#
+# The components used are:
+#     - WT32-Eth01
+#         - Enabled hardware and services:
+#             - Ethernet (ESP Home does not allow both Ethernet and WiFi together)
+#             - Webserver
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - None
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  device_internal_name: esphome_wt32_eth01_prototype
+  device_wifi_name: esphome-wt32-eth01-prototype
+  device_friendly_name: ESPHome WT32-ETH01 Prototype
+  device_ip_address: 192.168.0.250
+  ethernet_ip_address: 192.168.0.251
+  device_sampling_time: 30s
+  region: Africa/Johannesburg
+
+################################################################################
+# Common Packages
+################################################################################
+packages:
+  # ----------------------------------------------------------------------------
+  # Core packages
+  # ----------------------------------------------------------------------------
+  board: !include boards/esp32/wt32_eth01.yaml
+  settings: !include common/core/settings.yaml
+  time: !include common/time/home_assistant.yaml
+
+  # Network
+  # wifi: !include common/network/wifi.yaml
+  ethernet: !include common/network/ethernet_lan8720.yaml
+  webserver: !include common/network/webserver.yaml
+
+  # ----------------------------------------------------------------------------
+  # Sensor packages
+  # ----------------------------------------------------------------------------
+  # This is where you add additional configurations to your device that is not 
+  # included in you components.
+
+################################################################################
+# Custom Device Configuration
+################################################################################
+# Board Configuration
+# ------------------------------------------------------------------------------
+esphome:
+  comment: Using a WT32-ETH01 Ethernet Module
+
+# ------------------------------------------------------------------------------
+# Sensors
+# ------------------------------------------------------------------------------
+# This is where you add additional configurations to your device that is not 
+# included in you components.

@@ -1,0 +1,3 @@
+time:
+  - platform: gps
+    id: ${device_internal_name}_gps

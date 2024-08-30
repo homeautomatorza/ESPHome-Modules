@@ -1,0 +1,28 @@
+################################################################################
+# Home Assistant Time Component
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# -----------------------------------------------------------------------------
+# packages:
+#   ha-time: !include common/time/home_assistant.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: o.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: 
+# ------------------------------------------------------------------------------
+# Note:
+#       - Place holder
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+time:
+  # Get the time from the connected Home Assistant Instance
+  - platform: homeassistant
+    id: ${device_internal_name}_internal_time
+    timezone: ${region}

@@ -1,0 +1,119 @@
+################################################################################
+# Commonly used glyphs from Material Icons for Lambdas
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   glyphs: !include common/glyphs.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Only use this file if you are going to use glyphs (icons) in a lambda.
+#       - Only add glyphs that are going to be used in more than 1 project. For
+#         single project use add to the device file. 
+#       - Requires that the materialdesignicons-webfont.ttf font file be in the 
+#         font folder.
+# Reference: https://pictogrammers.com/library/mdi
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+font:
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: icon_font_25
+    size: 25
+    glyphs:
+      # Motion
+      - "\U000F0D91" # Motion Detection On
+      - "\U000F1435" # Motion Detection Off
+      # WiFi
+      - "\U000F05A9" # WiFi
+      - "\U000F091F" # WiFi Strength 1
+      - "\U000F0922" # WiFi Strength 2
+      - "\U000F0925" # WiFi Strength 3
+      - "\U000F0928" # WiFi Strength 4
+      - "\U000F05AA" # No WiFi
+      # Bluetooth
+      - "\U000F00AF" # Bluetooth
+      - "\U000F00B2" # Bluetooth Off 
+      # Weather
+      - "\U000F050F" # Temperature
+      - "\U000F058E" # Humidity
+      - "\U000F07E4" # CO2
+      - "\U000F0438" # TVOC
+      - "\U000F0590" # Cloudy
+      - "\U000F0591" # Fog
+      - "\U000F0592" # Hail
+      - "\U000F0F30" # Hazy
+      - "\U000F0593" # Lightning
+      - "\U000F067E" # Lightning Rainy
+      - "\U000F0594" # Clear Night
+      - "\U000F0595" # Partly Cloudy
+      - "\U000F0F31" # Partly Cloudy Night
+      - "\U000F0F32" # Partly Lightning
+      - "\U000F0F33" # Partly Rainy
+      - "\U000F0F34" # Partly Snowy
+      - "\U000F0F35" # Partly Snowy Rainy
+      - "\U000F0596" # Pouring
+      - "\U000F0597" # Rainy
+      - "\U000F0598" # Snowy
+      - "\U000F067F" # Snowy Rainy
+      - "\U000F0599" # Sunny
+      - "\U000F059D" # Windy
+      - "\U000F059E" # Windy Variant
+      # Other
+      - "\U000F048D" # Server Network
+
+  - file: "fonts/materialdesignicons-webfont.ttf"
+    id: icon_font_15
+    size: 15
+    glyphs:
+      # Motion
+      - "\U000F0D91" # Motion Detection On
+      - "\U000F1435" # Motion Detection Off
+      # WiFi
+      - "\U000F05A9" # WiFi
+      - "\U000F091F" # WiFi Strength 1
+      - "\U000F0922" # WiFi Strength 2
+      - "\U000F0925" # WiFi Strength 3
+      - "\U000F0928" # WiFi Strength 4
+      - "\U000F05AA" # No WiFi
+      # Bluetooth
+      - "\U000F00AF" # Bluetooth
+      - "\U000F00B2" # Bluetooth Off 
+      # Weather
+      - "\U000F050F" # Temperature
+      - "\U000F058E" # Humidity
+      - "\U000F07E4" # CO2
+      - "\U000F0438" # TVOC
+      - "\U000F0590" # Cloudy
+      - "\U000F0591" # Fog
+      - "\U000F0592" # Hail
+      - "\U000F0F30" # Hazy
+      - "\U000F0593" # Lightning
+      - "\U000F067E" # Lightning Rainy
+      - "\U000F0594" # Clear Night
+      - "\U000F0595" # Partly Cloudy
+      - "\U000F0F31" # Partly Cloudy Night
+      - "\U000F0F32" # Partly Lightning
+      - "\U000F0F33" # Partly Rainy
+      - "\U000F0F34" # Partly Snowy
+      - "\U000F0F35" # Partly Snowy Rainy
+      - "\U000F0596" # Pouring
+      - "\U000F0597" # Rainy
+      - "\U000F0598" # Snowy
+      - "\U000F067F" # Snowy Rainy
+      - "\U000F0599" # Sunny
+      - "\U000F059D" # Windy
+      - "\U000F059E" # Windy Variant
+      # Other
+      - "\U000F048D" # Server Network
+

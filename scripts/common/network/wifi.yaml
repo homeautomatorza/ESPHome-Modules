@@ -1,0 +1,188 @@
+################################################################################
+# WiFi Common Component for ESP32
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   wifi: !include common/network/wifi.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.4.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://www.esphome.io/components/wifi
+#            https://www.esphome.io/components/text_sensor/wifi_info
+#            https://www.esphome.io/components/sensor/wifi_signal
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Requires the following substitution in the device file:
+#           - device_ip_address
+#           - device_internal_name
+#           - device_wifi_name
+#           - device_sampling_time
+#       - Requires the folowing secrets:
+#           - wifi_ssid
+#           - subnet_address
+#           - gateway_address
+#           - subnet_address
+#           - dns_address (Optional)
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+# Globals
+################################################################################
+globals: ##to set default reboot behavior
+  - id: ${device_internal_name}_wifi_connection
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+  - id: ${device_internal_name}_wifi_radio_status
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+################################################################################
+# WiFi Settings
+################################################################################
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+  manual_ip:
+    static_ip: ${device_ip_address}
+    gateway: !secret gateway_address
+    subnet: !secret subnet_address
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: ${device_wifi_name}
+    password: !secret web_server_password
+  domain: .local
+  fast_connect: true
+
+captive_portal:
+
+################################################################################
+# Sensors
+################################################################################
+sensor:
+  - platform: wifi_signal
+    id: ${device_internal_name}_wifi_signal_db
+    name: WiFi Signal dB
+    icon: mdi:wifi
+    update_interval: ${device_sampling_time}
+    entity_category: diagnostic
+    disabled_by_default: true
+
+  - platform: copy
+    source_id: ${device_internal_name}_wifi_signal_db
+    id: ${device_internal_name}_wifi_signal_percentage
+    name: WiFi Signal Percentage
+    icon: mdi:wifi
+    filters:
+      - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
+    unit_of_measurement: "%"
+    entity_category: diagnostic
+    disabled_by_default: true
+
+################################################################################
+# Text Sensors
+################################################################################
+text_sensor:
+  # WiFi internal sensors
+  - platform: wifi_info
+    ip_address:
+      id: ${device_internal_name}_wifi_ip_address
+      name: IP Address
+      icon: mdi:wifi
+    ssid:
+      id: ${device_internal_name}_connected_ssid
+      name: Connected SSID
+      icon: mdi:wifi
+    mac_address:
+      id: ${device_internal_name}_wifi_mac_address
+      name: Mac Wifi Address
+      icon: mdi:wifi
+      disabled_by_default: true
+    dns_address:
+      id: ${device_internal_name}_wifi_dns_address
+      name: DNS Address
+      icon: mdi:network
+      disabled_by_default: true
+
+  # WiFi Strength human readable
+  - platform: template
+    id: ${device_internal_name}_wifi_strength
+    name: Wifi Signal Strength
+    icon: mdi:wifi-strength-off-outline
+    lambda: |-
+      std::string strength = "";
+      if (id(${device_internal_name}_wifi_signal_percentage).state >= 85 ) {
+        id(${device_internal_name}_wifi_strength).set_icon("mdi:wifi-strength-4");
+        strength = "Excellent";
+      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 65) {
+        id(${device_internal_name}_wifi_strength).set_icon("mdi:wifi-strength-3");
+        strength = "Good";
+      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 30) {
+        id(${device_internal_name}_wifi_strength).set_icon("mdi:wifi-strength-2");
+        strength = "Fair";
+      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 10) {
+        id(${device_internal_name}_wifi_strength).set_icon("mdi:wifi-strength-1");
+        strength = "Weak";
+      } else {
+        id(${device_internal_name}_wifi_strength).set_icon("mdi:wifi-strength-off-outline");
+        strength = "None";
+      }
+      return strength;
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+
+################################################################################
+# Switches
+################################################################################
+switch: 
+  # WiFi Radio Control 
+  - platform: template
+    id: ${device_internal_name}_wifi_radio_switch
+    name: WiFi Radio Switch
+    icon: mdi:wifi
+    lambda: return ${device_internal_name}_wifi_radio_status;
+    turn_on_action:
+      - lambda: !lambda wifi::global_wifi_component->enable();
+      - lambda: !lambda id(${device_internal_name}_wifi_radio_status) = true;
+      - delay: 2s
+    turn_off_action:
+      - lambda: !lambda wifi::global_wifi_component->disable();
+      - lambda: !lambda id(${device_internal_name}_wifi_radio_status) = false;
+      - delay: 2s
+    entity_category: config
+    disabled_by_default: true
+
+################################################################################
+# Interval
+################################################################################
+interval:
+  - interval: 10s
+    then:
+      - if:
+          condition:
+            wifi.connected:
+          then:
+            - lambda: |-
+                id(${device_internal_name}_wifi_connection) = true;
+          else:
+            - lambda: |-
+                id(${device_internal_name}_wifi_connection) = false;
+      - if:
+          condition: wifi.enabled
+          then:
+            - lambda: |-
+                id(${device_internal_name}_wifi_radio_status) = true;
+          else:
+            - lambda: |-
+                id(${device_internal_name}_wifi_radio_status) = false;

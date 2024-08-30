@@ -1,0 +1,46 @@
+################################################################################
+# Sun Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file.
+# Requires the time component for home assistant, GPS or SNTP
+# -----------------------------------------------------------------------------
+# packages:
+#  sun: !include sensors/sun.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/time/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sun:
+  latitude: ${location_latitude}
+  longitude: ${location_longitude}
+
+text_sensor:
+  - platform: sun
+    name: Sun Next Sunrise
+    type: sunrise
+    disabled_by_default: true
+
+  - platform: sun
+    name: Sun Next Sunset
+    type: sunset
+    disabled_by_default: true
+
+sensor:
+  - platform: sun
+    name: Sun Elevation
+    type: elevation
+    disabled_by_default: true
+
+  - platform: sun
+    name: Sun Azimuth
+    type: azimuth
+    disabled_by_default: true

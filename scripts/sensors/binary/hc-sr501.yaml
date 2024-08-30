@@ -1,0 +1,31 @@
+################################################################################
+# HC-SR501 Passive Infrared Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  hc-sr501: !include 
+#    file: sensors/hc-sr501.yaml
+#    vars:
+#      pin: GPIO14
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/switch/gpio.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+binary_sensor:
+  - platform: gpio
+    name: HC-SR501 Movement
+    id: ${device_internal_name}_movement
+    icon: mdi:motion-sensor
+    pin: ${pin}
+    device_class: motion

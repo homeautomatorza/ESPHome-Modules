@@ -1,0 +1,55 @@
+################################################################################
+# BME280 Temperature, Pressure and Humidity Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  bme280: !include 
+#    file: sensors/i2c/bme280.yaml
+#    vars:
+#      i2c_address: 0x77
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/bme280
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: bme280_i2c
+    address: ${i2c_address}
+    temperature:
+      name: "BME280 Temperature"
+      id: ${device_internal_name}_bme280_temperature
+      icon: mdi:temperature-celsius
+      oversampling: 16x
+    pressure:
+      name: "BME280 Pressure"
+      id: ${device_internal_name}_bme280_pressure
+      icon: mdi:gauge
+    humidity:
+      name: "BME280 Humidity"
+      id: ${device_internal_name}_bme280_humidity
+      icon: mdi:water-percent
+    on_value:
+      then:
+        component.update: ${device_internal_name}_bme280_temperature_f
+    update_interval: ${device_sampling_time}
+
+  - platform: template
+    id: ${device_internal_name}_bme280_temperature_f
+    name: BME280 Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_bme280_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+    

@@ -1,0 +1,71 @@
+################################################################################
+# BH1750 Illuminence Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  bh1750: !include 
+#    file: sensors/digital/i2c/bh1750.yaml
+#    vars:
+#      i2c_address: 0x23
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/bh1750.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:  
+  - platform: bh1750
+    name: BH1750 Illuminance
+    id: ${device_internal_name}_bh1750_illuminance
+    icon: mdi:sun-wireless-outline
+    address: ${i2c_address}
+    on_value:
+      then:
+        component.update: ${device_internal_name}_bh1750_illuminance_human_readable
+    device_class: illuminance
+    state_class: measurement
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+text_sensor:
+  - platform: template
+    id: ${device_internal_name}_bh1750_illuminance_human_readable
+    name: BH1750 Illuminance Human Readable
+    icon: mdi:sunglasses
+    lambda: |-
+      std::string brightness = "";
+      int lux = id(${device_internal_name}_bh1750_illuminance).state;
+      if (lux <= 200) {
+        brightness = "Dark";
+      }
+      else if (lux <= 300) {
+        brightness = "Dim";
+      }
+      else if (lux <= 500) {
+        brightness = "Ideal";
+      }
+      else if (lux <= 750) {
+        brightness = "Bright";
+      }
+      else if (lux <= 1000) {
+        brightness = "Very Bright";
+      }
+      else if (lux >= 1000) {
+        brightness = "Too Bright";
+      }
+      else {
+        brightness = "Unknown";
+      }
+      return brightness;
+    update_interval: never
+
+

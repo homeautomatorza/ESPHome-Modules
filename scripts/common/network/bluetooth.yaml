@@ -1,0 +1,189 @@
+################################################################################
+# Bluethooth Common Component
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   bl_proxy: !include common/bluetooth_proxy.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Do not use with web server or screens with bluetooth unless there is a
+#         lot of RAM on the device! 
+#       - Switches do not seen to work!
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+esp32_ble:
+  id: ${device_internal_name}_ble
+
+esp32_ble_tracker:
+  id: ${device_internal_name}_ble_tracker
+  scan_parameters:
+    interval: 10000ms
+    window: 500ms
+    active: true
+
+bluetooth_proxy:
+  id: ${device_internal_name}_ble_proxy
+  active: true
+
+binary_sensor:
+  - platform: template
+    id: ${device_internal_name}_ble_status
+    name: Bluetooth LE Status
+    lambda: return id(${device_internal_name}_ble).is_active();
+    entity_category: diagnostic
+    disabled_by_default: true
+
+text_sensor:
+  - platform: ble_scanner
+    id: ${device_internal_name}_ble_scanner
+    name: "Bluetooth LE Devices Scanner"
+    icon: mdi:bluetooth
+    entity_category: diagnostic
+    disabled_by_default: true
+
+# -----------------------------------------------------------------------------
+# Anything below this is in Alpha and cannot be trusted and is commented out
+# -----------------------------------------------------------------------------
+
+#globals:
+#  - id: ${device_internal_name}_bluetooth_proxy_active
+#    type: bool
+#    restore_value: yes
+#    initial_value: "false"
+
+#  - id: ${device_internal_name}_esp32_ble_tracker_scan_parameters_active
+#    type: bool
+#    restore_value: yes
+#    initial_value: "false"
+
+#  - id: ${device_internal_name}_esp32_ble_tracker_scan_parameters_continuous
+#    type: bool
+#    restore_value: yes
+#    initial_value: "false"
+
+#switch: 
+  # Bluetooth Radio Control 
+  #- platform: template
+  #  id: ${device_internal_name}_ble_radio_switch
+  #  name: Bluetooth Radio Switch
+  #  icon: mdi:bluetooth
+  #  lambda: return id(${device_internal_name}_ble).is_active();
+  #  restore_mode: RESTORE_DEFAULT_ON
+  #  optimistic: true
+  #  turn_on_action:
+  #    - lambda: id(${device_internal_name}_ble).enable();
+  #    - binary_sensor.template.publish:
+  #        id: ${device_internal_name}_ble_status
+  #        state: !lambda return id(${device_internal_name}_ble).is_active();
+  #    - delay: 2s
+  #  turn_off_action:
+  #    - lambda: id(${device_internal_name}_ble).disable();
+  #    - binary_sensor.template.publish:
+  #        id: ${device_internal_name}_ble_status
+  #        state: !lambda return id(${device_internal_name}_ble).is_active();
+  #    - delay: 2s
+  #  entity_category: config
+  #  disabled_by_default: true
+
+  # Code below does not seem to work - REVIEW 
+  # From https://community.home-assistant.io/t/a-switch-for-turning-bt-proxy-on-or-off/626178/15
+  # Bluetooth Proxy Control
+  #- platform: template
+  #  id: ${device_internal_name}_bluetooth_proxy_switch
+  #  name: Bluetooth Proxy
+  #  icon: mdi:bluetooth-connect
+  #  entity_category: config
+  #  restore_mode: RESTORE_DEFAULT_ON
+  #  optimistic: true
+  #  lambda: |- 
+  #    return id(${device_internal_name}_ble_proxy)->has_active() == true;
+  #  turn_on_action:
+  #    - lambda: |- 
+  #        id(${device_internal_name}_ble_proxy)->set_active(true);
+  #    - globals.set:
+  #        id: ${device_internal_name}_bluetooth_proxy_active
+  #        value: 'true'           
+  #    - delay: 2s # wait for BluetoothProxy to start up
+  #  turn_off_action:
+  #    - lambda: |- 
+  #        id(${device_internal_name}_ble_proxy)->set_active(false);
+  #    - globals.set:
+  #        id: ${device_internal_name}_bluetooth_proxy_active
+  #        value: 'false'                      
+  #    - delay: 2s # wait for BluetoothProxy to close
+  #  disabled_by_default: true
+
+  # Bluetooth Tracker Control
+  #- platform: template
+  #  id: ${device_internal_name}_ble_tracker_active
+  #  name: BLE Scan Active
+  #  icon: mdi:bluetooth-transfer
+  #  entity_category: config
+  #  optimistic: true
+  #  lambda: |- 
+  #    return id(${device_internal_name}_esp32_ble_tracker_scan_parameters_active) == true;
+  #  turn_on_action:
+  #    - globals.set:
+  #        id: ${device_internal_name}_esp32_ble_tracker_scan_parameters_active
+  #        value: 'true'
+  #    - lambda: |-
+  #        ${device_internal_name}_ble_tracker->set_scan_active(true);
+  #        ${device_internal_name}_ble_tracker->setup();
+  #  turn_off_action:
+  #    - globals.set:
+  #        id: ${device_internal_name}_esp32_ble_tracker_scan_parameters_active
+  #        value: 'false'
+  #    - lambda: |-
+  #        ${device_internal_name}_ble_tracker->set_scan_active(false);
+  #        ${device_internal_name}_ble_tracker->setup();
+
+  # Bluetooth Continuous Scan Control
+  #- platform: template
+  #  id: ${device_internal_name}_ble_tracker_continuous
+  #  name: BLE Scan Continuous
+  #  icon: mdi:bluetooth-transfer
+  #  entity_category: config
+  #  optimistic: true
+  #  lambda: |- 
+  #    return id(${device_internal_name}_esp32_ble_tracker_scan_parameters_continuous) == true;
+  #  turn_on_action:
+  #    - globals.set:
+  #        id: ${device_internal_name}_esp32_ble_tracker_scan_parameters_continuous
+  #        value: 'true'
+  #    - lambda: |-
+  #        ${device_internal_name}_ble_tracker->set_scan_continuous(true);
+  #        ${device_internal_name}_ble_tracker->setup();
+  #  turn_off_action:
+  #    - globals.set:
+  #        id: ${device_internal_name}_esp32_ble_tracker_scan_parameters_continuous
+  #        value: 'false'
+  #    - lambda: |-
+  #        ${device_internal_name}_ble_tracker->set_scan_continuous(false);
+  #        ${device_internal_name}_ble_tracker->setup();
+
+sensor:
+  - platform: template
+    name: Bluetooth LE Proxy Connections
+    icon: mdi:bluetooth-settings
+    id: ${device_internal_name}_esp32_ble_connections
+    unit_of_measurement: "connections"
+    accuracy_decimals: 0    
+    update_interval: 60s    
+    lambda: |-
+      auto bt_proxy = id(${device_internal_name}_ble_proxy);
+      int connections = bt_proxy->get_bluetooth_connections_limit();
+      int free = bt_proxy->get_bluetooth_connections_free();
+      return (connections-free);
+    entity_category: diagnostic
+    disabled_by_default: true

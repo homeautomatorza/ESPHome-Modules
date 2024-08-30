@@ -1,0 +1,69 @@
+################################################################################
+# ESPHome Room Sensor with screen Tutorial
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   color: !include common/colors.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Based on https://coolors.co naming.
+#       - Only add colors that are going to be used in more than 1 project. For
+#         single project use add to the device file. 
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+color:
+  # BW
+  - id: black  
+    hex: "000000"
+  - id: battleship_gray
+    hex: "858585"
+  - id: white
+    hex: "FFFFFF"
+
+  # RGB
+  - id: red
+    hex: "FF0000"
+  - id: green
+    hex: "00FF00"
+  - id: blue
+    hex: "0000FF"
+
+  # Other Alphabetically 
+  - id: battleship_grey
+    hex: "848482"
+  - id: bittersweet
+    hex: "FF6D6A"
+  - id: burgundy
+    hex: "70161E"
+  - id: cadet_grey
+    hex: "83A0A0"
+  - id: lilac
+    hex: "BCA0BC"
+  - id: ocean_blue
+    hex: 005EB8
+  - id: pumpkin
+    hex: "FC7A1E"
+  - id: traffic_light_green
+    hex: "81FF00"
+  - id: traffic_light_orange
+    hex: "CC5D29"
+  - id: traffic_light_red
+    hex: "D83232"
+  - id: yellow
+    hex: "FFFF00"
+
+  #Brand colors
+  - id: bluethooth_logo_blue
+    hex: "0082FC"

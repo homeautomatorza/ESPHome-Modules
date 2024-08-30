@@ -1,0 +1,50 @@
+################################################################################
+# DS18B20 Temperature Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   one wire GPIO to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ds18b20: !include 
+#    file: sensors/digital/other/ds18b20.yaml
+#    vars:
+#      data_pin: GPIO16
+#      sensor_address: 0x7114d0d446197628
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/dallas_temp.html 
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+one_wire:
+  - platform: gpio
+    pin: ${data_pin}
+    id: ${device_internal_name}_1_wire
+
+sensor:
+  - platform: dallas_temp
+    name: DS18B20 Temperature
+    id: ${device_internal_name}_ds18b20_temperature
+    one_wire_id: ${device_internal_name}_1_wire
+    address: ${sensor_address}
+    resolution: 10
+    icon: mdi:thermometer
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+
+  - platform: template
+    id: ${device_internal_name}_ds18b20_temperature_f
+    name: DS18B20 Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_ds18b20_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true

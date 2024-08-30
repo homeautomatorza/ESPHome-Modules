@@ -1,0 +1,47 @@
+################################################################################
+# SHT40 Temperature and humidity sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# ------------------------------------------------------------------------------
+# packages:
+#  sht40: !include 
+#    file: sensors/digital/i2c/sht40.yaml
+#    vars:
+#      i2c_address: 0x44
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/sht4x.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: sht4x
+    temperature:
+      name: SHT40 Temperature
+      id: ${device_internal_name}_sht40_temperature
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_sht40_temperature_f
+    humidity:
+      name: SHT40 Humidity
+      id: ${device_internal_name}_sht40_humidity
+    address: ${i2c_address}
+    update_interval: ${device_sampling_time}
+
+  - platform: template
+    id: ${device_internal_name}_sht40_temperature_f
+    name: SHT40 Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_sht40_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: never
+    disabled_by_default: true

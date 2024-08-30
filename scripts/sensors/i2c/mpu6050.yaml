@@ -1,0 +1,110 @@
+################################################################################
+# MPU6050 Accelerometer/Gyroscope Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  mpu6050: !include 
+#    file: sensors/mpu6050.yaml
+#    vars:
+#      i2c_address: 0x68
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/mpu6050.html
+# ------------------------------------------------------------------------------
+# Note:
+#       - None
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+globals:
+  - id: ${device_internal_name}_mpu6050_lastX
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: ${device_internal_name}_mpu6050_lastY
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: ${device_internal_name}_mpu6050_lastZ
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: ${device_internal_name}_mpu6050_movement_threshold
+    type: float
+    restore_value: no
+    initial_value: '0.4'
+
+sensor:
+  - platform: mpu6050
+    id: ${device_internal_name}_mpu6050
+    address: ${i2c_address}
+    accel_x:
+      name: "MPU6050 Accelerometer X"
+      id: ${device_internal_name}_mpu6050_accelerometer_x
+    accel_y:
+      name: "MPU6050 Accelerometer Y"
+      id: ${device_internal_name}_mpu6050_accelerometer_y
+    accel_z:
+      name: "MPU6050 Accelerometer Z"
+      id: ${device_internal_name}_mpu6050_accelerometer_z
+    gyro_x:
+      name: "MPU6050 Gyroscope X"
+      id: ${device_internal_name}_mpu6050_gyroscope_x
+    gyro_y:
+      name: "MPU6050 Gyroscope Y"
+      id: ${device_internal_name}_mpu6050_gyroscope_y
+    gyro_z:
+      name: "MPU6050 Gyroscope Z"
+      id: ${device_internal_name}_mpu6050_gyroscope_z
+    temperature:
+      name: "MPU6050 Temperature"
+      id: ${device_internal_name}_mpu6050_temperature
+      icon: mdi:temperature-celsius
+      on_value:
+        then:
+          component.update: ${device_internal_name}_mpu6050_temperature_f
+      disabled_by_default: true
+    update_interval: 500ms
+
+  # Fahrenheit conversion
+  - platform: template
+    id: ${device_internal_name}_mpu6050_temperature_f
+    name: BME680 Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_mpu6050_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: never
+    disabled_by_default: true
+    
+
+# Earthquake Detection
+binary_sensor:
+  - platform: template
+    id: ${device_internal_name}_mpu6050_earthquake_detected
+    name: "Earthquake Detected"
+    icon: mdi:vibrate
+    lambda: |-
+      if (abs(id(${device_internal_name}_mpu6050_accelerometer_x).state - id(${device_internal_name}_mpu6050_lastX)) > id(${device_internal_name}_mpu6050_movement_threshold) || abs(id(${device_internal_name}_mpu6050_accelerometer_y).state - id(${device_internal_name}_mpu6050_lastY)) > id(${device_internal_name}_mpu6050_movement_threshold) || abs(id(${device_internal_name}_mpu6050_accelerometer_z).state - id(${device_internal_name}_mpu6050_lastZ)) > id(${device_internal_name}_mpu6050_movement_threshold)) {
+        return true;
+      } else {
+        return false;
+      }
+    disabled_by_default: true
+
+interval:
+  - interval: 500ms
+    then:
+      - lambda: |-
+          id(${device_internal_name}_mpu6050_lastX) = id(${device_internal_name}_mpu6050_accelerometer_x).state;
+          id(${device_internal_name}_mpu6050_lastY) = id(${device_internal_name}_mpu6050_accelerometer_y).state;
+          id(${device_internal_name}_mpu6050_lastZ) = id(${device_internal_name}_mpu6050_accelerometer_z).state;

@@ -1,0 +1,109 @@
+################################################################################
+# HLK-LD2410C mmWave Presence Detection Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  i2c: !include 
+#    file: sensors/uart/hlk-ld2410c_minimal.yaml
+#    vars:
+#      presence_pin: GPIO27
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.2.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/ld2410.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+ld2410:
+  uart_id: ${device_internal_name}_uart_bus0
+  id: ${device_internal_name}_ld2410_mmwave
+
+binary_sensor:
+  - platform: ld2410
+    has_target:
+      id: ${device_internal_name}_ld2410_presence
+      name: LD2410 Presence
+      disabled_by_default: true
+    has_moving_target:
+      id: ${device_internal_name}_has_moving_target
+      name: LD2410 Moving Target
+      disabled_by_default: true
+    has_still_target:
+      id: ${device_internal_name}_has_still_target
+      name: LD2410 Still Target
+      disabled_by_default: true
+    ld2410_id: ${device_internal_name}_ld2410_mmwave
+
+  - platform: gpio
+    id: ${device_internal_name}_ld2410_gpio_presence
+    name: LD2410 GPIO Presence
+    icon: mdi:motion-sensor
+    pin: ${presence_pin}
+    device_class: presence
+
+sensor:
+  - platform: ld2410
+    moving_distance:
+      id: ${device_internal_name}_moving_distance
+      name : LD2410 Moving Distance
+      disabled_by_default: true
+    still_distance:
+      id: ${device_internal_name}_still_distance
+      name: LD2410 Still Distance
+      disabled_by_default: true
+    moving_energy:
+      id: ${device_internal_name}_move_energy
+      name: LD2410 Move Energy
+      disabled_by_default: true
+    still_energy:
+      id: ${device_internal_name}_still_energy
+      name: LD2410 Still Energy
+      disabled_by_default: true
+    detection_distance:
+      id: ${device_internal_name}_detection_distance
+      name: LD2410 Detection Distance
+      disabled_by_default: true
+    ld2410_id: ${device_internal_name}_ld2410_mmwave
+
+switch:
+  - platform: ld2410
+    bluetooth:
+      id: ${device_internal_name}_bluetooth
+      name: LD2410 Bluetooth
+      disabled_by_default: true
+    ld2410_id: ${device_internal_name}_ld2410_mmwave
+
+button:
+  - platform: ld2410
+    factory_reset:
+      id: ${device_internal_name}_factory_reset
+      name: LD2410 Factory Reset
+    restart:
+      id: ${device_internal_name}_restart
+      name: LD2410 Restart
+      entity_category: config
+    ld2410_id: ${device_internal_name}_ld2410_mmwave
+
+text_sensor:
+  - platform: ld2410
+    version:
+      id: ${device_internal_name}_firmware_version
+      name: LD2410 Firmware Version
+      disabled_by_default: true
+    ld2410_id: ${device_internal_name}_ld2410_mmwave
+
+select:
+  - platform: ld2410
+    distance_resolution:
+      id: ${device_internal_name}_distance_resolution
+      name: LD2410 Distance Resolution
+      disabled_by_default: true
+    ld2410_id: ${device_internal_name}_ld2410_mmwave
