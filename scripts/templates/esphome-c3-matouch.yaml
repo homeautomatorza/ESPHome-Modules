@@ -1,0 +1,136 @@
+################################################################################
+# Makerfabs MaTouch_ESP32-C3(RISC-V) SPI TFT Touch 3.5' LVGL Graphics Test
+################################################################################
+# The components used are:
+#     - Makerfabs MaTouch_ESP32-C3(RISC-V) SPI TFT Touch 3.5" (ESP32-C3FN4 RISCV Single Core)
+#         - Enabled hardware and services:
+#             - WiFi
+#             - 3.5" TFT SPI 480x320 Touch Screen (ILI9488)
+#             - Touchscreen (FT6236)
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - LVGL is not in ESPHome yet
+# ------------------------------------------------------------------------------
+# Referances:
+#       - https://esphome.io/components/lvgl/index.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  device_internal_name: esphome_makerfab_lvgl
+  device_wifi_name: esphome-makerfab-lvgl
+  device_friendly_name: ESPHome Makerfabs ESP32-C3 LVGL Test
+  device_ip_address: 192.168.0.248
+  device_sampling_time: 30s
+  region: Africa/Johannesburg
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # ----------------------------------------------------------------------------
+  # Core packages
+  # ----------------------------------------------------------------------------
+  board: !include boards/esp32/c3_mini_matouch_35.yaml
+  settings: !include common/core/settings.yaml
+  time: !include common/time/home_assistant.yaml
+
+  # Network
+  wifi: !include common/network/wifi.yaml
+
+  # ----------------------------------------------------------------------------
+  # Peripherals
+  # ----------------------------------------------------------------------------
+  color: !include common/display/colors.yaml
+  glyphs: !include common/display/glyphs.yaml
+
+################################################################################
+# Board Configuration
+################################################################################
+esphome:
+  comment: Makerfabs MaTouch_ESP32-C3(RISC-V) SPI TFT Touch 3.5' LVGL Graphics Test
+  on_boot:
+    then:
+      - light.turn_on:
+          id: ${device_internal_name}_backlight
+          brightness: 80%
+
+################################################################################
+# Custom Device Configuration
+################################################################################
+
+# -------------------------------------------------------------------------------
+# Remove existing configurations
+# -------------------------------------------------------------------------------
+i2c: !remove
+captive_portal: !remove
+
+# -------------------------------------------------------------------------------
+# Extend existing configurations
+# -------------------------------------------------------------------------------
+time:
+  - id: !extend ${device_internal_name}_internal_time
+    on_time_sync:
+      then:
+        - lvgl.label.update:
+            id: lbl_time
+            text:
+              time_format: "%H:%M"
+              time: !lambda return id(${device_internal_name}_internal_time).now();
+    on_time:
+      seconds: 0
+      then:
+        - lvgl.label.update:
+            id: lbl_time
+            text:
+              time_format: "%H:%M"
+              time: !lambda return id(${device_internal_name}_internal_time).now();
+
+# -------------------------------------------------------------------------------
+# LVGL Graphics
+# -------------------------------------------------------------------------------
+lvgl:
+  displays:
+    - ${device_internal_name}_display
+#  touchscreens:
+#    - ${device_internal_name}_touchscreen
+  buffer_size: 25%
+  pages:
+    - id: lvgl_page
+      widgets:
+        - label:
+            id: lbl_time
+            align: CENTER
+            text: "00:00"
+            text_font: roboto_120_bold
+        - led:
+            id: led_status
+            color: traffic_light_red
+            height: 15
+            width: 15
+            x: 10
+            y: 10
+
+# -------------------------------------------------------------------------------
+# Fonts
+# -------------------------------------------------------------------------------
+font:
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_120_bold
+    size: 120
