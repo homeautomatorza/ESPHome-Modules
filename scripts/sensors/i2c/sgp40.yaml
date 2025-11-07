@@ -1,0 +1,34 @@
+################################################################################
+# SGP40 VOC Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   humidity and temparature id to the sensor used.
+# ------------------------------------------------------------------------------
+# packages:
+#   sgp40: !include
+#     file: sensors/i2c/sgp40.yaml
+#     vars: 
+#       humidity: ${device_internal_name}_source_humidity
+#       temperature: ${device_internal_name}_source_temperature
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/sht4x.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: sgp4x
+    voc:
+      id: ${device_internal_name}_voc_index
+      name: "VOC Index"
+    compensation:
+      humidity_source: $humidity
+      temperature_source: $temperature
+    update_interval: $device_sampling_time

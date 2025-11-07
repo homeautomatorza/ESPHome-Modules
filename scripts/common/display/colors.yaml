@@ -49,12 +49,18 @@ color:
     hex: "70161E"
   - id: cadet_grey
     hex: "83A0A0"
+  - id: duckling_yellow
+    hex: "F0B741"
+  - id: green_grass
+    hex: "3F9B0B"
   - id: lilac
     hex: "BCA0BC"
   - id: ocean_blue
-    hex: 005EB8
+    hex: "005EB8"
   - id: pumpkin
     hex: "FC7A1E"
+  - id: sunshine_yellow
+    hex: "F4DB87"
   - id: traffic_light_green
     hex: "81FF00"
   - id: traffic_light_orange

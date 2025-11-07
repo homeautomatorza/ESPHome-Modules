@@ -1,0 +1,33 @@
+################################################################################
+# ZigBee 3.0 Common Component for ESP32 C and H series only
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include common/network/zigbee.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://github.com/luar123/zigbee_esphome 
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Coming Soon (WIP)
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "untested" disclaimer!
+# Use at your own risk!
+################################################################################
+esp32:
+  framework:
+    sdkconfig_options:
+       CONFIG_OPENTHREAD_ENABLED: n # Disable Thread!
+       CONFIG_ENABLE_WIFI_STATION: n
+       CONFIG_ZB_ENABLED: y
+       CONFIG_ZB_ZED: y
+       CONFIG_ZB_RADIO_NATIVE: y
+       ZB_ED_ROLE: y
+

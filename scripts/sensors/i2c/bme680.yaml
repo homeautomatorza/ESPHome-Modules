@@ -6,7 +6,7 @@
 # -----------------------------------------------------------------------------
 # packages:
 #  bme680: !include 
-#    file: sensors/digital/i2c/bme680.yaml
+#    file: sensors/i2c/bme680.yaml
 #    vars:
 #      i2c_address: 0x77
 # ------------------------------------------------------------------------------
@@ -33,24 +33,29 @@ sensor:
       icon: mdi:temperature-celsius
       device_class: temperature
       oversampling: 16x
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_bme680_temperature_f
+      disabled_by_default: true
     pressure:
       id: ${device_internal_name}_bme680_pressure
       name: BME680 Pressure
       icon: mdi:gauge
       device_class: pressure
+      disabled_by_default: true
     humidity:
       id: ${device_internal_name}_bme680_humidity
       name: BME680 Humidity
       icon: mdi:water-percent
       device_class: humidity
+      disabled_by_default: true
     gas_resistance:
       id: ${device_internal_name}_gas_resistance
       name: BME680 Gas Resistance
       disabled_by_default: true
-    on_value:
-      then:
-        - component.update: ${device_internal_name}_bme680_air_quality
-        - component.update: ${device_internal_name}_bme680_temperature_f
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_bme680_air_quality
     update_interval: ${device_sampling_time}
 
   - platform: template
@@ -75,7 +80,18 @@ sensor:
     device_class: temperature
     update_interval: never
     disabled_by_default: true
-    
+
+  # Dew Point
+  - platform: template
+    name: "BME680 Dew Point"
+    id: ${device_internal_name}_bme680_dew_point
+    lambda: |-
+      return (243.5*(log(id(${device_internal_name}_bme680_humidity).state/100)+((17.67*id(${device_internal_name}_bme680_temperature).state)/
+      (243.5+id(${device_internal_name}_bme680_temperature).state)))/(17.67-log(id(${device_internal_name}_bme680_humidity).state/100)-
+      ((17.67*id(${device_internal_name}_bme680_temperature).state)/(243.5+id(${device_internal_name}_bme680_temperature).state))));
+    unit_of_measurement: °C
+    icon: 'mdi:thermometer-alert'
+
 text_sensor:
   - platform: template
     id: ${device_internal_name}_human_readable_air_quality
@@ -104,6 +120,6 @@ text_sensor:
         return {"Extremely polluted"};
       }
       else {
-        return {"unknown"};
+        return {"Calculating"};
       }
     update_interval: never

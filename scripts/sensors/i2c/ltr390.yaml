@@ -1,0 +1,77 @@
+################################################################################
+# LTR390 UV Sensor Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ltr390: !include 
+#    file: sensors/i2c/ltr390.yaml
+#    vars:
+#      i2c_address: 0x53
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/bh1750.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: ltr390
+    uv_index:
+      id: ${device_internal_name}_ltr390_uv_index
+      name: LTR390 UV Index
+    uv:
+      id: ${device_internal_name}_ltr390_uv
+      name: LTR390 UV Sensor
+    light:
+      id: ${device_internal_name}_ltr390_illuminance
+      name: LTR390 Light
+      on_value:
+        then:
+          component.update: ${device_internal_name}_ltr390_illuminance_readable
+      disabled_by_default: true
+    ambient_light:
+      id: ${device_internal_name}_ltr390_ambient_light
+      name: LTR390 Ambient Light
+      disabled_by_default: true
+    address: $i2c_address
+    update_interval: $device_sampling_time
+
+text_sensor:
+  - platform: template
+    id: ${device_internal_name}_ltr390_illuminance_readable
+    name: LTR390 Illuminance Human Readable
+    icon: mdi:sunglasses
+    lambda: |-
+      std::string brightness = "";
+      int lux = id(${device_internal_name}_ltr390_illuminance).state;
+      if (lux <= 200) {
+        brightness = "Dark";
+      }
+      else if (lux <= 300) {
+        brightness = "Dim";
+      }
+      else if (lux <= 500) {
+        brightness = "Ideal";
+      }
+      else if (lux <= 750) {
+        brightness = "Bright";
+      }
+      else if (lux <= 1000) {
+        brightness = "Very Bright";
+      }
+      else if (lux >= 1000) {
+        brightness = "Too Bright";
+      }
+      else {
+        brightness = "Unknown";
+      }
+      return brightness;
+    update_interval: never

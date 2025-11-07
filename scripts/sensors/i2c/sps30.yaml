@@ -1,0 +1,83 @@
+################################################################################
+# Sensirion SPS30 Particulate Matter Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# ------------------------------------------------------------------------------
+# packages:
+#   sps30: !include
+#     file: sensors/i2c/sps30.yaml
+#     vars: 
+#       i2c_address: 0x69
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://www.esphome.io/components/sensor/sps30/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: sps30
+    id: ${device_internal_name}_sps30
+    pm_1_0:
+        name: SPS30 PM <1µm Weight concentration
+        id: ${device_internal_name}_sps30_PM_1_0
+        state_class: measurement
+    pm_2_5:
+        name: SPS30 PM <2.5µm Weight concentration
+        id: ${device_internal_name}_sps30_PM_2_5
+        state_class: measurement
+    pm_4_0:
+        name: SPS30 PM <4µm Weight concentration
+        id: ${device_internal_name}_sps30_PM_4_0
+        state_class: measurement
+    pm_10_0:
+        name: SPS30 PM <10µm Weight concentration
+        id: ${device_internal_name}_sps30_PM_10_0
+        state_class: measurement
+    pmc_0_5:
+        name: SPS30 PM <0.5µm Number concentration
+        id: ${device_internal_name}_sps30_PMC_0_5
+        state_class: measurement
+        disabled_by_default: true
+    pmc_1_0:
+        name: SPS30 PM <1µm Number concentration
+        id: ${device_internal_name}_sps30_PMC_1_0
+        state_class: measurement
+        disabled_by_default: true
+    pmc_2_5:
+        name: SPS30 PM <2.5µm Number concentration
+        id: ${device_internal_name}_sps30_PMC_2_5
+        state_class: measurement
+        disabled_by_default: true
+    pmc_4_0:
+        name: SPS30 PM <4µm Number concentration
+        id: ${device_internal_name}_sps30_PMC_4_0
+        state_class: measurement
+        disabled_by_default: true
+    pmc_10_0:
+        name: SPS30 PM <10µm Number concentration
+        id: ${device_internal_name}_sps30_PMC_10_0
+        disabled_by_default: true
+    pm_size:
+        name: SPS30 Typical Particle size
+        id: ${device_internal_name}_sps30_pm_size
+        state_class: measurement
+        disabled_by_default: true
+    address: ${i2c_address}
+    update_interval: ${device_sampling_time}
+
+button:
+  - platform: template
+    name: "SPS30 Fan Clean"
+    id: ${device_internal_name}_sps30_fan_clean
+    icon: mdi:fan
+    on_press:
+      then:
+        - sps30.start_fan_autoclean: ${device_internal_name}_sps30

@@ -1,0 +1,122 @@
+################################################################################
+# SPG30 eCO2 and TVOC Air Quality Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  sgp30: !include 
+#    file: sensors/i2c/sgp30.yaml
+#    vars:
+#      i2c_address: 0x58
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/sps30.html 
+# ------------------------------------------------------------------------------
+# Note:
+#       - Expects ${device_internal_name}_temperature and ${device_internal_name}_humidity
+#         to exist for calibration.
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!!!
+################################################################################
+sensor:
+  - platform: sgp30
+    eco2:
+      id: ${device_internal_name}_sgp30_eco2 
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_eco2 
+      accuracy_decimals: 1
+      icon: mdi:molecule-co2
+      state_class: measurement
+      disabled_by_default: true
+    tvoc:
+      id: ${device_internal_name}_sgp30_tvoc
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_tvoc
+      accuracy_decimals: 1
+      icon: mdi:heat-wave
+      state_class: measurement
+      disabled_by_default: true
+    store_baseline: yes
+    address: ${i2c_address}
+    compensation:
+      temperature_source: ${device_internal_name}_temperature
+      humidity_source: ${device_internal_name}_humidity
+    update_interval: ${device_sampling_time}
+
+  # eCO2
+  - platform: template
+    id: ${device_internal_name}_eco2 
+    name: SGP30 eCO2
+    icon: mdi:molecule-co2
+    lambda: return id(${device_internal_name}_sgp30_eco2).state;
+    state_class: measurement
+    update_interval: never
+    disabled_by_default: true
+
+  # TVOC
+  - platform: template
+    id: ${device_internal_name}_tvoc
+    name: SGP30 TVOC
+    icon: mdi:heat-wave
+    lambda: return id(${device_internal_name}_sgp30_tvoc).state;
+    state_class: measurement
+    update_interval: never
+    disabled_by_default: true
+
+# Human readable sensors
+text_sensor:
+  - platform: template
+    name: "eCO2 Classification"
+    id: ${device_internal_name}_eco2_clasification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if (int(id(${device_internal_name}_sgp30_eco2).state) <= 400) {
+        return {"Excellent"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_eco2).state) <= 1000) {
+        return {"Good"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_eco2).state) <= 2000) {
+        return {"Poor"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_eco2).state) <= 5000) {
+        return {"Bad"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_eco2).state) >= 250) {
+        return {"Dangerous"};
+      }
+      else {
+        return {"unknown"};
+      }
+
+  - platform: template
+    name: "TVOC Concern"
+    id: ${device_internal_name}_tvoc_clasification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 300) {
+        return {"None"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 500) {
+        return {"Low"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 1000) {
+        return {"Moderate"};
+      }
+      else if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 3000) {
+        return {"High"};
+      }
+      else {
+        return {"unknown"};
+      }

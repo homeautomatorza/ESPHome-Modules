@@ -1,0 +1,160 @@
+################################################################################
+# Sparkfun Windvane
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   PIN to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  sf_wind_vane: !include 
+#    file: sensors/analogue/sparkfun-wind_vane.yaml
+#.   vars:
+#      pin: GPIO35
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/ccs811.html 
+# ------------------------------------------------------------------------------
+# Note: Incomple!!!
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!!!
+################################################################################
+sensor:
+  - platform: adc
+    id: wind_direction
+    pin: GPIO35
+    name: ADC wind
+    attenuation: 11db
+    internal: true
+    update_interval: ${update_fq}
+
+  - platform: resistance
+    sensor: wind_direction
+    id: resistance_sensor
+    configuration: DOWNSTREAM
+    resistor: 10kOhm
+    internal: true
+    name: Resistance Sensor
+    reference_voltage: 3.3V
+    accuracy_decimals: 1
+    on_value:
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 30500 
+              below: 33900 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "N"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 0.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 7500 
+              below: 8400 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "NE"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 45.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 88000 
+              below: 115000 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "E"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 90.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 1800 
+              below: 2500 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "SE"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 135.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 3500 
+              below: 4000 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "S"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 180.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 14500 
+              below: 16600 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "SW"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 225.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 850 
+              below: 1200 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "W"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 270.0
+      - if:
+          condition:
+            sensor.in_range:
+              id: resistance_sensor
+              above: 55000 
+              below: 63000 
+          then:
+            - text_sensor.template.publish:
+                id: wind_dir_card
+                state: "NW"
+            - sensor.template.publish:
+                id: wind_heading
+                state: 315.0
+
+  - platform: template
+    name: "Weather Station Wind Heading"
+    id: wind_heading
+    unit_of_measurement: "°"
+
+text_sensor:
+  - platform: template
+    name: "Weather Station Wind Cardinal Direction"
+    id: wind_dir_card

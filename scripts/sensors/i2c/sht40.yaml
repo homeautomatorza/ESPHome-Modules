@@ -25,23 +25,48 @@
 sensor:
   - platform: sht4x
     temperature:
-      name: SHT40 Temperature
       id: ${device_internal_name}_sht40_temperature
       on_value:
         then:
           - component.update: ${device_internal_name}_sht40_temperature_f
+          - component.update: ${device_internal_name}_sht40_temperature_c
+      internal: true
     humidity:
-      name: SHT40 Humidity
-      id: ${device_internal_name}_sht40_humidity
+      id: ${device_internal_name}_sht40_humidity_internal
+      on_value:
+        then: 
+          - component.update: ${device_internal_name}_sht40_humidity
+      internal: true
     address: ${i2c_address}
     update_interval: ${device_sampling_time}
 
+  # Temparature Fahrenheit
   - platform: template
     id: ${device_internal_name}_sht40_temperature_f
     name: SHT40 Temperature (F)
     icon: mdi:temperature-fahrenheit
-    unit_of_measurement: °F
+    unit_of_measurement: '°F'
     lambda: return id(${device_internal_name}_sht40_temperature).state * 9/5+32;
     device_class: temperature
     update_interval: never
     disabled_by_default: true
+
+  # Temperature Celsius
+  - platform: template
+    id: ${device_internal_name}_sht40_temperature_c
+    name: SHT40 Temperature (C)
+    icon: mdi:temperature-celsius
+    unit_of_measurement: '°C'
+    lambda: return id(${device_internal_name}_sht40_temperature).state;
+    device_class: temperature
+    update_interval: never
+
+  # Humidity
+  - platform: template
+    id: ${device_internal_name}_sht40_humidity
+    name: SHT40 Humidity
+    icon: mdi:water-percent
+    unit_of_measurement: '%'
+    lambda: return id(${device_internal_name}_sht40_humidity_internal).state;
+    device_class: humidity
+    update_interval: never

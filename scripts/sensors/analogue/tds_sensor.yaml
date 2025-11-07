@@ -1,0 +1,48 @@
+
+################################################################################
+# Total Dissolved Solids Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  tds_sensor: !include 
+#    file: sensors/analogue/tds_sensor.yaml
+#    vars:
+#      pin: GPIO63
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/switch/gpio.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: adc
+    id: ${device_internal_name}_tds_sensor_voltage
+    name: Total Dissolved Solids Voltage
+    icon: mdi:flash
+    pin: $pin
+    attenuation: 12db
+    unit_of_measurement: V
+    update_interval: $device_sampling_time
+    disabled_by_default: true
+
+  - platform: copy
+    id: ${device_internal_name}_tds_sensor
+    source_id: ${device_internal_name}_tds_sensor_voltage
+    name: Total Dissolved Solids Sensor
+    icon: mdi:water-opacity
+    unit_of_measurement: ppm
+    filters:
+      #- lambda: return x / (1 + (0.02 * (id(${device_internal_name}_temperature).state - 25.0)));
+      - lambda: return x / (1 + (0.02 * (id(${device_internal_name}_internal_temperature).state - 25.0)));
+      - lambda: return (133.42*x*x*x - 255.86*x*x + 857.39*x)*0.5;
+
+  # Add human readable value Good, High, Critically High

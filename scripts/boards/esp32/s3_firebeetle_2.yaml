@@ -34,9 +34,6 @@ esp32:
   flash_size: 16MB
 
 esphome: 
-  platformio_options:
-    build_flags: "-DBOARD_HAS_PSRAM"
-    board_build.arduino.memory_type: qio_opi
 
 # PSRAM
 psram:
@@ -68,11 +65,11 @@ spi:
   interface: hardware
 
 # Status led
-#status_led:
-#  id: ${device_internal_name}_status_led
-#  pin:
-#    number: GPIO21
-#    inverted: false
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO21
+    inverted: false
 
 # Sensors
 sensor:

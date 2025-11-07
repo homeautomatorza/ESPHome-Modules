@@ -1,0 +1,100 @@
+################################################################################
+# Sparkfun Anemimeter
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  sf_anemometer: !include 
+#    file: sensors/analogue/sparkfun-anemometer.yaml
+#.   vars:
+#      pin: GPIO14
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/ccs811.html 
+# ------------------------------------------------------------------------------
+# Note:
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!!!
+################################################################################
+sensor:
+  # Wind Speed
+  - platform: pulse_counter
+    name: Wind Speed (KPH)
+    id: ${device_internal_name}_wind_speed_kph
+    icon: mdi:weather-windy
+    pin: 
+      number: ${pin}
+      mode: INPUT_PULLUP
+    unit_of_measurement: km/h
+    accuracy_decimals: 1
+    update_interval: ${device_sampling_time}
+    filters:
+      - multiply: 0.048 
+      
+  - platform: template
+    name: Wind Speed (Knots)
+    id: ${device_internal_name}_wind_meter_knot
+    icon: mdi:weather-windy
+    unit_of_measurement: knots
+    update_interval: ${device_sampling_time}
+    lambda: |-
+      return id(${device_internal_name}_wind_speed_kph).state * 0.539957;
+
+  - platform: template
+    name: 'Wind Speed Average'
+    icon: 'mdi:weather-windy'
+    id: ${device_internal_name}_wind_meter_avg
+    lambda: return id(${device_internal_name}_wind_speed_kph).state;
+    unit_of_measurement: 'km/h'
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+    filters:
+      - throttle_average: 50s
+    on_value:
+      lambda: |-
+        if (id(${device_internal_name}_wind_speed_avg).state < 1) {
+          id(${device_internal_name}_wind_scale).publish_state("Calm");
+        } else if (id(${device_internal_name}_wind_speed_avg).state > 0 && id(${device_internal_name}_wind_speed_avg).state < 4) {
+          id(${device_internal_name}_wind_scale).publish_state("Light Air");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 3 && id(${device_internal_name}_wind_meter_avg).state < 8) {
+          id(${device_internal_name}_wind_scale).publish_state("Light Breeze");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 7 && id(${device_internal_name}_wind_meter_avg).state < 13) {
+          id(${device_internal_name}_wind_scale).publish_state("Gentle Breeze");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 12 && id(${device_internal_name}_wind_meter_avg).state < 19) {
+          id(${device_internal_name}_wind_scale).publish_state("Moderate Breeze");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 18 && id(${device_internal_name}_wind_meter_avg).state < 25) {
+          id(${device_internal_name}_wind_scale).publish_state("Fresh Breeze");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 24 && id(${device_internal_name}_wind_meter_avg).state < 32) {
+          id(${device_internal_name}_wind_scale).publish_state("Strong Breeze");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 31 && id(${device_internal_name}_wind_meter_avg).state < 39) {
+          id(${device_internal_name}_wind_scale).publish_state("Near Gale");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 38 && id(${device_internal_name}_wind_meter_avg).state < 47) {
+          id(${device_internal_name}_wind_scale).publish_state("Gale");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 46 && id(${device_internal_name}_wind_meter_avg).state < 55) {
+          id(${device_internal_name}_wind_scale).publish_state("Severe Gale");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 54 && id(${device_internal_name}_wind_meter_avg).state < 64) {
+          id(${device_internal_name}_wind_scale).publish_state("Storm");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 63 && id(${device_internal_name}_wind_meter_avg).state < 73) {
+          id(${device_internal_name}_wind_scale).publish_state("Violent Storm");
+        } else if (id(${device_internal_name}_wind_meter_avg).state > 72) {
+          id(${device_internal_name}_wind_scale).publish_state("Hurricane Force");
+        } else {
+          id(${device_internal_name}_wind_scale).publish_state("Calculating");
+        }
+
+text_sensor:
+  # Beaufort Scale 
+  - platform: template
+    name: Beaufort Wind Scale
+    icon: mdi:tailwind
+    id: ${device_internal_name}_wind_scale
+    update_interval: never

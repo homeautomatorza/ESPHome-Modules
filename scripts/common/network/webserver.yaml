@@ -5,7 +5,7 @@
 #   Add the following code to package section in the device file
 # ------------------------------------------------------------------------------
 # packages:
-#   board: !include common/webserver.yaml
+#   webserver: !include common/webserver.yaml
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -21,8 +21,20 @@
 web_server:
   port: 80
   version: 3
+  local: true
   include_internal: true
   auth:
     username: !secret web_server_user
     password: !secret web_server_password
-  local: true
+  sorting_groups:
+    - id: wifi_group
+      name: Wi-Fi Diagnostic
+      sorting_weight: 90
+    - id: ble_group
+      name: BLE Diagnostic
+      sorting_weight: 91
+    - id: device_group
+      name: Hardware Information
+      sorting_weight: 92
+
+

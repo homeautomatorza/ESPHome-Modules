@@ -39,8 +39,9 @@
 ################################################################################
 esp32:
   board: wt32-eth01
+  flash_size: 4MB
   framework:
-    type: arduino
+    type: esp-idf
     version: latest
 
 # Status led
@@ -81,7 +82,7 @@ sensor:
   - platform: internal_temperature
     id: ${device_internal_name}_internal_temperature
     name: Internal Temperature 
-    icon: mdi:coolant-temperature
+    icon: mdi:temperature-celsius
     unit_of_measurement: °C
     device_class: temperature
     update_interval: ${device_sampling_time}
@@ -90,7 +91,7 @@ sensor:
   - platform: template
     id: ${device_internal_name}_internal_temperature_f
     name: Internal Temperature (F)
-    icon: mdi:coolant-temperature
+    icon: mdi:temperature-fahrenheit
     unit_of_measurement: °F
     lambda: return id(${device_internal_name}_internal_temperature).state * 9/5+32;
     device_class: temperature

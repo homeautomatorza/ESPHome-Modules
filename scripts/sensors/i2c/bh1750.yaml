@@ -1,5 +1,5 @@
 ################################################################################
-# BH1750 Illuminence Sensor
+# BH1750 Illuminance Sensor
 ################################################################################
 # Usage:
 #   Add the following code to package section in the device file changing the 
@@ -30,7 +30,7 @@ sensor:
     address: ${i2c_address}
     on_value:
       then:
-        component.update: ${device_internal_name}_bh1750_illuminance_human_readable
+        component.update: ${device_internal_name}_bh1750_illuminance_readable
     device_class: illuminance
     state_class: measurement
     update_interval: ${device_sampling_time}
@@ -38,7 +38,7 @@ sensor:
 
 text_sensor:
   - platform: template
-    id: ${device_internal_name}_bh1750_illuminance_human_readable
+    id: ${device_internal_name}_bh1750_illuminance_readable
     name: BH1750 Illuminance Human Readable
     icon: mdi:sunglasses
     lambda: |-

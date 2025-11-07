@@ -28,8 +28,6 @@ esp32:
   flash_size: 4MB
   framework:
     type: esp-idf
-    version: 5.2.1 
-    platform_version: 6.6.0 
     sdkconfig_options:
       CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y # Ensures a 4MB flash size
       CONFIG_OPENTHREAD_ENABLED: n      # Disable Thread!
@@ -37,11 +35,11 @@ esp32:
       CONFIG_USE_MINIMAL_MDNS: y
 
 # Status led
-#status_led:
-#  id: ${device_internal_name}_status_led
-#  pin:
-#    number: GPIO15
-#    inverted: false
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO15
+    inverted: false
 
 # I2C settings
 i2c:
@@ -68,10 +66,10 @@ spi:
   interface: hardware
 
 # Sensors
-#sensor:
-#  # Internal Temperature Sensor
-#  - platform: internal_temperature
-#    id: ${device_internal_name}_internal_temperature
-#    name: "Internal Temperature"
-#    update_interval: ${device_sampling_time}
-#    disabled_by_default: true
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: "Internal Temperature"
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true

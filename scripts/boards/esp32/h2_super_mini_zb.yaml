@@ -1,0 +1,135 @@
+################################################################################
+# Espressif ESP32 H2 Super Mini v1 (Zigbee version)
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include boards/esp32/h2_super_mini_zb.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Coming Soon
+# ------------------------------------------------------------------------------
+# Spec: 
+#     - ESP32-H2-MINI-1 Single-core RISC-V 32-bit (96MHz)
+#     - Thread / Zigbee 3.0 (IEEE 802.15.4)
+#     - Bluetooth (BLE) 5 module
+#     - 320 KB SRAM
+#     - 128 KB ROM
+#     - 4 MB Flash
+#     - 2 × I2C
+#     - 1 x I2S
+#     - 3 x SPI
+#     - 2 x UART
+#     - ? × 12-bit SAR ADC
+#     - 1 x LED
+#     - 1 x RGB LED
+#     - 1 x Internal Temperature Sensor
+# ------------------------------------------------------------------------------
+# Notes:
+#     - See https://www.espboards.dev/esp32/esp32-h2-super-mini/ for all pin definition
+#.    - Work in progress and not tested!
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+
+esp32:
+  board: esp32-h2-devkitm-1
+  variant: esp32h2
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+    # sdkconfig_options:
+    #   CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y
+    #   CONFIG_ZB_ENABLED: y
+    #   CONFIG_ZB_ZED: y
+    #   CONFIG_ZB_RADIO_NATIVE: y
+    #   ZB_ED_ROLE: y
+
+# Internal LEDs 
+status_led:
+  id: ${device_internal_name}_status_led
+  pin:
+    number: GPIO13
+    inverted: true
+
+# Internal RGB LED
+# Please disable in master file
+light:
+  - platform: esp32_rmt_led_strip
+    id: ${device_internal_name}_onboard_rgb_led
+    name: Onboard RGB LED
+    icon: mdi:led-outline
+    rgb_order: GRB
+    pin: GPIO8
+    num_leds: 1
+    restore_mode: ALWAYS_OFF
+    chipset: ws2812
+    entity_category: config
+    disabled_by_default: true
+
+# I2C settings
+i2c:
+  id: ${device_internal_name}_i2c
+  sda: GPIO8
+  scl: GPIO9
+  scan: true
+
+# UART
+uart:
+  id: ${device_internal_name}_uart_bus0
+  tx_pin: GPIO21
+  rx_pin: GPIO20
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
+
+# SPI
+spi:
+  id: ${device_internal_name}_spi_bus0
+  clk_pin: GPIO4
+  miso_pin: GPIO5
+  mosi_pin: GPIO6
+  interface: hardware
+
+# Sensors
+sensor:
+  # Internal Temperature Sensor
+  - platform: internal_temperature
+    id: ${device_internal_name}_internal_temperature
+    name: "Internal Temperature"
+    icon: mdi:temperature-celsius
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+  - platform: template
+    id: ${device_internal_name}_internal_temperature_f
+    name: Internal Temperature Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_internal_temperature).state * 9/5+32;
+    device_class: temperature
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+# Board Model for Referance
+text_sensor:
+  - platform: template
+    name: Board Model
+    id: ${device_internal_name}_board
+    lambda: |-
+      return {"Espressif ESP32 H2 Super Mini v1"};
+    icon: mdi:cpu-32-bit
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true

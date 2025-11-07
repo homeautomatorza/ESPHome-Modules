@@ -73,12 +73,16 @@ captive_portal:
 sensor:
   - platform: wifi_signal
     id: ${device_internal_name}_wifi_signal_db
-    name: WiFi Signal dB
+    name: WiFi Signal dBm
     icon: mdi:wifi
     update_interval: ${device_sampling_time}
     entity_category: diagnostic
     disabled_by_default: true
+    web_server:
+      sorting_weight: 3
+      sorting_group_id: wifi_group
 
+  #See https://esphome.io/components/sensor/wifi_signal.html for details
   - platform: copy
     source_id: ${device_internal_name}_wifi_signal_db
     id: ${device_internal_name}_wifi_signal_percentage
@@ -89,6 +93,9 @@ sensor:
     unit_of_measurement: "%"
     entity_category: diagnostic
     disabled_by_default: true
+    web_server:
+      sorting_weight: 4
+      sorting_group_id: wifi_group
 
 ################################################################################
 # Text Sensors
@@ -100,20 +107,32 @@ text_sensor:
       id: ${device_internal_name}_wifi_ip_address
       name: IP Address
       icon: mdi:wifi
+      web_server:
+        sorting_weight: 1
+        sorting_group_id: wifi_group
     ssid:
       id: ${device_internal_name}_connected_ssid
       name: Connected SSID
       icon: mdi:wifi
+      web_server:
+        sorting_weight: 2
+        sorting_group_id: wifi_group
     mac_address:
       id: ${device_internal_name}_wifi_mac_address
       name: Mac Wifi Address
       icon: mdi:wifi
       disabled_by_default: true
+      web_server:
+        sorting_weight: 51
+        sorting_group_id: wifi_group
     dns_address:
       id: ${device_internal_name}_wifi_dns_address
       name: DNS Address
       icon: mdi:network
       disabled_by_default: true
+      web_server:
+        sorting_weight: 52
+        sorting_group_id: wifi_group
 
   # WiFi Strength human readable
   - platform: template
@@ -141,6 +160,9 @@ text_sensor:
       return strength;
     entity_category: diagnostic
     update_interval: ${device_sampling_time}
+    web_server:
+      sorting_weight: 5
+      sorting_group_id: wifi_group
 
 ################################################################################
 # Switches
@@ -162,6 +184,9 @@ switch:
       - delay: 2s
     entity_category: config
     disabled_by_default: true
+    web_server:
+      sorting_weight: 53
+      sorting_group_id: wifi_group
 
 ################################################################################
 # Interval

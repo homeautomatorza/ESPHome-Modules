@@ -1,0 +1,59 @@
+################################################################################
+# DFRobot GDI 2.8INCH IPS LCD 320x240 TOUCH DISPLAY WITH MICROSD SLOT
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin.
+# -----------------------------------------------------------------------------
+# packages:
+#     display: !include 
+#       file: peripherals/display/dfrobot_28_320x240_spi_gdi.yaml
+#       vars:
+#           cs_pin: GPIO18
+#           dc_pin: GPIO3
+#           reset_pin: GPIO38
+#           backlight_pin: GPIO21
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/switch/gpio.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+
+# -------------------------------------------------------------------------------
+# Display
+# -------------------------------------------------------------------------------
+display:
+  - platform: ili9xxx
+    id: ${device_internal_name}_display
+    model: ILI9341
+    cs_pin: $cs_pin
+    dc_pin: $dc_pin
+    reset_pin: $reset_pin
+    dimensions:
+      height: 320
+      width: 240
+    color_order: bgr
+    invert_colors: false
+
+# Display Backlight
+output:
+  - platform: ledc
+    id: ${device_internal_name}_backlight_pwm
+    pin: $backlight_pin 
+
+# Display - Monochromatic dimmable light for the backlight
+light:
+  - platform: monochromatic
+    id: ${device_internal_name}_backlight
+    name: "Display Backlight"
+    icon: mdi:brightness-7
+    restore_mode: ALWAYS_ON
+    output: ${device_internal_name}_backlight_pwm
+    entity_category: config

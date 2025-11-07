@@ -78,5 +78,19 @@ font:
       type: gfonts
       family: Roboto
       weight: 700
+    id: roboto_70_bold
+    size: 70
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
     id: roboto_80_bold
     size: 80
+
+  - file:
+      type: gfonts
+      family: Roboto
+      weight: 700
+    id: roboto_120_bold
+    size: 120

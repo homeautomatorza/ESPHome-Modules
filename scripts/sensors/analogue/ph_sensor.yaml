@@ -1,0 +1,47 @@
+################################################################################
+# pH Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ph_sensor: !include 
+#    file: sensors/analogue/ph_sensor.yaml
+#    vars:
+#      pin: GPIO14
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/switch/gpio.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: adc
+    id: ${device_internal_name}_ph_sensor_voltage
+    name: pH Sensor Voltage
+    icon: mdi:flash
+    pin: $pin
+    filters:
+      - median:
+          window_size: 7
+          send_every: 4
+          send_first_at: 3
+    unit_of_measurement: V
+    update_interval: $device_sampling_time
+    disabled_by_default: true
+
+  - platform: copy
+    id: ${device_internal_name}_ph_sensor
+    source_id: ${device_internal_name}_ph_sensor_voltage
+    name: pH Sensor
+    icon: mdi:ph
+    unit_of_measurement: pH
+
+  # Add human readable value Critcally low, Low, Good, High, Critically High

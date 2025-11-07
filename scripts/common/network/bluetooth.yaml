@@ -5,7 +5,7 @@
 #   Add the following code to package section in the device file
 # ------------------------------------------------------------------------------
 # packages:
-#   bl_proxy: !include common/bluetooth_proxy.yaml
+#   bl_proxy: !include common/bluetooth.yaml
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -43,6 +43,10 @@ binary_sensor:
     lambda: return id(${device_internal_name}_ble).is_active();
     entity_category: diagnostic
     disabled_by_default: true
+    web_server:
+      sorting_weight: 1
+      sorting_group_id: ble_group
+
 
 text_sensor:
   - platform: ble_scanner
@@ -187,3 +191,6 @@ sensor:
       return (connections-free);
     entity_category: diagnostic
     disabled_by_default: true
+    web_server:
+      sorting_weight: 20
+      sorting_group_id: ble_group

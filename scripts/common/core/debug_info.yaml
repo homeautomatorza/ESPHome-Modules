@@ -1,0 +1,199 @@
+
+################################################################################
+# Debug Information
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   debug: !include common/core/debug_info.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.2.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+debug:
+  update_interval: ${device_sampling_time}
+
+# -------------------------------------------------------------------------------
+# Sensor
+# -------------------------------------------------------------------------------
+sensor: 
+  - platform: debug
+    free:
+      name: Heap Free
+      web_server:
+        sorting_weight: 51
+      disabled_by_default: true
+    block:
+      name: Heap Max Block
+      web_server:
+        sorting_weight: 52
+      disabled_by_default: true
+    loop_time:
+      name: Loop Time
+      web_server:
+        sorting_weight: 53
+      disabled_by_default: true
+    psram:
+      id: ${device_internal_name}_raw_free_psram
+      name: RAW Free PSRAM
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_free_psram
+      web_server:
+        sorting_weight: 2
+      disabled_by_default: true
+
+  - platform: template
+    id: ${device_internal_name}_free_psram
+    name: Free PSRAM
+    icon: mdi:memory
+    lambda: return id(${device_internal_name}_raw_free_psram).state / 1000000.0;
+    unit_of_measurement: MB
+    accuracy_decimals: 2
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+    web_server:
+      sorting_weight: 2
+  
+  - platform: template
+    id: ${device_internal_name}_memory
+    icon: mdi:memory
+    name: Free Memory
+    lambda: return heap_caps_get_free_size(MALLOC_CAP_INTERNAL) / 1024;
+    unit_of_measurement: 'kB'
+    state_class: measurement
+    entity_category: "diagnostic"
+    disabled_by_default: true
+      
+  # - platform: template
+  #   id: ${device_internal_name}_raw_device_total_psram
+  #   name: "Total PSRAM"
+  #   lambda: |-
+  #     if (psramFound()) {
+  #       return ESP.getPsramSize();
+  #     } else {
+  #       return 0;
+  #   unit_of_measurement: "bytes"
+  #   entity_category: diagnostic
+  #   web_server:
+  #     sorting_weight: 4
+  #     sorting_group_id: device_group
+
+  #- platform: template 
+  #  name: "Total Flash Memory" 
+  #  lambda: |- 
+  #          return ESP.getFlashChipRealSize(); 
+  #  update_interval: 60s 
+  #  unit_of_measurement: "bytes"
+
+# -------------------------------------------------------------------------------
+# Text Sensors
+# -------------------------------------------------------------------------------
+text_sensor:
+  - platform: debug
+    device:
+      name: Device Info
+      id: ${device_internal_name}_raw_device_info
+      entity_category: diagnostic
+      web_server:
+        sorting_weight: 10
+        sorting_group_id: device_group
+      disabled_by_default: true
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_chip
+          - component.update: ${device_internal_name}_cores
+          - component.update: ${device_internal_name}_features
+    reset_reason:
+      name: Reset Reason
+      entity_category: diagnostic
+      web_server:
+        sorting_weight: 3
+
+  - platform: template
+    id: ${device_internal_name}_chip
+    name: Chip
+    icon: mdi:chip
+    lambda: |-
+            String info = id(${device_internal_name}_raw_device_info).state;
+            String pre = "Chip: ";
+            String post = "Features";
+
+            if (info.length() != 0) {
+              int prepos = info.find(pre) + 6;
+              info.erase(0, prepos);
+              int postpos = info.find(post);
+              int end = info.length();
+              info.erase(postpos, end);
+              
+              return info;
+
+            } else {
+              return info;
+            }
+    entity_category: diagnostic
+    web_server:
+      sorting_weight: 1
+      sorting_group_id: device_group
+
+  - platform: template
+    id: ${device_internal_name}_cores
+    name: Cores
+    icon: mdi:chip
+    lambda: |-
+
+            String info = id(${device_internal_name}_raw_device_info).state;
+            String pre = "Cores:";
+            String post = "Revision";
+
+            if (info.length() != 0) {
+              int prepos = info.find(pre) + 6;
+              info.erase(0, prepos);
+              int postpos = info.find(post);
+              int end = info.length();
+              info.erase(postpos, end);
+              
+              return info;
+
+            } else {
+              return info;
+            }
+    entity_category: diagnostic
+    web_server:
+      sorting_weight: 2
+      sorting_group_id: device_group
+
+  - platform: template
+    id: ${device_internal_name}_features
+    name: Features
+    icon: mdi:chip
+    lambda: |-
+
+            String info = id(${device_internal_name}_raw_device_info).state;
+            String pre = "Features:";
+            String post = ", Cores";
+
+            if (info.length() != 0) {
+              int prepos = info.find(pre) + 9;
+              info.erase(0, prepos);
+              int postpos = info.find(post);
+              int end = info.length();
+              info.erase(postpos, end);
+              
+              return info;
+
+            } else {
+              return info;
+            }
+    entity_category: diagnostic
+    web_server:
+      sorting_weight: 3
+      sorting_group_id: device_group

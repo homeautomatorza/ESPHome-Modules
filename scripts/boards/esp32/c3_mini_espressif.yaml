@@ -5,7 +5,7 @@
 #   Add the following code to package section in the device file
 # ------------------------------------------------------------------------------
 # packages:
-#   board: !include boards/esp32/c3_mini_espressif
+#   board: !include boards/esp32/c3_mini_espressif.yaml
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -49,7 +49,6 @@ light:
     rgb_order: GRB
     pin: GPIO8
     num_leds: 1
-    rmt_channel: 0
     chipset: ws2812
     entity_category: config
     disabled_by_default: true
@@ -83,6 +82,31 @@ sensor:
   # Internal Temperature Sensor
   - platform: internal_temperature
     id: ${device_internal_name}_internal_temperature
-    name: "Internal Temperature"
+    name: Internal Temperature
+    icon: mdi:temperature-celsius
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+  - platform: template
+    id: ${device_internal_name}_internal_temperature_f
+    name: Internal Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_internal_temperature).state * 9/5+32;
+    device_class: temperature
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+# Board Model for referance
+text_sensor:
+  - platform: template
+    name: Board Model
+    id: ${device_internal_name}_board
+    lambda: |-
+      return {"Espressif ESP32-C3-MINI-1"};
+    icon: mdi:cpu-32-bit
+    entity_category: diagnostic
     update_interval: ${device_sampling_time}
     disabled_by_default: true

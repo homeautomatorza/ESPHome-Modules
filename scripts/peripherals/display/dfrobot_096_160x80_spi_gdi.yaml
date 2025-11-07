@@ -1,0 +1,67 @@
+################################################################################
+# DFRobot GDI 0.96 INCH IPS LCD 160x80 DISPLAY
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin.
+# -----------------------------------------------------------------------------
+# packages:
+#     display: !include 
+#       file: peripherals/display/dfrobot_096_160x80_spi_gdi.yaml
+#       vars:
+#           cs_pin: GPIO1
+#           dc_pin: GPIO8
+#           reset_pin: GPIO14
+#           backlight_pin: GPIO15
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/switch/gpio.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+esphome:
+  on_boot:
+    then:
+      - light.turn_on:
+          id: ${device_internal_name}_backlight
+          brightness: 50%
+
+# ------------------------------------------------------------------------------
+# Display
+# ------------------------------------------------------------------------------
+# DFRobot 0.96" TFT SPI 160x80 (ST7735)
+display:
+  - platform: ili9xxx
+    id: ${device_internal_name}_display
+    model: ST7735
+    cs_pin: $cs_pin
+    dc_pin: $dc_pin
+    reset_pin: $reset_pin
+    color_palette: NONE
+    dimensions:
+      height: 160
+      width: 80
+      offset_width: 24
+    color_order: bgr
+
+# ST7735 160x80 0.96 SPI TFT Display Backlight
+output:
+  - platform: ledc
+    id: ${device_internal_name}_backlight_pwm
+    pin: $backlight_pin
+
+# ST7735 160x80 0.96 SPI TFT Display - Monochromatic dimmable light for the backlight
+light:
+  - platform: monochromatic
+    id: ${device_internal_name}_backlight
+    name: "Display Backlight"
+    icon: mdi:brightness-7
+    restore_mode: ALWAYS_ON
+    output: ${device_internal_name}_backlight_pwm
+    entity_category: config

@@ -1,0 +1,41 @@
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  device_internal_name: esphome_c6_super_mini
+  device_wifi_name: esphome-c6-super-mini
+  device_friendly_name: ESPHome C6 Super Mini
+  device_ip_address: 192.168.5.103
+  device_sampling_time: 30s
+  region: Africa/Johannesburg
+
+################################################################################
+# Packages
+################################################################################
+packages:
+ # ----------------------------------------------------------------------------
+  # Core packages
+  # ----------------------------------------------------------------------------
+  board: !include boards/esp32/c6_super_mini.yaml
+  settings: !include common/core/settings.yaml
+  time: !include common/time/home_assistant.yaml
+
+  # Network
+  wifi: !include common/network/wifi.yaml
+  webserver: !include common/network/webserver.yaml
+
+  # ----------------------------------------------------------------------------
+  # Sensor packages
+  # ----------------------------------------------------------------------------
+  
+
+################################################################################
+# Board Configuration
+################################################################################
+esphome:
+  name: ${device_internal_name}
+  friendly_name: ${device_friendly_name}
+
+################################################################################
+# Custom Device Configuration
+################################################################################

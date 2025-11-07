@@ -5,7 +5,7 @@
 #   Add the following code to package section in the device file
 # ------------------------------------------------------------------------------
 # packages:
-#   board: !include common/settings.yaml
+#   settings: !include common/core/settings.yaml
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -72,37 +72,6 @@ binary_sensor:
     disabled_by_default: true
 
 ################################################################################
-# Sensors
-################################################################################
-sensor:
-  # Human Readable Uptime Conversion Sensor
-  - platform: uptime
-    id: ${device_internal_name}_uptime_sensor
-    name: Uptime Sensor
-    on_raw_value:
-      then:
-        - text_sensor.template.publish:
-            id: ${device_internal_name}_uptime_human
-            state: !lambda |-
-              int seconds = round(id(${device_internal_name}_uptime_sensor).raw_state);
-              int days = seconds / (24 * 3600);
-              seconds = seconds % (24 * 3600);
-              int hours = seconds / 3600;
-              seconds = seconds % 3600;
-              int minutes = seconds /  60;
-              seconds = seconds % 60;
-              return (
-                (days ? to_string(days) + "d " : "") +
-                (hours ? to_string(hours) + "h " : "") +
-                (minutes ? to_string(minutes) + "m " : "") +
-                (to_string(seconds) + "s")
-              ).c_str();
-    internal: true
-    update_interval: ${device_sampling_time}
-    disabled_by_default: true
-
-
-################################################################################
 # Text Sensors
 ################################################################################
 text_sensor:
@@ -113,13 +82,14 @@ text_sensor:
     hide_timestamp: true
     disabled_by_default: true
 
-  # Human Time Text Sensors
-  - platform: template
-    id: ${device_internal_name}_uptime_human
-    name: Uptime Human Readable
-    icon: mdi:clock-start
-    entity_category: diagnostic
-
+  - platform: uptime
+    name: "Uptime"
+    #id: ${device_internal_name}_uptime_human
+    #icon: mdi:clock-start
+    #entity_category: diagnostic
+    #web_server:
+    #  sorting_weight: 1
+  
 ################################################################################
 # Switch
 ################################################################################

@@ -1,0 +1,63 @@
+################################################################################
+# Espressif ESP32 C3 Super Mini v2
+################################################################################
+# The components used are:
+#     - Espressif ESP32 S3 Super Mini v1
+#         - Enabled hardware and services:
+#             - WiFi
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# Notes: 
+#       - Not using the LED
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!
+################################################################################
+
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  device_internal_name: esphome_s3_super_mini
+  device_wifi_name: esphome-s3-super-mini
+  device_friendly_name: ESPHome ESP32 S3 Super Mini v2
+  device_ip_address: 192.168.5.101
+  device_sampling_time: 30s
+  region: Africa/Johannesburg
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # ----------------------------------------------------------------------------
+  # Core packages
+  # ----------------------------------------------------------------------------
+  board: !include boards/esp32/s3_super_mini.yaml
+  settings: !include common/core/settings.yaml
+  time: !include common/time/home_assistant.yaml
+
+  # Network
+  wifi: !include common/network/wifi.yaml
+  webserver: !include common/network/webserver.yaml
+
+################################################################################
+# Board Configuration
+################################################################################
+esphome:
+  comment: Espressif ESP32 S3 Super Mini v2
+
+################################################################################
+# Custom Device Configuration
+################################################################################
+
+# -------------------------------------------------------------------------------
+# Remove existing configurations
+# -------------------------------------------------------------------------------
+# status_led: !remove

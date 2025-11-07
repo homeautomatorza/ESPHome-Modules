@@ -1,0 +1,43 @@
+################################################################################
+# Sparkfun Rain Gauge
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   PIN to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  sf_rain_gauge: !include 
+#    file: sensors/analogue/sparkfun_rain_gauge.yaml
+#.   vars:
+#      pin: GPIO25
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/ccs811.html 
+# ------------------------------------------------------------------------------
+# Note: Incomple!!!
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risks!!!
+################################################################################
+sensor:
+  - platform: pulse_counter
+    pin:
+      number: ${pin}
+      allow_other_uses: true
+      inverted: True
+      mode: INPUT_PULLUP    
+    name: 'Rainfall'
+    unit_of_measurement: 'mm'
+    count_mode:
+      rising_edge: DISABLE
+      falling_edge: INCREMENT
+#    internal_filter: 14ms          
+    filters:
+      - multiply: 0.367
+    update_interval: ${update_fq}

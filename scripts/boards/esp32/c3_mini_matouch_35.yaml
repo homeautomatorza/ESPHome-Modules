@@ -37,11 +37,7 @@ esp32:
   board: esp32-c3-devkitm-1
   flash_size: 4MB
   framework:
-  # type: arduino
-  # version: latest
     type: esp-idf
-    version: 5.2.1 
-    platform_version: 6.6.0 
     sdkconfig_options:
       CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y # Ensures a 4MB flash size
       CONFIG_OPENTHREAD_ENABLED: n      # Disable Thread!
@@ -108,6 +104,18 @@ light:
     restore_mode: ALWAYS_ON
     output: ${device_internal_name}_backlight_pwm
     entity_category: config
+
+# Board Model for Referance
+text_sensor:
+  - platform: template
+    name: Board Model
+    id: ${device_internal_name}_board
+    lambda: |-
+      return {"Makerfabs MaTouch_ESP32-C3(RISC-V) SPI TFT Touch 3.5" ILI9488"};
+    icon: mdi:cpu-32-bit
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
 
 # -------------------------------------------------------------------------------
 # FT6236 Touch screen @ I2C 0x38
