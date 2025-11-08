@@ -6,7 +6,7 @@
 3. (WIP) I am cleaning up the files and folders.
 4. (WIP) I am also systematicaly retesting every development boards as I clean up. 
 5. (WIP) Adding further documentation to all files.
-5. (WIP) I've added many new development boards with starter templates, I am also adding a board compatibility list ![here](compatible-boards.md).
+5. (WIP) I've added many new development boards with starter templates, I am also adding a board compatibility list ![here](documentation/compatible-boards.md).
 6. (WIP) I am working on creating samples for both Thread and Zigbee with the C and H series chips.
 
 A lot of this will not happen over night but I will work on them as I have time.
@@ -31,7 +31,7 @@ I just ask that you follow these gidelines:
 
 1. You need to follow the standards I have in the tutorial series.
 2. You have tested the scripts you are adding and you are sure it works, you will have to sign it off.
-3. Your files have the header shown in the tutorials, samples found [here](/header-samples.md).
+3. Your files have the header shown in the tutorials, samples found [here](documentation/header-samples.md).
 4. All files are filed in their respective directories.
 5. The repository owner has the final word on what to merge.
 
