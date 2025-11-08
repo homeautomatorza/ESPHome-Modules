@@ -17,7 +17,7 @@ The scripts can de found [here](/scripts/), you can clone or copy it as is and p
 
 To to learn more about the project, you can find the tutorials below:
 
-[![Watch the video](/esphome-modules/Images/Splash_Screen_1_1.jpg)](https://youtube.com/playlist?list=PLJ3MNJX_MOUnMWzUNDatN3LWAN8l99v5I&si=ycyInH13YDWGuAjm)
+[![Watch the video](Images/Splash_Screen_1_1.jpg)](https://youtube.com/playlist?list=PLJ3MNJX_MOUnMWzUNDatN3LWAN8l99v5I&si=ycyInH13YDWGuAjm)
 
 ## Licence
 
