@@ -6,7 +6,7 @@
 3. (WIP) I am cleaning up the files and folders.
 4. (WIP) I am also systematicaly retesting every development boards as I clean up. 
 5. (WIP) Adding further documentation to all files.
-5. (WIP) I've added many new development boards with starter templates, I am also adding a board compatibility list ![here](/esphome-modules/compatible-boards.md).
+5. (WIP) I've added many new development boards with starter templates, I am also adding a board compatibility list ![here](compatible-boards.md).
 6. (WIP) I am working on creating samples for both Thread and Zigbee with the C and H series chips.
 
 A lot of this will not happen over night but I will work on them as I have time.
