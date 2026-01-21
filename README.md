@@ -43,6 +43,8 @@ These terms can and may change at a moment's notice, except for the licence.
 
 ## Latest Updates (2026/01/21)
 
+Last tested with ESPHome 2025.12
+
 1. New boards: ESP32 C6 Firebettle 2 & Open Green Energy Solar Powered WiFi Weather Station V4.0
 2. ESPNow has been added to the Network folder, however it has not been tested yet!
 3. WiFi Module has been updated to cater with power output compatibility issues with some of the C series chips.
