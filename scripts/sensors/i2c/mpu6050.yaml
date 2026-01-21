@@ -50,25 +50,33 @@ sensor:
     accel_x:
       name: "MPU6050 Accelerometer X"
       id: ${device_internal_name}_mpu6050_accelerometer_x
+      state_class: measurement
     accel_y:
       name: "MPU6050 Accelerometer Y"
       id: ${device_internal_name}_mpu6050_accelerometer_y
+      state_class: measurement
     accel_z:
       name: "MPU6050 Accelerometer Z"
       id: ${device_internal_name}_mpu6050_accelerometer_z
+      state_class: measurement
     gyro_x:
       name: "MPU6050 Gyroscope X"
       id: ${device_internal_name}_mpu6050_gyroscope_x
+      state_class: measurement
     gyro_y:
       name: "MPU6050 Gyroscope Y"
       id: ${device_internal_name}_mpu6050_gyroscope_y
+      state_class: measurement
     gyro_z:
       name: "MPU6050 Gyroscope Z"
       id: ${device_internal_name}_mpu6050_gyroscope_z
+      state_class: measurement
     temperature:
       name: "MPU6050 Temperature"
       id: ${device_internal_name}_mpu6050_temperature
       icon: mdi:temperature-celsius
+      state_class: measurement
+      device_class: temperature
       on_value:
         then:
           component.update: ${device_internal_name}_mpu6050_temperature_f

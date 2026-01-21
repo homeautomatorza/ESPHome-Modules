@@ -1,24 +1,33 @@
 ################################################################################
-# Bluethooth Common Component
+# ESPNow Common Component
 ################################################################################
 # Usage:
 #   Add the following code to package section in the device file
 # ------------------------------------------------------------------------------
 # packages:
-#   bluetooth: !include common/bluetooth_off.yaml
+#     espnow: !include common/espnow.yaml
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Version: 1.0.0
 # Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Documentation: https://esphome.io/components/espnow/ 
 # ------------------------------------------------------------------------------
 # Notes: 
-#       - Forces the bluetooth radio toswitch off
+#       - Not tested
+#       - This configuration is for failover
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
 # Meaning that it works on my setup but it may not work on yours.
 ################################################################################
-esp32_ble:
-  enable_on_boot: false
+espnow:
+  id: ${device_internal_name}_espnow
+  enable_on_boot: true
+  auto_add_peer: true # Not normaly recomended
+
+# Look at using packet transport for more security, something like below maybe?
+# packet_transport:
+#  - platform: espnow
+#    encryption: !secret espnow_encryption_key

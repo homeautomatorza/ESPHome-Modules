@@ -37,6 +37,7 @@ sensor:
       accuracy_decimals: 1
       icon: mdi:molecule-co2
       state_class: measurement
+      device_class: carbon_dioxide
       disabled_by_default: true
     tvoc:
       id: ${device_internal_name}_ccs811_tvoc
@@ -46,6 +47,7 @@ sensor:
       accuracy_decimals: 1
       icon: mdi:heat-wave
       state_class: measurement
+      device_class: volatile_organic_compounds_parts
       disabled_by_default: true
     version:
       name: CCS811 Version
@@ -64,6 +66,7 @@ sensor:
     icon: mdi:molecule-co2
     lambda: return id(${device_internal_name}_ccs811_eco2).state;
     state_class: measurement
+    device_class: carbon_dioxide
     update_interval: never
     disabled_by_default: true
 
@@ -74,6 +77,7 @@ sensor:
     icon: mdi:heat-wave
     lambda: return id(${device_internal_name}_ccs811_tvoc).state;
     state_class: measurement
+    device_class: volatile_organic_compounds_parts
     update_interval: never
     disabled_by_default: true
 

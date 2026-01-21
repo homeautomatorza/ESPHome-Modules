@@ -27,7 +27,7 @@
 substitutions:
   device_internal_name: esphome_c3_super_mini
   device_wifi_name: esphome-c3-super-mini
-  device_friendly_name: ESPHome ESP32 C3 Super Mini v1
+  device_friendly_name: ESPHome ESP32 C3 Super Mini
   device_ip_address: 192.168.5.100
   device_sampling_time: 30s
   region: Africa/Johannesburg
@@ -47,6 +47,9 @@ packages:
   wifi: !include common/network/wifi.yaml
   webserver: !include common/network/webserver.yaml
 
+  # Additional Sensors
+
+
 ################################################################################
 # Board Configuration
 ################################################################################
@@ -61,3 +64,8 @@ esphome:
 # Remove existing configurations
 # -------------------------------------------------------------------------------
 status_led: !remove
+
+# Add config to existing components
+
+
+

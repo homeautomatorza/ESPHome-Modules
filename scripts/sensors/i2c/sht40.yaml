@@ -26,6 +26,7 @@ sensor:
   - platform: sht4x
     temperature:
       id: ${device_internal_name}_sht40_temperature
+      state_class: measurement
       on_value:
         then:
           - component.update: ${device_internal_name}_sht40_temperature_f
@@ -33,6 +34,7 @@ sensor:
       internal: true
     humidity:
       id: ${device_internal_name}_sht40_humidity_internal
+      state_class: measurement
       on_value:
         then: 
           - component.update: ${device_internal_name}_sht40_humidity
@@ -48,6 +50,7 @@ sensor:
     unit_of_measurement: '°F'
     lambda: return id(${device_internal_name}_sht40_temperature).state * 9/5+32;
     device_class: temperature
+    state_class: measurement
     update_interval: never
     disabled_by_default: true
 
@@ -59,6 +62,7 @@ sensor:
     unit_of_measurement: '°C'
     lambda: return id(${device_internal_name}_sht40_temperature).state;
     device_class: temperature
+    state_class: measurement
     update_interval: never
 
   # Humidity
@@ -69,4 +73,5 @@ sensor:
     unit_of_measurement: '%'
     lambda: return id(${device_internal_name}_sht40_humidity_internal).state;
     device_class: humidity
+    state_class: measurement
     update_interval: never

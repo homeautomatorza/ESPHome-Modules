@@ -71,5 +71,17 @@ sensor:
   - platform: internal_temperature
     id: ${device_internal_name}_internal_temperature
     name: "Internal Temperature"
+    icon: mdi:temperature-celsius
     update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+  - platform: template
+    id: ${device_internal_name}_internal_temperature_f
+    name: Internal Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: °F
+    lambda: return id(${device_internal_name}_internal_temperature).state * 9/5+32;
+    device_class: temperature
+    update_interval: ${device_sampling_time}
+    entity_category: diagnostic
     disabled_by_default: true

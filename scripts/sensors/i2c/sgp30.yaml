@@ -30,28 +30,32 @@
 sensor:
   - platform: sgp30
     eco2:
-      id: ${device_internal_name}_sgp30_eco2 
+      id: ${device_internal_name}_sgp30_eco2_raw 
+      name: SGP30 eCO2 RAW
       on_value:
         then:
           - component.update: ${device_internal_name}_eco2 
       accuracy_decimals: 1
       icon: mdi:molecule-co2
       state_class: measurement
+      device_class: carbon_dioxide
       disabled_by_default: true
     tvoc:
-      id: ${device_internal_name}_sgp30_tvoc
+      id: ${device_internal_name}_sgp30_tvoc_raw
+      name: SGP30 TVOC RAW
       on_value:
         then:
           - component.update: ${device_internal_name}_tvoc
       accuracy_decimals: 1
       icon: mdi:heat-wave
       state_class: measurement
+      device_class: volatile_organic_compounds_parts
       disabled_by_default: true
     store_baseline: yes
     address: ${i2c_address}
     compensation:
-      temperature_source: ${device_internal_name}_temperature
-      humidity_source: ${device_internal_name}_humidity
+      temperature_source: ${temperature}
+      humidity_source: ${humidity}
     update_interval: ${device_sampling_time}
 
   # eCO2
@@ -59,8 +63,9 @@ sensor:
     id: ${device_internal_name}_eco2 
     name: SGP30 eCO2
     icon: mdi:molecule-co2
-    lambda: return id(${device_internal_name}_sgp30_eco2).state;
+    lambda: return id(${device_internal_name}_sgp30_eco2_raw).state;
     state_class: measurement
+    device_class: carbon_dioxide
     update_interval: never
     disabled_by_default: true
 
@@ -69,8 +74,9 @@ sensor:
     id: ${device_internal_name}_tvoc
     name: SGP30 TVOC
     icon: mdi:heat-wave
-    lambda: return id(${device_internal_name}_sgp30_tvoc).state;
+    lambda: return id(${device_internal_name}_sgp30_tvoc_raw).state;
     state_class: measurement
+    device_class: volatile_organic_compounds_parts
     update_interval: never
     disabled_by_default: true
 
@@ -81,19 +87,19 @@ text_sensor:
     id: ${device_internal_name}_eco2_clasification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
-      if (int(id(${device_internal_name}_sgp30_eco2).state) <= 400) {
+      if (int(id(${device_internal_name}_sgp30_eco2_raw).state) <= 400) {
         return {"Excellent"};
       }
-      else if (int(id(${device_internal_name}_sgp30_eco2).state) <= 1000) {
+      else if (int(id(${device_internal_name}_sgp30_eco2_raw).state) <= 1000) {
         return {"Good"};
       }
-      else if (int(id(${device_internal_name}_sgp30_eco2).state) <= 2000) {
+      else if (int(id(${device_internal_name}_sgp30_eco2_raw).state) <= 2000) {
         return {"Poor"};
       }
-      else if (int(id(${device_internal_name}_sgp30_eco2).state) <= 5000) {
+      else if (int(id(${device_internal_name}_sgp30_eco2_raw).state) <= 5000) {
         return {"Bad"};
       }
-      else if (int(id(${device_internal_name}_sgp30_eco2).state) >= 250) {
+      else if (int(id(${device_internal_name}_sgp30_eco2_raw).state) >= 250) {
         return {"Dangerous"};
       }
       else {
@@ -105,16 +111,16 @@ text_sensor:
     id: ${device_internal_name}_tvoc_clasification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
-      if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 300) {
+      if (int(id(${device_internal_name}_sgp30_tvoc_raw).state) <= 300) {
         return {"None"};
       }
-      else if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 500) {
+      else if (int(id(${device_internal_name}_sgp30_tvoc_raw).state) <= 500) {
         return {"Low"};
       }
-      else if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 1000) {
+      else if (int(id(${device_internal_name}_sgp30_tvoc_raw).state) <= 1000) {
         return {"Moderate"};
       }
-      else if (int(id(${device_internal_name}_sgp30_tvoc).state) <= 3000) {
+      else if (int(id(${device_internal_name}_sgp30_tvoc_raw).state) <= 3000) {
         return {"High"};
       }
       else {

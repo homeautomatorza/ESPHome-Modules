@@ -37,6 +37,7 @@ sensor:
     resolution: 10
     icon: mdi:thermometer
     device_class: temperature
+    state_class: measurement
     update_interval: ${device_sampling_time}
 
   - platform: template
@@ -46,5 +47,6 @@ sensor:
     unit_of_measurement: °F
     lambda: return id(${device_internal_name}_ds18b20_temperature).state * 9/5+32;
     device_class: temperature
+    state_class: measurement
     update_interval: ${device_sampling_time}
     disabled_by_default: true

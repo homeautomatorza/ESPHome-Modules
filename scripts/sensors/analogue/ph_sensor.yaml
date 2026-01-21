@@ -43,5 +43,6 @@ sensor:
     name: pH Sensor
     icon: mdi:ph
     unit_of_measurement: pH
+    device_class: ph
 
   # Add human readable value Critcally low, Low, Good, High, Critically High

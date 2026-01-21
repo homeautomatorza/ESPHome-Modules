@@ -7,7 +7,7 @@
 # -----------------------------------------------------------------------------
 # packages:
 #  bh1750: !include 
-#    file: sensors/digital/i2c/bh1750.yaml
+#    file: sensors/i2c/bh1750.yaml
 #    vars:
 #      i2c_address: 0x23
 # ------------------------------------------------------------------------------
@@ -34,7 +34,6 @@ sensor:
     device_class: illuminance
     state_class: measurement
     update_interval: ${device_sampling_time}
-    disabled_by_default: true
 
 text_sensor:
   - platform: template

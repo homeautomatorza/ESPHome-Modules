@@ -18,8 +18,8 @@
 # ------------------------------------------------------------------------------
 # Spec: 
 #     - ESP32-H2-MINI-1 Single-core RISC-V 32-bit (96MHz)
-#     - Thread / Zigbee 3.0 (IEEE 802.15.4)
-#     - Bluetooth (BLE) 5 module
+#     - Thread 1.4 / Zigbee 3.0 (IEEE 802.15.4) @ 250 Kbps
+#     - Bluetooth LE 5.3 module
 #     - 320 KB SRAM
 #     - 128 KB ROM
 #     - 4 MB Flash
@@ -27,7 +27,7 @@
 #     - 1 x I2S
 #     - 3 x SPI
 #     - 2 x UART
-#     - ? × 12-bit SAR ADC
+#     - 5 × 12-bit SAR ADC
 #     - 1 x LED
 #     - 1 x RGB LED
 #     - 1 x Internal Temperature Sensor

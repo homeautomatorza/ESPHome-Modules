@@ -27,19 +27,24 @@ sensor:
     uv_index:
       id: ${device_internal_name}_ltr390_uv_index
       name: LTR390 UV Index
+      state_class: measurement
     uv:
       id: ${device_internal_name}_ltr390_uv
       name: LTR390 UV Sensor
+      state_class: measurement
     light:
       id: ${device_internal_name}_ltr390_illuminance
       name: LTR390 Light
       on_value:
         then:
           component.update: ${device_internal_name}_ltr390_illuminance_readable
+      device_class: illuminance
+      state_class: measurement
       disabled_by_default: true
     ambient_light:
       id: ${device_internal_name}_ltr390_ambient_light
       name: LTR390 Ambient Light
+      state_class: measurement
       disabled_by_default: true
     address: $i2c_address
     update_interval: $device_sampling_time

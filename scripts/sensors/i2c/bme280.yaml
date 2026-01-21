@@ -27,6 +27,7 @@ sensor:
     address: ${i2c_address}
     temperature:
       id: ${device_internal_name}_bme280_temperature
+      name: BMP280 Temperature RAW
       oversampling: 16x
       on_value:
         then:
@@ -36,6 +37,7 @@ sensor:
       disabled_by_default: true
     pressure:
       id: ${device_internal_name}_bme280_pressure_internal
+      name: BMP280 Atmospheric Pressure RAW
       on_value:
         then: 
           - component.update: ${device_internal_name}_bme280_pressure
@@ -43,6 +45,7 @@ sensor:
       disabled_by_default: true
     humidity:
       id: ${device_internal_name}_bme280_humidity_internal
+      name: BMP280 Humidity RAW
       on_value:
         then: 
           - component.update: ${device_internal_name}_bme280_humidity
@@ -64,7 +67,7 @@ sensor:
   # Temperature Celsius
   - platform: template
     id: ${device_internal_name}_bme280_temperature_c
-    name: SHT40 Temperature (C)
+    name: BME280 Temperature (C)
     icon: mdi:temperature-celsius
     unit_of_measurement: '°C'
     lambda: return id(${device_internal_name}_bme280_temperature).state;
@@ -74,7 +77,7 @@ sensor:
   # Humidity
   - platform: template
     id: ${device_internal_name}_bme280_humidity
-    name: SHT40 Humidity
+    name: BME280 Humidity
     icon: mdi:water-percent
     unit_of_measurement: '%'
     lambda: return id(${device_internal_name}_bme280_humidity_internal).state;

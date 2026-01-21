@@ -8,7 +8,7 @@
 #  bme680: !include 
 #    file: sensors/i2c/bme680.yaml
 #    vars:
-#      i2c_address: 0x77
+#      i2c_address: 0x76
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -36,19 +36,19 @@ sensor:
       on_value:
         then:
           - component.update: ${device_internal_name}_bme680_temperature_f
-      disabled_by_default: true
+      disabled_by_default: false
     pressure:
       id: ${device_internal_name}_bme680_pressure
       name: BME680 Pressure
       icon: mdi:gauge
       device_class: pressure
-      disabled_by_default: true
+      disabled_by_default: false
     humidity:
       id: ${device_internal_name}_bme680_humidity
       name: BME680 Humidity
       icon: mdi:water-percent
       device_class: humidity
-      disabled_by_default: true
+      disabled_by_default: false
     gas_resistance:
       id: ${device_internal_name}_gas_resistance
       name: BME680 Gas Resistance

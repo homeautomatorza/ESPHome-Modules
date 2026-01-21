@@ -6,10 +6,11 @@
 #   I2C Address to the appropriate one.
 # -----------------------------------------------------------------------------
 # packages:
-#  i2c: !include 
+#  ld2410c: !include 
 #    file: sensors/uart/hlk-ld2410c_minimal.yaml
 #    vars:
 #      presence_pin: GPIO27
+#      uart_port: ${device_internal_name}_uart_bus1
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -23,7 +24,7 @@
 # Meaning that it works on my setup but it may not work on yours.
 ################################################################################
 ld2410:
-  uart_id: ${device_internal_name}_uart_bus0
+  uart_id: ${uart_port}
   id: ${device_internal_name}_ld2410_mmwave
 
 binary_sensor:

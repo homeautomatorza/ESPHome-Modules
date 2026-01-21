@@ -45,6 +45,7 @@ esp32:
   flash_size: 4MB
   framework:
     type: esp-idf
+    #version: 5.4.2
     sdkconfig_options:
       CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y # Ensures a 4MB flash size
       CONFIG_ENABLE_WIFI_STATION: y     # Ensures the WiFi is up
@@ -68,7 +69,7 @@ i2c:
 # UART
 uart:
   id: ${device_internal_name}_uart_bus0
-  tx_pin: GPIO21
+  tx_pin: GPIO19
   rx_pin: GPIO20
   baud_rate: 256000
   parity: NONE

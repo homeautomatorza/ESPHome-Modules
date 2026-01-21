@@ -5,7 +5,7 @@
 #   Add the following code to package section in the device file
 # ------------------------------------------------------------------------------
 # packages:
-#   board: !include common/esp32/e_firebeetle_2.yaml
+#   board: !include common/esp32/e_n16r2_firebeetle_2.yaml
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -56,12 +56,20 @@
 esp32:
   board: esp32dev #dfrobot_firebeetle2_esp32e
   framework:
-    type: arduino
+    type: esp-idf
     version: latest
+    sdkconfig_options:
+      CONFIG_ENABLE_WIFI_STATION: y     # Ensures the WiFi is up
+      CONFIG_USE_MINIMAL_MDNS: y
   flash_size: 16MB
 
+esphome: 
+  platformio_options:
+    build_flags: "-DBOARD_HAS_PSRAM"
+    board_build.arduino.memory_type: qio_opi
+
 psram:
-  mode: octal
+  mode: quad
   speed: 80MHz
 
 # Status led
@@ -80,7 +88,6 @@ light:
     rgb_order: GRB
     pin: GPIO5 #D8
     num_leds: 1
-    rmt_channel: 0
     restore_mode: ALWAYS_OFF
     chipset: ws2812
     entity_category: config

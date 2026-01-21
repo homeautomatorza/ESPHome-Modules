@@ -18,10 +18,11 @@
 #     - Compiled OK
 # ------------------------------------------------------------------------------
 # Spec: 
-#     - ESP32S3FH4R2 Dual-core Xtensa® LX7, 240MHz
+#     - ESP32S3FH4R2 (QFN56) Dual-core Xtensa® LX7, 240MHz
 #     - 2.4 GHz Wi­Fi 6 (802.11 b/g/n)
 #     - Bluetooth (LE) 5 module
 #     - 512 KB SRAM
+#     - 2 MB PSRAM
 #     - 384 KB ROM
 #     - 4 MB Flash
 #     - 1 × I2C
@@ -83,8 +84,8 @@ i2c:
 # UART
 uart:
   id: ${device_internal_name}_uart_bus0
-  tx_pin: GPIO1
-  rx_pin: GPIO2
+  tx_pin: GPIO3
+  rx_pin: GPIO4
   baud_rate: 256000
   parity: NONE
   stop_bits: 1

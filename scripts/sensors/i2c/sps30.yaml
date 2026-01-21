@@ -29,18 +29,22 @@ sensor:
         name: SPS30 PM <1µm Weight concentration
         id: ${device_internal_name}_sps30_PM_1_0
         state_class: measurement
+        device_class: pm1
     pm_2_5:
         name: SPS30 PM <2.5µm Weight concentration
         id: ${device_internal_name}_sps30_PM_2_5
         state_class: measurement
+        device_class: pm25
     pm_4_0:
         name: SPS30 PM <4µm Weight concentration
         id: ${device_internal_name}_sps30_PM_4_0
         state_class: measurement
+        device_class: pm4
     pm_10_0:
         name: SPS30 PM <10µm Weight concentration
         id: ${device_internal_name}_sps30_PM_10_0
         state_class: measurement
+        device_class: pm10
     pmc_0_5:
         name: SPS30 PM <0.5µm Number concentration
         id: ${device_internal_name}_sps30_PMC_0_5
@@ -72,6 +76,27 @@ sensor:
         disabled_by_default: true
     address: ${i2c_address}
     update_interval: ${device_sampling_time}
+    idle_interval: 5min
+
+  # Requires ESPHome 2026.1 +
+  - platform: aqi
+    name: "Air Quality Index (US)"
+    id: ${device_internal_name}_sps30_aqi_us
+    pm_2_5: ${device_internal_name}_sps30_PM_2_5
+    pm_10_0: ${device_internal_name}_sps30_PM_10_0
+    calculation_type: AQI
+    device_class: aqi
+    disabled_by_default: true
+
+  # Requires ESPHome 2026.1 +
+  - platform: aqi
+    name: "Air Quality Index (EU)"
+    id: ${device_internal_name}_sps30_aqi_eu
+    pm_2_5: ${device_internal_name}_sps30_PM_2_5
+    pm_10_0: ${device_internal_name}_sps30_PM_10_0
+    calculation_type: CAQI
+    device_class: aqi
+    disabled_by_default: true
 
 button:
   - platform: template
@@ -81,3 +106,4 @@ button:
     on_press:
       then:
         - sps30.start_fan_autoclean: ${device_internal_name}_sps30
+

@@ -28,6 +28,7 @@ sensor:
     voc:
       id: ${device_internal_name}_voc_index
       name: "VOC Index"
+      state_class: measurement
     compensation:
       humidity_source: $humidity
       temperature_source: $temperature
