@@ -1,7 +1,5 @@
 # Latest Updates (2026/04/16)
 
-# Latest Updates (2026/04/16)
-
 Tested with ESPHome 2026.4
 
 I ran [Google Jules](https://jules.google.com/) Coding AI against this repo, it found a few issues which I promptly fixed but it seems that it's information is outdated by a few month, 6 or more in my opinion, so I would definitively not use it for generating ESPHome files.
@@ -33,8 +31,8 @@ Another update is coming soon!
    1. Fixed bug in WiFi Signal Strength and migrated logic to Jinja templating.
    2. Fixed embedded lamdas
    3. **<span style="color: #ef4444">BREAKING CHANGE</span>** Wifi setting have moved to the wifi\_fixedip.yaml or wifi\_dynamicip.yaml reference to one of these files is now requited in the device file!
-   4. Added wifi\_fixedip.yaml config file, the wifi\_dynamicip.yaml file will come with the next batch
-   5. Various other  improvements and clean up
+   4. Added network\wifi\_fixedip.yaml config file and network\wifi\_dynamicip.yaml file.
+   5. Various other improvements and clean up
 
 9. Cleaned up comments in various files
 

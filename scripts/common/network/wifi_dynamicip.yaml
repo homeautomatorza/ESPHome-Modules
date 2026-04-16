@@ -17,6 +17,10 @@
 # Notes: 
 #       - Requires the following substitution in the device file:
 #           - device_internal_name
+#
+# If you want to use Improv via BLE add the 2 lines below to your device file
+# esp32_improv:
+#  authorizer: none #does not require a binary sensor, reduces security
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
