@@ -3,7 +3,7 @@ import esphome.config_validation as cv
 from esphome.components import text_sensor
 
 hardware_info = cg.esphome_ns.namespace("hardware_info")
-HardwareInfo = empty_text_sensor_ns.class_(
+HardwareInfo = hardware_info.class_(
     "HardwareInfo", text_sensor.TextSensor, cg.Component
 )
 
