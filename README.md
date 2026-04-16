@@ -41,35 +41,8 @@ I just ask that you follow these gidelines:
 
 These terms can and may change at a moment's notice, except for the licence.
 
-## Latest Updates (2026/01/21)
+## Change logs
 
-Last tested with ESPHome 2025.12
-
-1. New boards: ESP32 C6 Firebettle 2 & Open Green Energy Solar Powered WiFi Weather Station V4.0
-2. ESPNow has been added to the Network folder, however it has not been tested yet!
-3. WiFi Module has been updated to cater with power output compatibility issues with some of the C series chips.
-4. WiFi Module updated to cater for auth (2025.11) & Roaming (2026.1).
-5. SPS30 Sensor Module - Added AQI for EU and US, also added device classes (AQI and PM).
-6. (WIP) Added device classes to most of the sensors as well as other minor tweaks.
-7. Removed the following files until I am sure of the calibration:
-    - sparkfun-anemometer.yaml
-    - sparkfun_rain_gauge.yaml
-    - sparkfun-wind_vane.yaml
-  
-    These will be readded once I am sure of the math.
-
-8. Most boards have been moved to ESP-IDF and tested.
-9. (WIP) Cleaning up the files and folders is continuing.
-10. (WIP) Adding further documentation to all files is ongoing.
-
-## Updates (2025/11/07)
-
-1. My latest modules have been uploaded.
-2. (WIP) With ESPHome 2025.10, I've started to migrate all devices to ESP-IDF.
-3. (WIP) I am cleaning up the files and folders.
-4. (WIP) I am also systematicaly retesting every development boards as I clean up.
-5. (WIP) Adding further documentation to all files.
-6. (WIP) I've added many new development boards with starter templates, I am also adding a board compatibility list [here](documentation/compatible-boards.md).
-7. (WIP) I am working on creating samples for both Thread and Zigbee with the C and H series chips.
-
-A lot of this will not happen over night but I will work on them as I have time.
+[2026-04-16](changelogs/2026-04-16.yaml) - Major overhaul and alignment with 2026.4
+[2026-01-21](changelogs/2026-01-21.yaml) - Bug fixes and alignment with 2025.12
+[2025-11-07](changelogs/2025-11-07.yaml) - Initial upload

@@ -1,0 +1,20 @@
+# Latest Updates (2026/01/21)
+
+Last tested with ESPHome 2025.12
+
+1. New boards: ESP32 C6 Firebettle 2 & Open Green Energy Solar Powered WiFi Weather Station V4.0
+2. ESPNow has been added to the Network folder, however it has not been tested yet!
+3. WiFi Module has been updated to cater with power output compatibility issues with some of the C series chips.
+4. WiFi Module updated to cater for auth (2025.11) & Roaming (2026.1).
+5. SPS30 Sensor Module - Added AQI for EU and US, also added device classes (AQI and PM).
+6. (WIP) Added device classes to most of the sensors as well as other minor tweaks.
+7. Removed the following files until I am sure of the calibration:
+    - sparkfun-anemometer.yaml
+    - sparkfun_rain_gauge.yaml
+    - sparkfun-wind_vane.yaml
+  
+    These will be readded once I am sure of the math.
+
+8. Most boards have been moved to ESP-IDF and tested.
+9. (WIP) Cleaning up the files and folders is continuing.
+10. (WIP) Adding further documentation to all files is ongoing.

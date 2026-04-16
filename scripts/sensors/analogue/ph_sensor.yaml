@@ -27,14 +27,14 @@ sensor:
     id: ${device_internal_name}_ph_sensor_voltage
     name: pH Sensor Voltage
     icon: mdi:flash
-    pin: $pin
+    pin: ${pin}
     filters:
       - median:
           window_size: 7
           send_every: 4
           send_first_at: 3
     unit_of_measurement: V
-    update_interval: $device_sampling_time
+    update_interval: ${device_sampling_time}
     disabled_by_default: true
 
   - platform: copy

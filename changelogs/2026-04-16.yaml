@@ -1,0 +1,41 @@
+# Latest Updates (2026/04/16)
+
+# Latest Updates (2026/04/16)
+
+Tested with ESPHome 2026.4
+
+I ran [Google Jules](https://jules.google.com/) Coding AI against this repo, it found a few issues which I promptly fixed but it seems that it's information is outdated by a few month, 6 or more in my opinion, so I would definitively not use it for generating ESPHome files.
+
+Important: Please note that this code is not tested yet, further changes and full testing are expected in the next few days!
+
+In short, the WiFi and a couple of other modules are being rewriten to cater for deployments outside your home, this means you will be able to prepare a ESP32 package and connect to a WiFi AP using improv or the captive portal.
+I ask for some patiance for me to write the neccesary code and test it.
+
+Another update is coming soon!
+
+1. Removed incomplete files
+2. common/core/settings.yaml
+
+   \[x] Changed OTA in settings file to use API only
+
+   \[x] Expended Safe Mode
+
+   \[x] Added a safe mode button
+
+   \[x] Added some disabled by defaults  to avoid unnesesary clutter
+3. peripherals/display/dfrobot\_096\_160x80\_spi\_gdi.yam, fixed some typos
+4. peripherals/display/dfrobot\_28\_320x240\_spi\_gdi.yaml, fixed some typos
+5. peripherals/display/dfrobot\_35\_480x320\_spi\_gdi.yaml, fixed some typos
+6. peripherals/display/dfrobot\_20\_320x240\_spi\_gdi.yaml, fixed some typos
+7. sensors/analogue/ph\_sensor.yaml, fixed some typos
+8. scripts/common/network/wifi.yaml
+
+   1. Fixed bug in WiFi Signal Strength and migrated logic to Jinja templating.
+   2. Fixed embedded lamdas
+   3. **<span style="color: #ef4444">BREAKING CHANGE</span>** Wifi setting have moved to the wifi\_fixedip.yaml or wifi\_dynamicip.yaml reference to one of these files is now requited in the device file!
+   4. Added wifi\_fixedip.yaml config file, the wifi\_dynamicip.yaml file will come with the next batch
+   5. Various other  improvements and clean up
+
+9. Cleaned up comments in various files
+
+

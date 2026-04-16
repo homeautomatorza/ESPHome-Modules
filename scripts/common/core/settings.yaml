@@ -13,6 +13,11 @@
 # Version: 1.2.0
 # Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
+# Requires the following variables in the device file:
+#   - device_internal_name
+#   - device_friendly_name
+#   - device_sampling_time
+################################################################################
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
 # Meaning that it works on my setup but it may not work on yours.
@@ -28,25 +33,25 @@ esphome:
 ################################################################################
 logger:
   id: ${device_internal_name}_logger
-  baud_rate: 0
 
 ################################################################################
 # Enable Home Assistant API
 ################################################################################
 api:
   id: ${device_internal_name}_ha_api
-  encryption:
-    key: !secret api_encryption_key
   reboot_timeout: 0s
 
 ################################################################################
 # OTA Settings
 ################################################################################
 ota:
-  platform: esphome
-  password: !secret web_server_password
+  - platform: esphome
 
+################################################################################
+# Safe Mode Settings
+################################################################################
 safe_mode:
+  boot_is_good_after: 1min
   disabled: false
   reboot_timeout: 10min
   num_attempts: 5
@@ -86,7 +91,16 @@ text_sensor:
 
   - platform: uptime
     name: "Uptime"
-  
+
+################################################################################
+# Button
+################################################################################
+button: # Allows to remotely force into safe mode
+  - platform: safe_mode
+    id: ${device_internal_name}_safe_mode
+    name: Enter Safe Mode
+    disabled_by_default: true
+
 ################################################################################
 # Switch
 ################################################################################
@@ -95,6 +109,7 @@ switch:
   - platform: restart
     id: ${device_internal_name}_device_restart
     name: Restart
+    disabled_by_default: true
 
   # Restart the device in Safe Mode
   - platform: safe_mode

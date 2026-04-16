@@ -33,9 +33,9 @@ display:
   - platform: ili9xxx
     id: ${device_internal_name}_display
     model: ILI9341
-    cs_pin: $cs_pin
-    dc_pin: $dc_pin
-    reset_pin: $reset_pin
+    cs_pin: ${cs_pin}
+    dc_pin: ${dc_pin}
+    reset_pin: ${reset_pin}
     dimensions:
       height: 320
       width: 240
@@ -46,7 +46,7 @@ display:
 output:
   - platform: ledc
     id: ${device_internal_name}_backlight_pwm
-    pin: $backlight_pin 
+    pin: ${backlight_pin}
 
 # Display - Monochromatic dimmable light for the backlight
 light:

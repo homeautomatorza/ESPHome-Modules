@@ -41,7 +41,6 @@ sensor:
     icon: mdi:water-opacity
     unit_of_measurement: ppm
     filters:
-      #- lambda: return x / (1 + (0.02 * (id(${device_internal_name}_temperature).state - 25.0)));
       - lambda: return x / (1 + (0.02 * (id(${device_internal_name}_internal_temperature).state - 25.0)));
       - lambda: return (133.42*x*x*x - 255.86*x*x + 857.39*x)*0.5;
 
