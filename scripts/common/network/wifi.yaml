@@ -182,12 +182,12 @@ switch:
     icon: mdi:wifi
     lambda: return ${device_internal_name}_wifi_radio_status;
     turn_on_action:
-      - lambda: !lambda wifi::global_wifi_component->enable();
-      - lambda: !lambda id(${device_internal_name}_wifi_radio_status) = true;
+      - lambda: wifi::global_wifi_component->enable();
+      - lambda: id(${device_internal_name}_wifi_radio_status) = true;
       - delay: 2s
     turn_off_action:
-      - lambda: !lambda wifi::global_wifi_component->disable();
-      - lambda: !lambda id(${device_internal_name}_wifi_radio_status) = false;
+      - lambda: wifi::global_wifi_component->disable();
+      - lambda: id(${device_internal_name}_wifi_radio_status) = false;
       - delay: 2s
     entity_category: config
     disabled_by_default: true
