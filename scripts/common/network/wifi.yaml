@@ -52,7 +52,7 @@ globals: ##to set default reboot behavior
 # Please note that all wifi settings have moved to wifi_fixedip.yaml or wifi_dynamicip.yaml
 
 ################################################################################
-# WiFi Settings
+# Captive Portal
 ################################################################################
 captive_portal:
 
