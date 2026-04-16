@@ -43,6 +43,6 @@ These terms can and may change at a moment's notice, except for the licence.
 
 ## Change logs
 
-[2026-04-16](changelogs/2026-04-16.yaml) - Major overhaul and alignment with 2026.4  
-[2026-01-21](changelogs/2026-01-21.yaml) - Bug fixes and alignment with 2025.12  
-[2025-11-07](changelogs/2025-11-07.yaml) - Initial upload  
+[2026-04-16](changelogs/2026-04-16.md) - Major overhaul and alignment with 2026.4  
+[2026-01-21](changelogs/2026-01-21.md) - Bug fixes and alignment with 2025.12  
+[2025-11-07](changelogs/2025-11-07.md) - Initial upload  
