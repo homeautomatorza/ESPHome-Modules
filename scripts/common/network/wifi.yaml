@@ -129,7 +129,7 @@ text_sensor:
   - platform: template
     id: ${device_internal_name}_wifi_strength
     name: Wifi Signal Strength
-    icon: mdi:wifi-strength-off-outline
+    icon: mdi:wifi
     lambda: |-
       if (id(${device_internal_name}_wifi_signal_percentage).state >= 85) {
         return std::string("Excellent");
