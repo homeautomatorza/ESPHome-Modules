@@ -1,0 +1,38 @@
+################################################################################
+# TTP223 Capasitive Touch Button
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ttp223: !include 
+#    file: sensors/binary/ttp223.yaml
+#    vars:
+#      pin: GPIO0
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/switch/gpio.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: ${pin}
+      mode: INPUT_PULLDOWN
+    name: "TTP223 Capasitive Touch Button"
+    id: ${device_internal_name}_tt223_touch_button
+    icon: mdi:light-switch
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 50ms
+    on_press:
+      then:
+        - logger.log: "TTP223 Button on ${pin} Touched!"
