@@ -1,0 +1,110 @@
+################################################################################
+# ENS160 Volatile Organic Compound (VOC) and eCO₂ Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ens160: !include 
+#    file: sensors/i2c/ens160.yaml
+#    vars:
+#      i2c_address: 0x52
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/ens160/ 
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: ens160_i2c
+    address: ${i2c_address}
+    eco2:
+      id: ${device_internal_name}_ens160_eco2
+      name: "ENS160 eCO2"
+      accuracy_decimals: 1
+      icon: mdi:molecule-co2
+      state_class: measurement
+      device_class: carbon_dioxide
+      unit_of_measurement: PPM
+    tvoc:
+      id: ${device_internal_name}_ens160_tvoc
+      name: "ENS160 Total Volatile Organic Compounds"
+      accuracy_decimals: 1
+      icon: mdi:heat-wave
+      state_class: measurement
+      device_class: volatile_organic_compounds_parts
+      unit_of_measurement: PPB
+    aqi:
+      id: ${device_internal_name}_ens160_aqi
+      name: "ENS160 Air Quality Index"
+    #compensation:
+    #  temperature: ${temperature}
+    #  humidity: ${humidity}
+    update_interval: ${device_sampling_time}
+
+# Human readable sensors
+text_sensor:
+  - platform: template
+    name: "eCO2 Classification"
+    id: ${device_internal_name}_eco2_clasification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if (int(id(${device_internal_name}_ens160_eco2).state) <= 400) {
+        return {"Excellent"};
+      }
+      else if (int(id(${device_internal_name}_ens160_eco2).state) <= 1000) {
+        return {"Good"};
+      }
+      else if (int(id(${device_internal_name}_ens160_eco2).state) <= 2000) {
+        return {"Poor"};
+      }
+      else if (int(id(${device_internal_name}_ens160_eco2).state) <= 5000) {
+        return {"Bad"};
+      }
+      else if (int(id(${device_internal_name}_ens160_eco2).state) >= 250) {
+        return {"Dangerous"};
+      }
+      else {
+        return {"unknown"};
+      }
+
+  - platform: template
+    name: "TVOC Concern"
+    id: ${device_internal_name}_tvoc_clasification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      if (int(id(${device_internal_name}_ens160_tvoc).state) <= 300) {
+        return {"None"};
+      }
+      else if (int(id(${device_internal_name}_ens160_tvoc).state) <= 500) {
+        return {"Low"};
+      }
+      else if (int(id(${device_internal_name}_ens160_tvoc).state) <= 1000) {
+        return {"Moderate"};
+      }
+      else if (int(id(${device_internal_name}_ens160_tvoc).state) <= 3000) {
+        return {"High"};
+      }
+      else {
+        return {"unknown"};
+      }
+
+  - platform: template
+    name: "Air Quality Rating"
+    id: ${device_internal_name}_aqi_clasification
+    lambda: |-
+      switch ( (int) (id(${device_internal_name}_ens160_aqi).state) ) {
+        case 1: return {"Excellent"};
+        case 2: return {"Good"};
+        case 3: return {"Moderate"};
+        case 4: return {"Poor"};
+        case 5: return {"Unhealthy"};
+        default: return {"Not Available"};
+      }
