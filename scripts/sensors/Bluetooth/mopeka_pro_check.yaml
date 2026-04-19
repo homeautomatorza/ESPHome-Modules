@@ -1,0 +1,50 @@
+################################################################################
+# Mopeka Pro Check BLE Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   mac address to the appropriate one.
+#
+# Note: Both the bluetooth proxy and Bluetooth Low Energy Tracker Hub must be enabled
+# -----------------------------------------------------------------------------
+# packages:
+#  mopeka_pro_check: !include 
+#    file: sensors/mopeka_pro_check.yaml
+#    vars:
+#      mac_address: ff:ff:ff:ff:ff:ff
+#      distance_full: 26cm
+#      distance_empty: 1cm
+#      percentage_low: 10
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/mopeka_pro_check.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: mopeka_pro_check
+    mac_address: ${mac_address}
+    tank_type: custom
+    custom_distance_full: ${distance_full}
+    custom_distance_empty: ${distance_empty}
+    temperature:
+      name: "LPG Sensor Temp"
+      id: ${device_name}_lpg_tank_sensor_temp
+    level:
+      name: "LPG Level"
+      id: ${device_name}_lpg_tank_level
+    distance:
+      name: "LPG Distance"
+      id: ${device_name}_lpg_tank_distance
+    battery_level:
+      name: "LPG Sensor battery level"
+      id: ${device_name}_lpg_tank_sensor_battery
+
+# add percentage full
+# add binary critically low

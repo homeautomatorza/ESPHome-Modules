@@ -1,0 +1,66 @@
+################################################################################
+# Xiaomi MI Smart Scale 2 Bluetooth Sensors
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   mac Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  miscale2: !include 
+#    file: sensors/bluetooth/miscale2.yaml
+#    vars:
+#      mac_address: XX:XX:XX:XX:XX:XX
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CCO 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/xiaomi_miscale/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: xiaomi_miscale
+    mac_address: ${mac_address}
+    weight:
+      name: "Xiaomi Mi Scale 2 Weight"
+      id: ${device_internal_name}_miscale2_weight
+      filters:
+        - timeout:
+            timeout: 30s
+            value: !lambda return 0;
+      on_value:
+        then:
+          - sensor.template.publish:
+              id: xiaomi_v2_last_weight_time
+              state: !lambda "return id(${device_internal_name}_internal_time).now().timestamp;"
+#          - lambda: |-
+#              auto time_now = id(${device_internal_name}_internal_time).now();
+#              std::string time_str = time_now.strftime("%A, %d %B %Y %H:%M");
+#              id(xiaomi_v2_last_weight_time).publish_state(time_str);
+    impedance:
+      name: "Xiaomi Mi Scale 2 Impedance"
+      id: ${device_internal_name}_miscale2_impedance
+      filters:
+        - timeout:
+            timeout: 30s
+            value: !lambda return 0;
+    #clear_impedance:
+    #  name: Clear Impedance
+
+  - platform: template
+    name: "Xiaomi Mi Scale v2 Last Weight Time"
+    id: xiaomi_v2_last_weight_time
+    device_class: timestamp
+    disabled_by_default: true
+    update_interval: never
+
+text_sensor:
+  - platform: template
+    name: "Xiaomi Mi Scale v2 Last Weight Time Readable"
+    id: xiaomi_v2_last_weight_time_readable
+    icon: mdi:clock-check-outline
+    update_interval: never
