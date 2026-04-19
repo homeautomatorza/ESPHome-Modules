@@ -123,36 +123,31 @@ text_sensor:
         sorting_weight: 52
         sorting_group_id: wifi_group
 
-################################################################################
-# Text Sensors
-################################################################################
   # WiFi Strength human readable
-template:
-  - sensor:
-      - name: Wifi Signal Strength
-        id: ${device_internal_name}_wifi_strength
-        state: >
-          {% set signal = states('sensor.your_device_wifi_signal_percentage') | float(0) %}
-          {% if signal >= 85 %} Excellent
-          {% elif signal > 65 %} Good
-          {% elif signal > 30 %} Fair
-          {% elif signal > 10 %} Weak
-          {% else %} None
-          {% endif %}
-        icon: >
-          {% set signal = states('sensor.your_device_wifi_signal_percentage') | float(0) %}
-          {% if signal >= 85 %} mdi:wifi-strength-4
-          {% elif signal > 65 %} mdi:wifi-strength-3
-          {% elif signal > 30 %} mdi:wifi-strength-2
-          {% elif signal > 10 %} mdi:wifi-strength-1
-          {% else %} mdi:wifi-strength-off-outline
-          {% endif %}
-        entity_category: diagnostic
-        update_interval: ${device_sampling_time}
-        web_server:
-          sorting_weight: 5
-          sorting_group_id: wifi_group
-
+  # I had to remove the dynamic icon, I am still investigating but at first glance the set_icon() as been depercated and not replaced in 2026.4
+  # https://developers.esphome.io/blog/2026/03/12/icon-and-device-class-getter-migration/
+  - platform: template
+    id: ${device_internal_name}_wifi_strength
+    name: Wifi Signal Strength
+    icon: mdi:wifi-strength-off-outline
+    lambda: |-
+      if (id(${device_internal_name}_wifi_signal_percentage).state >= 85) {
+        return std::string("Excellent");
+      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 65) {
+        return std::string("Good");
+      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 30) {
+        return std::string("Fair");
+      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 10) {
+        return std::string("Weak");
+      } else {
+        return std::string("None");
+      }
+    entity_category: diagnostic
+    update_interval: ${device_sampling_time}
+    web_server:
+      sorting_weight: 5
+      sorting_group_id: wifi_group
+      
 ################################################################################
 # Switches
 ################################################################################
