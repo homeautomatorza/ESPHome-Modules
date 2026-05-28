@@ -1,0 +1,127 @@
+################################################################################
+# SendSpin PCM5102 Speaker
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 0.1.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.5.1
+#     - Recommended ESPHome: 2026.5.1 or newer
+#     - Notes: SendSpin is experimental and may change in future ESPHome releases.
+# ------------------------------------------------------------------------------
+# Specifications:
+#     - SendSpin synchronized audio hub and player
+#     - PCM5102 external I2S DAC
+#     - Stereo line-level output for an amplified speaker AUX input
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - ESP32-based board
+#     - PCM5102 I2S DAC module
+#     - 3.5 mm analogue audio connection to powered speaker
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/components/sendspin/
+#     - https://esphome.io/components/media_source/sendspin/
+#     - https://esphome.io/components/i2s_audio/
+#     - https://esphome.io/components/speaker/i2s_audio/
+#     - https://esphome.io/components/media_player/speaker/
+# ------------------------------------------------------------------------------
+# Usage:
+#     Add this package from a device file and provide the required PCM5102 pin
+#     substitutions there.
+#
+# packages:
+#   sendspin_pcm5102: !include ../../../peripherals/speakers/sendspin_pcm5102.yaml
+# ------------------------------------------------------------------------------
+# This package exposes:
+#     - SendSpin hub
+#     - I2S audio bus
+#     - PCM5102 speaker output
+#     - SendSpin media source
+#     - Home Assistant media player entity
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Device identity, board, Wi-Fi, API, OTA, and web server configuration
+#       remain owned by the master device file and common framework packages.
+#     - The buffer defaults are intentionally conservative for early validation.
+#       Increase them only after the physical build proves stable.
+################################################################################
+
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  sendspin_sample_rate: "48000"
+  sendspin_buffer_size: "250000"
+  sendspin_media_player_buffer_size: "250000"
+  sendspin_fixed_delay: 0us
+  sendspin_initial_static_delay: 0ms
+  sendspin_static_delay_adjustable: "true"
+  pcm5102_bits_per_sample: 16bit
+  pcm5102_channel: stereo
+  pcm5102_timeout: never
+
+################################################################################
+# SendSpin Hub
+################################################################################
+sendspin:
+  id: ${device_internal_name}_sendspin
+
+################################################################################
+# I2S Audio Bus
+################################################################################
+i2s_audio:
+  id: ${device_internal_name}_pcm5102_i2s
+  i2s_bclk_pin: ${pcm5102_bclk_pin}
+  i2s_lrclk_pin: ${pcm5102_lrclk_pin}
+
+################################################################################
+# Speaker
+################################################################################
+speaker:
+  - platform: i2s_audio
+    id: ${device_internal_name}_pcm5102_speaker
+    i2s_audio_id: ${device_internal_name}_pcm5102_i2s
+    dac_type: external
+    i2s_dout_pin: ${pcm5102_dout_pin}
+    channel: ${pcm5102_channel}
+    sample_rate: ${sendspin_sample_rate}
+    bits_per_sample: ${pcm5102_bits_per_sample}
+    timeout: ${pcm5102_timeout}
+
+################################################################################
+# Media Sources
+################################################################################
+media_source:
+  - platform: sendspin
+    id: ${device_internal_name}_sendspin_source
+    sendspin_id: ${device_internal_name}_sendspin
+    sample_rate: ${sendspin_sample_rate}
+    buffer_size: ${sendspin_buffer_size}
+    fixed_delay: ${sendspin_fixed_delay}
+    initial_static_delay: ${sendspin_initial_static_delay}
+    static_delay_adjustable: ${sendspin_static_delay_adjustable}
+
+################################################################################
+# Media Players
+################################################################################
+media_player:
+  - platform: speaker
+    id: ${device_internal_name}_media_player
+    name: ${device_friendly_name}
+    buffer_size: ${sendspin_media_player_buffer_size}
+    volume_initial: 60%
+    media_pipeline:
+      speaker: ${device_internal_name}_pcm5102_speaker
+      sources:
+        - ${device_internal_name}_sendspin_source
+      format: FLAC
+      sample_rate: ${sendspin_sample_rate}
+      num_channels: 2

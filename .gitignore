@@ -1,6 +1,12 @@
-# Gitignore settings for ESPHome
-# This is an example and may include too much for your use-case.
-# You can modify this file to suit your needs.
-/secrets.yaml
 .DS_Store
-.gitignore
+/secrets.yaml
+/.venv/
+/local_workbench/*
+!/local_workbench/.gitignore
+!/local_workbench/README.md
+!/local_workbench/devices/
+/local_workbench/devices/*
+!/local_workbench/devices/.gitkeep
+!/local_workbench/packages/
+/local_workbench/packages/*
+!/local_workbench/packages/.gitkeep

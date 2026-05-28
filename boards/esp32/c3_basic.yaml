@@ -1,0 +1,44 @@
+################################################################################
+# Espressif ESP32-C3 Basic
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# ------------------------------------------------------------------------------
+# packages:
+#   board: !include boards/esp32/c3_basic.yaml
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - ESP32-C3 board/platform configuration
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/esp32.html
+# Reference: https://docs.espressif.com/projects/arduino-esp32/en/latest/boards/ESP32-C3-DevKitM-1.html
+# ------------------------------------------------------------------------------
+# Specifications:
+#     - ESP32-C3 RISC-V 32-bit single core
+#     - 2.4 GHz Wi-Fi and Bluetooth LE
+#     - 4 MB flash
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Minimal board package for ESP32-C3 devices where GPIO ownership belongs
+#       to device-specific packages.
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+################################################################################
+esp32:
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  flash_size: 4MB
+  framework:
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y
+      CONFIG_ENABLE_WIFI_STATION: y
+      CONFIG_USE_MINIMAL_MDNS: y

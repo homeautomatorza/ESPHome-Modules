@@ -1,0 +1,46 @@
+################################################################################
+# INA219 DC Current Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# ------------------------------------------------------------------------------
+# packages:
+#  ina219: !include 
+#    file: sensors/i2c/ina219.yaml
+#    vars:
+#      i2c_address: 0x40
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/sensor/ina219.html
+# ------------------------------------------------------------------------------
+# Notes:
+#       - Untested
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: ina219
+    shunt_resistance: 0.1 ohm
+    current:
+      name: "Current"
+      id: ${device_internal_name}_current
+    power:
+      name: "Power"
+      id: ${device_internal_name}_power
+    bus_voltage:
+      name: "Bus Voltage"
+      id: ${device_internal_name}_bus_voltage
+    shunt_voltage:
+      name: "Shunt Voltage"
+      id: ${device_internal_name}_shunt_voltage
+    max_voltage: 32.0V
+    max_current: 3.2A
+    address: ${i2c_address}
+    update_interval: ${device_sampling_time}

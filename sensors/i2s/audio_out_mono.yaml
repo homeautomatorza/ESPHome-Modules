@@ -1,0 +1,23 @@
+################################################################################
+# I2S Audio Driver
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file
+# -----------------------------------------------------------------------------
+# packages:
+#   i2s_audio: !include sensors/i2s/audio_out_mono.yaml
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 0.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: 
+# ------------------------------------------------------------------------------
+# Notes:
+#       - Place holder
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################

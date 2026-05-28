@@ -1,0 +1,5 @@
+# Project-local development and validation tools.
+#
+# Install or upgrade with prerelease support:
+#   uv pip install --prerelease allow --upgrade -r requirements_dev.txt
+esphome

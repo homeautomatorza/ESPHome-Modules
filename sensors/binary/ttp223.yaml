@@ -1,0 +1,54 @@
+################################################################################
+# TTP223 Capacitive Touch Button
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ttp223: !include
+#    file: sensors/binary/ttp223.yaml
+#    vars:
+#      pin: GPIO0
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - a binary sensor showing the raw touch state
+#   - a template switch that toggles each time the button is touched
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/binary_sensor/index.html
+# References: https://esphome.io/components/binary_sensor/gpio.html
+# References: https://esphome.io/components/switch/index.html
+# References: https://esphome.io/components/switch/template.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: ${pin}
+      mode: INPUT_PULLDOWN
+    name: "TTP223 Capacitive Touch Button"
+    id: ${device_internal_name}_tt223_touch_button
+    icon: mdi:light-switch
+    filters:
+      - delayed_on: 10ms
+      - delayed_off: 50ms
+    on_press:
+      then:
+        - switch.toggle: ${device_internal_name}_ttp223_touch_switch
+        - logger.log: "TTP223 Button on ${pin} Touched!"
+
+switch:
+  - platform: template
+    id: ${device_internal_name}_ttp223_touch_switch
+    name: "TTP223 Touch Switch"
+    icon: mdi:light-switch
+    optimistic: true
+    restore_mode: RESTORE_DEFAULT_OFF

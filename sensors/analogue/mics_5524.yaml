@@ -1,0 +1,176 @@
+################################################################################
+# MiCS 5524 Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  mics_5524: !include 
+#    file: sensors/analogue/mics_5524.yaml
+#    vars:
+#      pin: GPIO5
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://community.home-assistant.io/t/co-sensor-mics-5524-or-mics-6814/292550/8
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+
+#esphome:
+#  on_boot:
+#    priority: 600
+#    then:
+#      - output.turn_on: enable_mics5524
+
+globals:
+  - id: ${device_internal_name}_mics5524_invalid_reading_minutes
+    type: int
+    restore_value: no
+    initial_value: '0'
+
+  - id: ${device_internal_name}_mics5524_ro
+    type: float
+    restore_value: true
+    initial_value: '10000.0'
+
+interval:
+  - interval: 1min
+    then:
+      - lambda: |-
+          if (isnan(id(${device_internal_name}_mics5524_rs).state)) {
+            id(${device_internal_name}_mics5524_invalid_reading_minutes) += 1;
+          } else {
+            id(${device_internal_name}_mics5524_invalid_reading_minutes) = 0;
+          }
+          if (id(${device_internal_name}_mics5524_invalid_reading_minutes) >= 5) {
+            id(${device_internal_name}_mics5524_invalid_reading_minutes) = 0;
+            App.reboot();
+          }
+
+binary_sensor:
+  - platform: status
+    id: ${device_internal_name}_mics5524
+    name: "MICS-5524 Sensor Status"
+
+button: 
+  - platform: template
+    name: "MICS-5524 Start Calibration"
+    id: ${device_internal_name}_mics5524_start_calibration
+    on_press:
+      then:
+        #- output.turn_on: enable_mics5524
+        - delay: 180s  # 3-minute warm-up
+        - lambda: |-
+            float rs = id(${device_internal_name}_mics5524_rs).state;
+            if (!isnan(rs) && rs > 1000 && rs < 50000) {
+              id(${device_internal_name}_mics5524_ro) = rs;
+            }
+
+sensor: 
+
+  - platform: template
+    name: "MICS-5524 Rs/Ro Ratio"
+    id: ${device_internal_name}_mics5524_rs_ro_ratio
+    accuracy_decimals: 4
+    update_interval: 10s
+    lambda: |-
+      float rs = id(${device_internal_name}_mics5524_rs).state;
+      float ro = id(${device_internal_name}_mics5524_ro);
+      if (isnan(rs) || isnan(ro) || ro <= 0) {
+        return NAN;
+      }
+      return rs / ro;
+
+  - platform: adc
+    pin: ${pin}
+    id: ${device_internal_name}_mics5524_vout
+    name: "MICS-5524 Vout"
+    unit_of_measurement: "V"
+    accuracy_decimals: 4
+    filters:
+      - median:
+          window_size: 5
+          send_every: 2
+      - sliding_window_moving_average:
+          window_size: 10
+          send_every: 5
+
+  - platform: template
+    name: "MICS-5524 Rs"
+    id: ${device_internal_name}_mics5524_rs
+    unit_of_measurement: "Ohms"
+    accuracy_decimals: 0
+    update_interval: 10s
+    lambda: |-
+      float vout = id(${device_internal_name}_mics5524_vout).state;
+      if (vout > 0.1 && vout < 4.9) {
+        return 820.0 * (5.0 / vout - 1);
+      }
+      return NAN;
+
+  - platform: template
+    name: "MICS-5524 Carbon Monoxide (CO)"
+    id: ${device_internal_name}_mics5524_co_ppm
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      float ratio = id(${device_internal_name}_mics5524_rs_ro_ratio).state;
+      return isnan(ratio) ? NAN : 0.25 * pow(ratio, -2.95) * exp(1.77 * log(ratio));
+
+  - platform: template
+    name: "MICS-5524 Methane (CH4)"
+    id: ${device_internal_name}_mics5524_ch4_ppm
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      float ratio = id(${device_internal_name}_mics5524_rs_ro_ratio).state;
+      return isnan(ratio) ? NAN : 2.4 * pow(ratio, -2.61) * exp(1.62 * log(ratio));
+
+  - platform: template
+    name: "MICS-5524 Ethanol (C2H5OH)"
+    id: ${device_internal_name}_mics5524_ethanol_ppm
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      float ratio = id(${device_internal_name}_mics5524_rs_ro_ratio).state;
+      return isnan(ratio) ? NAN : 0.15 * pow(ratio, -3.14) * exp(2.43 * log(ratio));
+
+  - platform: template
+    name: "MICS-5524 Hydrogen (H2)"
+    id: ${device_internal_name}_mics5524_h2_ppm
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      float ratio = id(${device_internal_name}_mics5524_rs_ro_ratio).state;
+      return isnan(ratio) ? NAN : 0.10 * pow(ratio, -1.8) * exp(0.9 * log(ratio));
+
+  - platform: template
+    name: "MICS-5524 Ammonia (NH3)"
+    id: ${device_internal_name}_nh3_ppm
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 1
+    update_interval: 10s
+    lambda: |-
+      float ratio = id(${device_internal_name}_mics5524_rs_ro_ratio).state;
+      return isnan(ratio) ? NAN : 0.17 * pow(ratio, -1.67) * exp(0.87 * log(ratio));
+
+  - platform: template
+    name: "MICS-5524 Nitrogen Dioxide (NO2)"
+    id: ${device_internal_name}_mics5524_no2_ppm
+    unit_of_measurement: "ppm"
+    accuracy_decimals: 2
+    update_interval: 10s
+    lambda: |-
+      float ratio = id(${device_internal_name}_mics5524_rs_ro_ratio).state;
+      return isnan(ratio) ? NAN : 0.13 * pow(ratio, 1.18) * exp(-0.35 * log(ratio));

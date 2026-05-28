@@ -1,0 +1,82 @@
+################################################################################
+# SHT40 Temperature and humidity sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the
+#   I2C Address to the appropriate one.
+# ------------------------------------------------------------------------------
+# packages:
+#  sht40: !include
+#    file: sensors/i2c/sht40.yaml
+#    vars:
+#      i2c_address: 0x44
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - sensor entities
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.1.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/sensor/index.html
+# References: https://esphome.io/components/sensor/sht4x.html
+# References: https://esphome.io/components/sensor/template.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+sensor:
+  - platform: sht4x
+    temperature:
+      id: ${device_internal_name}_sht40_temperature
+      state_class: measurement
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_sht40_temperature_f
+          - component.update: ${device_internal_name}_sht40_temperature_c
+      internal: true
+    humidity:
+      id: ${device_internal_name}_sht40_humidity_internal
+      state_class: measurement
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_sht40_humidity
+      internal: true
+    address: ${i2c_address}
+    update_interval: ${device_sampling_time}
+
+  # Temperature Fahrenheit
+  - platform: template
+    id: ${device_internal_name}_sht40_temperature_f
+    name: SHT40 Temperature (F)
+    icon: mdi:temperature-fahrenheit
+    unit_of_measurement: '°F'
+    lambda: return id(${device_internal_name}_sht40_temperature).state * 9/5+32;
+    device_class: temperature
+    state_class: measurement
+    update_interval: never
+    disabled_by_default: true
+
+  # Temperature Celsius
+  - platform: template
+    id: ${device_internal_name}_sht40_temperature_c
+    name: SHT40 Temperature (C)
+    icon: mdi:temperature-celsius
+    unit_of_measurement: '°C'
+    lambda: return id(${device_internal_name}_sht40_temperature).state;
+    device_class: temperature
+    state_class: measurement
+    update_interval: never
+
+  # Humidity
+  - platform: template
+    id: ${device_internal_name}_sht40_humidity
+    name: SHT40 Humidity
+    icon: mdi:water-percent
+    unit_of_measurement: '%'
+    lambda: return id(${device_internal_name}_sht40_humidity_internal).state;
+    device_class: humidity
+    state_class: measurement
+    update_interval: never

@@ -1,0 +1,75 @@
+################################################################################
+# AS3935 Lighning Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the 
+#   I2C Address to the appropriate one.
+# ------------------------------------------------------------------------------ 
+# packages:
+#  as3935_i2c: !include 
+#    file: sensors/i2c/as3935.yaml
+#    vars:
+#      i2c_address: 0x03
+#      irq_pin: GPIOxx
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/sensor/as3935.html
+# ------------------------------------------------------------------------------
+# Notes:
+#       - Untested
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+################################################################################
+as3935_i2c:
+  address: ${i2c_address}
+  irq_pin: ${irq_pin}
+  indoor: true
+  noise_level: 2
+  spike_rejection: 5
+  lightning_threshold: 1
+  mask_disturber: true
+  div_ratio: 0
+  capacitance: 5
+  watchdog_threshold: 2
+
+sensor:
+  - platform: as3935
+    lightning_energy:
+      name: Lightning Energy
+      id: ${device_internal_name}_lightning_energy
+      accuracy_decimals: 0
+      on_value:
+        then:
+          - number.increment: ${device_internal_name}_lightning_counter_n
+    distance:
+      name: Storm Distance
+      id: ${device_internal_name}_storm_distance
+
+  - platform: template
+    name: "Lightning Counter"
+    id: ${device_internal_name}_lightning_counter
+    icon: mdi:lightning-bolt-circle
+    lambda: |-
+      return (id(${device_internal_name}_lightning_counter_n).state);
+    unit_of_measurement: "pcs"
+    accuracy_decimals: 0
+
+number:
+  - platform: template
+    name: "Lightning Counter"
+    id: ${device_internal_name}_lightning_counter_n
+    optimistic: true
+    min_value: 0
+    max_value: 1000
+    step: 1
+
+binary_sensor:
+  - platform: as3935
+    name: Storm Alert
+    id: ${device_internal_name}_storm_alert
