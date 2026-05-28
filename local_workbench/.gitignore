@@ -1,9 +1,0 @@
-*
-!.gitignore
-!README.md
-!devices/
-devices/*
-!devices/.gitkeep
-!packages/
-packages/*
-!packages/.gitkeep

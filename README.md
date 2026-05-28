@@ -1,48 +1,80 @@
-# ESPHome Modules
+# ESPHome Modular Rebuild 2026
 
-Module changelogs are at the bottom of this page.
+This repository is the 2026 rebuild of the Home Automator ZA ESPHome modular
+configuration project. The goal is to keep reusable ESPHome packages, board
+templates, sensors, peripherals, and starter device files clean, testable, and
+current with modern ESPHome releases.
 
-Please find the current compatible board list [here](documentation/compatible-boards.md), this list will grow as I get more board or boards are contributed by the community.
+The project is based on Pascal Parent's ESPHome modularisation series for Home
+Automator ZA:
 
-## About
+- YouTube channel: https://www.youtube.com/@homeautomatorza
+- Original modules repository: https://github.com/homeautomatorza/ESPHome-Modules
 
-This is a community driven ESPHome based code repository based on my YouTube series on ESPHome modularisation, "Coding Practices, Tips and Tricks"
+## Current Focus
 
-The scripts can de found [here](scripts/), you can clone or copy it as is and put it in your ESPHOME folder on your server of choice, have fun.
+- Preserve the working modular approach from the original project.
+- Bring YAML modules up to date with current ESPHome behaviour.
+- Improve folder structure, naming, and documentation.
+- Keep compatibility data, file header standards, and changelogs visible.
+- Validate changes against real boards and clearly mark anything untested.
 
-To to learn more about the project, you can find the tutorials below:
+## Repository Map
 
-[![Watch the video](Images/Splash_Screen_1_1.jpg)](https://youtube.com/playlist?list=PLJ3MNJX_MOUnMWzUNDatN3LWAN8l99v5I&si=ycyInH13YDWGuAjm)
+| Path | Purpose |
+| --- | --- |
+| `boards/` | Board-specific package files and hardware defaults. |
+| `common/` | Shared core, display, network, and time packages. |
+| `documentation/` | Project documentation, standards, compatibility notes, and usage guidance. |
+| `documentation/changelogs/` | Historical and future project changelogs. |
+| `documentation/compatibilities/` | Compatibility references, starting with board support. |
+| `documentation/deferred_components/` | Preserved component code that is not active yet. |
+| `documentation/headers/` | File header standards and samples. |
+| `fonts/` | Font assets used by display packages. |
+| `includes/` | C/C++ include files used by ESPHome configurations. |
+| `peripherals/` | Display, bus, touch, and other attached hardware packages. |
+| `sensors/` | Sensor packages, grouped by type and bus where useful. |
+| `sample_secrets.yaml` | Example secrets file. Copy values into local `secrets.yaml`. |
 
-## Available Modules
+The real root `secrets.yaml` file is intentionally ignored by git.
+Local-only folders such as `local_workbench/`, `internal_documentation/`,
+`sample_projects/`, and `tools/` are also ignored by git until their contents are
+ready for public release.
 
-- [Development Boards](documentation/compatible-boards.md)
-- Commonly used modules (Coming Soon)
-- Components (Coming Soon)
-- Peripherals (Coming Soon)
-- Sensors (Coming Soon)
-- Starter Templates (Coming Soon)
+## Documentation
+
+- [Documentation index](documentation/index.md)
+- [Compatible boards](documentation/compatibilities/boards.md)
+- [Header samples](documentation/headers/header.md)
+- [Project structure](documentation/project_structure.md)
+- [Changelog index](documentation/changelogs/README.md)
+
+## Compatibility
+
+The current compatibility list was carried forward from the original project and
+should be treated as a living document. Tested status should only be marked when
+the board or module has actually been validated.
+
+## Secrets
+
+Use `sample_secrets.yaml` as the reference for required secret keys. Create a
+local `secrets.yaml` in the repository root for real values. Do not commit real
+passwords, tokens, API keys, WiFi credentials, or private network details.
 
 ## Licence
 
-Please read the licence, the TL;DR is you are welcome to use these scripts for any type of personal or commercial use, read more here  [Creative Commons Legal Code - CC0 1.0 Universal](/LICENSE)
+The original ESPHome Modules project uses CC0 1.0 Universal. Keep licence
+metadata in module headers aligned with the project licence unless a file has a
+specific reason to do otherwise.
 
-## Contributing
+See [LICENSE](LICENSE) for the full licence text.
 
-Should you feel like contributing, you are welcome to do so and you will be added as a contributor on the project.
+## Contributing Standard
 
-I just ask that you follow these gidelines:  
+Contributions and internal module updates should follow these rules:
 
-1. You need to follow the standards I have in the tutorial series.
-2. You have tested the scripts you are adding and you are sure it works, you will have to sign it off.
-3. Your files have the header shown in the tutorials, samples found [here](documentation/header-samples.md).
-4. All files are filed in their respective directories.
-5. The repository owner has the final word on what to merge.
-
-These terms can and may change at a moment's notice, except for the licence.
-
-## Change logs
-
-[2026-04-16](changelogs/2026-04-16.md) - Major overhaul and alignment with 2026.4  
-[2026-01-21](changelogs/2026-01-21.md) - Bug fixes and alignment with 2025.12  
-[2025-11-07](changelogs/2025-11-07.md) - Initial upload  
+1. Keep files in their correct module category.
+2. Include the appropriate file header.
+3. Mark tested status truthfully.
+4. Record meaningful changes in `documentation/changelogs/`.
+5. Prefer small, reviewable updates over broad undocumented rewrites.

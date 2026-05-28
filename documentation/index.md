@@ -8,10 +8,7 @@ This folder is the working documentation set for the ESPHome Modular Rebuild
 - [Compatible boards](compatibilities/boards.md)
 - [Header samples](headers/header.md)
 - [Project structure](project_structure.md)
-- [Local workbench](local_workbench.md)
-- [Validation](validation/README.md)
 - [Changelogs](changelogs/README.md)
-- [Audits](audits/README.md)
 - [Deferred components](deferred_components/README.md)
 
 ## Secrets

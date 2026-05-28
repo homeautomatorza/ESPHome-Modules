@@ -11,9 +11,7 @@ make module purpose and reuse boundaries easier to understand.
 | `common/` | Shared settings used by many devices. |
 | `fonts/` | Font assets used by display packages. |
 | `includes/` | C/C++ include files used by ESPHome configurations. |
-| `local_workbench/` | Local-only private device and package experiments. Working contents are ignored by git. |
 | `peripherals/` | Displays, buses, touch controllers, and other attached hardware. |
-| `sample_projects/` | Example device configurations and starter projects. |
 | `sensors/` | Sensor packages, grouped by type and bus where useful. |
 | `sample_secrets.yaml` | Example secrets file for local `secrets.yaml` values. |
 | `documentation/` | Human-facing project documentation. |
@@ -21,6 +19,12 @@ make module purpose and reuse boundaries easier to understand.
 | `documentation/compatibilities/` | Compatibility references such as board support. |
 | `documentation/deferred_components/` | Preserved component code that is not active yet. |
 | `documentation/headers/` | Header standards and examples. |
+
+The local-only development folders `internal_documentation/`, `local_workbench/`,
+`sample_projects/`, and `tools/` are intentionally ignored by git. They can be
+used in the private rebuild workflow, but content should only move into tracked
+public folders after it has been cleaned, validated, and documented for channel
+users.
 
 ## Working Rules
 

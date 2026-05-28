@@ -1,12 +1,8 @@
 .DS_Store
 /secrets.yaml
 /.venv/
-/local_workbench/*
-!/local_workbench/.gitignore
-!/local_workbench/README.md
-!/local_workbench/devices/
-/local_workbench/devices/*
-!/local_workbench/devices/.gitkeep
-!/local_workbench/packages/
-/local_workbench/packages/*
-!/local_workbench/packages/.gitkeep
+/internal_documentation/
+/local_workbench/
+/sample_projects/
+/tools/
+/requirements_dev.txt
