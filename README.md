@@ -1,5 +1,10 @@
 # ESPHome Modules
 
+> **Active development notice**
+>
+> A new modular 2026 rebuild of this repository is being developed on the [`dev`](https://github.com/homeautomatorza/ESPHome-Modules/tree/dev) branch. The `dev` branch is public early access and is expected to change while modules, documentation, and compatibility notes are validated. You are welcome to try it and comment, but please treat it as active development rather than the stable channel-facing release.
+
+
 Module changelogs are at the bottom of this page.
 
 Please find the current compatible board list [here](documentation/compatible-boards.md), this list will grow as I get more board or boards are contributed by the community.
