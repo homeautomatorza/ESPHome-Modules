@@ -5,11 +5,11 @@ This folder is the working documentation set for the ESPHome Modular Rebuild
 
 ## Reference Documents
 
-- [Compatible boards](compatibilities/boards.md)
+- [Getting started](getting_started.md)
+- [Compatibility](compatibilities/README.md)
 - [Header samples](headers/header.md)
 - [Project structure](project_structure.md)
 - [Changelogs](changelogs/README.md)
-- [Deferred components](deferred_components/README.md)
 
 ## Secrets
 

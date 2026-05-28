@@ -28,7 +28,6 @@ Automator ZA:
 | `documentation/` | Project documentation, standards, compatibility notes, and usage guidance. |
 | `documentation/changelogs/` | Historical and future project changelogs. |
 | `documentation/compatibilities/` | Compatibility references, starting with board support. |
-| `documentation/deferred_components/` | Preserved component code that is not active yet. |
 | `documentation/headers/` | File header standards and samples. |
 | `fonts/` | Font assets used by display packages. |
 | `includes/` | C/C++ include files used by ESPHome configurations. |
@@ -44,7 +43,8 @@ ready for public release.
 ## Documentation
 
 - [Documentation index](documentation/index.md)
-- [Compatible boards](documentation/compatibilities/boards.md)
+- [Getting started](documentation/getting_started.md)
+- [Compatibility](documentation/compatibilities/README.md)
 - [Header samples](documentation/headers/header.md)
 - [Project structure](documentation/project_structure.md)
 - [Changelog index](documentation/changelogs/README.md)

@@ -1,0 +1,43 @@
+################################################################################
+# ESP32-S3 Super Mini Master Device File
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 1.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Usage:
+#   This is the top-level ESPHome device file.
+#   Put it in the ESPHome root folder beside `boards/`, `common/`, `sensors/`,
+#   and `peripherals/`.
+# ------------------------------------------------------------------------------
+# Package exposes:
+#   - ESPHome base settings
+#   - WiFi and captive portal support
+#   - web server support
+#   - ESP32-S3 Super Mini board support
+################################################################################
+
+substitutions:
+  device_internal_name: s3_super_mini_master
+  device_friendly_name: S3 Super Mini Master
+  device_wifi_name: S3 Super Mini Master
+  device_sampling_time: 60s
+
+packages:
+  settings: !include common/core/settings.yaml
+  wifi_base: !include common/network/wifi.yaml
+  wifi: !include common/network/wifi_dynamicip.yaml
+  webserver: !include common/network/webserver.yaml
+  board: !include boards/esp32/s3_super_mini.yaml
+
+wifi:
+  networks:
+    - ssid: !secret wifi_ssid
+      password: !secret wifi_password
+

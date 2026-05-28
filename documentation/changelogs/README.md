@@ -5,6 +5,7 @@ project and will hold future dated changelogs for this rebuild.
 
 ## Rebuild Changelogs
 
+- [2026-05-28](2026-05-28.md) - Cleaned public/internal documentation boundaries and added split compatibility charts.
 - [2026-05-16](2026-05-16.md) - Reconciled offline sensor/template imports, workbench inventory, and Kanban tracking.
 - [2026-05-12](2026-05-12.md) - Added TTP223 touch switch functionality and normalized package header exposure/reference blocks.
 - [2026-05-11](2026-05-11.md) - Initial rebuild setup, documentation, compatibility cleanup, and breaking path naming changes.

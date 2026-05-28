@@ -17,7 +17,6 @@ make module purpose and reuse boundaries easier to understand.
 | `documentation/` | Human-facing project documentation. |
 | `documentation/changelogs/` | Dated project change notes. |
 | `documentation/compatibilities/` | Compatibility references such as board support. |
-| `documentation/deferred_components/` | Preserved component code that is not active yet. |
 | `documentation/headers/` | Header standards and examples. |
 
 The local-only development folders `internal_documentation/`, `local_workbench/`,

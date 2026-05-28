@@ -9,6 +9,7 @@ Preferred section order:
 - component or device name
 - author, web, version, and licence
 - warning
+- compatibility
 - specifications
 - bill of materials
 - references
@@ -31,6 +32,12 @@ Preferred section order:
 # This code carries an "It works on my setup" disclaimer.
 # Meaning that it works on my setup but it may not work on yours.
 # Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.5.0
+#     - Recommended ESPHome: 2026.5.0 or newer
+#     - Status: Not tested
+#     - Validated ESPHome: Not run
 # ------------------------------------------------------------------------------
 # Bill of Materials:
 #     - DFRobot Firebeetle 2 ESP 32 S3 N16R8 Board
@@ -66,6 +73,12 @@ Preferred section order:
 # This code carries an "It works on my setup" disclaimer.
 # Meaning that it works on my setup but it may not work on yours.
 # Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.5.0
+#     - Recommended ESPHome: 2026.5.0 or newer
+#     - Status: Tested
+#     - Validated ESPHome: 2026.5.0
 # ------------------------------------------------------------------------------
 # Specifications:
 #     - ESP32-C3FN4 RISC-V single core
@@ -120,6 +133,12 @@ Preferred section order:
 # This code carries an "It works on my setup" disclaimer.
 # Meaning that it works on my setup but it may not work on yours.
 # ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.5.0
+#     - Recommended ESPHome: 2026.5.0 or newer
+#     - Status: Tested
+#     - Validated ESPHome: 2026.5.0
+# ------------------------------------------------------------------------------
 # References:
 #     - https://esphome.io/components/esphome.html
 #     - https://esphome.io/components/logger.html
@@ -160,6 +179,12 @@ Preferred section order:
 # This code carries an "It works on my setup" disclaimer.
 # Meaning that it works on my setup but it may not work on yours.
 # ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.5.0
+#     - Recommended ESPHome: 2026.5.0 or newer
+#     - Status: Not tested
+#     - Validated ESPHome: Not run
+# ------------------------------------------------------------------------------
 # References:
 #     - https://esphome.io/components/sensor/index.html
 #     - https://esphome.io/components/sensor/bh1750.html
@@ -183,3 +208,19 @@ Preferred section order:
 #     - Tested OK
 ################################################################################
 ```
+
+## Compatibility Status Values
+
+Use the same status words as the compatibility documentation:
+
+| Status | Meaning |
+| --- | --- |
+| Not tested | No ESPHome compilation has been done in this rebuild. |
+| Needs validation | AI-assisted review and ESPHome compilation/config validation found no blocking errors, but the package has not been validated on physical hardware by a person. |
+| Experimental | In active development. It is expected to compile and might work, but behaviour is still being proven. |
+| Tested | Validated on physical hardware. The ESPHome version used for validation must be recorded. |
+
+Only use `Tested` when the module has been validated on real hardware by a
+person. Record the exact ESPHome version in `Validated ESPHome`. If a module
+passes AI-assisted review and ESPHome compilation/config validation but has not
+been flashed or tested physically, use `Needs validation`.

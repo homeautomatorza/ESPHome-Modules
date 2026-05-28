@@ -12,9 +12,11 @@
 # Use at your own risk.
 # ------------------------------------------------------------------------------
 # Compatibility:
-#     - Minimum ESPHome: 2026.5.1
-#     - Recommended ESPHome: 2026.5.1 or newer
-#     - Notes: SendSpin is experimental and may change in future ESPHome releases.
+#     - Minimum ESPHome: 2026.6.0-dev
+#     - Recommended ESPHome: 2026.6.0-dev or newer
+#     - Notes: Requires the speaker_source component from ESPHome GitHub main at
+#       this time. SendSpin is experimental and may change in future ESPHome
+#       releases.
 # ------------------------------------------------------------------------------
 # Specifications:
 #     - SendSpin synchronized audio hub and player
@@ -60,7 +62,6 @@
 substitutions:
   sendspin_sample_rate: "48000"
   sendspin_buffer_size: "250000"
-  sendspin_media_player_buffer_size: "250000"
   sendspin_fixed_delay: 0us
   sendspin_initial_static_delay: 0ms
   sendspin_static_delay_adjustable: "true"
@@ -113,10 +114,9 @@ media_source:
 # Media Players
 ################################################################################
 media_player:
-  - platform: speaker
+  - platform: speaker_source
     id: ${device_internal_name}_media_player
     name: ${device_friendly_name}
-    buffer_size: ${sendspin_media_player_buffer_size}
     volume_initial: 60%
     media_pipeline:
       speaker: ${device_internal_name}_pcm5102_speaker

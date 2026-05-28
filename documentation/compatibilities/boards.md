@@ -3,6 +3,18 @@
 This compatibility list is preserved from the original ESPHome Modules project
 and should be updated as boards are retested during the rebuild.
 
+## Status Legend
+
+| Status | Meaning |
+| --- | --- |
+| Not tested | No ESPHome compilation has been done in this rebuild. |
+| Needs validation | AI-assisted review and ESPHome compilation/config validation found no blocking errors, but the package has not been validated on physical hardware by a person. |
+| Experimental | In active development. It is expected to compile and might work, but behaviour is still being proven. |
+| Tested | Validated on physical hardware. The ESPHome version used for validation must be recorded in the notes or a dedicated version column. |
+
+This board list still preserves historical `Tested` fields from the original
+project. Convert rows to the shared status wording as each board is retested.
+
 ## ESP8266 Series
 
 | Development Board | Chip Model | Connectivity | Last Edited | Has Template | Tested | Notes |
