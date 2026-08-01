@@ -18,7 +18,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/status_led.html
@@ -30,10 +30,21 @@
 # Reference: https://esphome.io/components/sensor/template.html
 # ------------------------------------------------------------------------------
 # Notes:
-#     - Work in Progress --
+#     - Pascal confirmed historical hardware operation.
 #     - To flash with a serial programmer bridge IO0 and GND
+#     - Uses ESP-IDF.
+#     - Removed the floating framework version pin.
+#     - GPIO2, GPIO5, and GPIO15 are strapping pins; verify attached hardware
+#       before boot.
 # ------------------------------------------------------------------------------
-# Reference: https://docs.espressif.com/projects/arduino-esp32/en/latest/boards/ESP32-C3-DevKitM-1.html
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Historical test only; current ESP-IDF retest pending
+#     - Validation status: Needs validation
+# ------------------------------------------------------------------------------
 # Spec:
 #     - WT32-S1 (ESP32-D0WD-Q6) Dual core
 #     - 2.4 GHz Wi­Fi 4 (802.11 b/g/n) and Bluetooth 4.2
@@ -58,7 +69,6 @@ esp32:
   flash_size: 4MB
   framework:
     type: esp-idf
-    version: latest
 
 # Status led
 status_led:

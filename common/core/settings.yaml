@@ -23,7 +23,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.2.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esphome.html
 # Reference: https://esphome.io/components/logger.html
@@ -45,6 +45,15 @@
 #   - device_internal_name
 #   - device_friendly_name
 #   - device_sampling_time
+# ------------------------------------------------------------------------------
+# Compatibility:
+#   - Minimum ESPHome: 2026.6.0
+#   - Recommended ESPHome: 2026.7.3 or newer
+#   - Config validated: ESPHome 2026.7.3
+#   - Compile validated: ESPHome 2026.7.3
+#   - Hardware validated: Not yet
+#   - Validation status: Needs validation
+#   - This shared package enforces the project baseline with min_version.
 ################################################################################
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
@@ -53,8 +62,9 @@
 # ESPHome Configuration
 ################################################################################
 esphome:
-  name: ${device_internal_name}
+  name: ${device_wifi_name}
   friendly_name: ${device_friendly_name}
+  min_version: 2026.6.0
 
 ################################################################################
 # Enable logging
@@ -67,6 +77,8 @@ logger:
 ################################################################################
 api:
   id: ${device_internal_name}_ha_api
+  encryption:
+    key: !secret api_encryption_key
   reboot_timeout: 0s
 
 ################################################################################
@@ -144,4 +156,3 @@ switch:
     id: ${device_internal_name}_device_safe_mode
     name: Use Safe Mode
     disabled_by_default: true
-

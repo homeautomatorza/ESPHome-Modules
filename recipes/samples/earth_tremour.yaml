@@ -1,0 +1,99 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: sample
+status: experimental
+labels:
+  - recipe
+  - sample
+  - mpu6050
+  - earth_tremour
+minimum_esphome: 2026.6.0
+recommended_esphome: 2026.7.3
+depends_on:
+  - sensors/i2c/mpu6050.yaml
+---
+################################################################################
+# Earth Tremour Detection Sample
+################################################################################
+# This is a little fun project that watches MPU6050 accelerometer movement and
+# raises a binary sensor when the movement delta crosses a simple threshold.
+#
+# It depends on `sensors/i2c/mpu6050.yaml` and must be included in the same
+# device file after the MPU6050 package so the accelerometer entity IDs exist.
+# This is not a scientific earthquake detector and should not be used for safety,
+# emergency, insurance, or structural monitoring decisions.
+# ------------------------------------------------------------------------------
+# Usage:
+# packages:
+#   mpu6050: !include
+#     file: sensors/i2c/mpu6050.yaml
+#     vars:
+#       i2c_address: 0x68
+#   earth_tremour: !include recipes/samples/earth_tremour.yaml
+# ------------------------------------------------------------------------------
+# This sample exposes:
+#   - global state helpers
+#   - binary sensor entities
+#   - interval automations
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/globals.html
+# References: https://esphome.io/components/binary_sensor/template.html
+# References: https://esphome.io/components/interval.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: Not tested
+#     - Compile validated: Not tested
+#     - Hardware validated: Not yet
+#     - Validation status: Experimental
+#     - Depends on: sensors/i2c/mpu6050.yaml
+################################################################################
+globals:
+  - id: ${device_internal_name}_mpu6050_lastX
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: ${device_internal_name}_mpu6050_lastY
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: ${device_internal_name}_mpu6050_lastZ
+    type: float
+    restore_value: no
+    initial_value: '0'
+  - id: ${device_internal_name}_mpu6050_movement_threshold
+    type: float
+    restore_value: no
+    initial_value: '0.4'
+
+binary_sensor:
+  - platform: template
+    id: ${device_internal_name}_mpu6050_earth_tremour_detected
+    name: "Earth Tremour Detected"
+    icon: mdi:vibrate
+    lambda: |-
+      if (abs(id(${device_internal_name}_mpu6050_accelerometer_x).state - id(${device_internal_name}_mpu6050_lastX)) > id(${device_internal_name}_mpu6050_movement_threshold) || abs(id(${device_internal_name}_mpu6050_accelerometer_y).state - id(${device_internal_name}_mpu6050_lastY)) > id(${device_internal_name}_mpu6050_movement_threshold) || abs(id(${device_internal_name}_mpu6050_accelerometer_z).state - id(${device_internal_name}_mpu6050_lastZ)) > id(${device_internal_name}_mpu6050_movement_threshold)) {
+        return true;
+      } else {
+        return false;
+      }
+    disabled_by_default: true
+
+interval:
+  - interval: 500ms
+    then:
+      - lambda: |-
+          id(${device_internal_name}_mpu6050_lastX) = id(${device_internal_name}_mpu6050_accelerometer_x).state;
+          id(${device_internal_name}_mpu6050_lastY) = id(${device_internal_name}_mpu6050_accelerometer_y).state;
+          id(${device_internal_name}_mpu6050_lastZ) = id(${device_internal_name}_mpu6050_accelerometer_z).state;

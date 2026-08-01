@@ -19,7 +19,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/esphome.html
@@ -32,9 +32,19 @@
 # Reference: https://esphome.io/components/sensor/template.html
 # ------------------------------------------------------------------------------
 # Notes:
-#       - Work in progress
-#       - There are more configs for specific models in the
-#         custom_packages/peripherals folder.
+#     - Uses native ESP-IDF with 16 MB flash and octal 80 MHz PSRAM.
+#     - ESP-IDF is intentionally not pinned. ESPHome selects the supported
+#       framework version for the installed ESPHome release.
+#     - Removed obsolete PlatformIO and Arduino memory settings before the
+#       2026.0.0b framework baseline.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Not yet
+#     - Validation status: Needs validation
 # ------------------------------------------------------------------------------
 # Spec:
 #     - Xtensa dual-core 32-bit LX7 microprocessor @ 240 MHz
@@ -62,18 +72,11 @@ esp32:
   board: esp32-s3-devkitc-1
   framework:
     type: esp-idf
-    version: 5.2.1
-    platform_version: 6.6.0
     sdkconfig_options:
       CONFIG_OPENTHREAD_ENABLED: n      # Disable Thread!
       CONFIG_ENABLE_WIFI_STATION: y     # Ensures the WiFi is up
       CONFIG_USE_MINIMAL_MDNS: y
   flash_size: 16MB
-
-esphome:
-  platformio_options:
-    build_flags: "-DBOARD_HAS_PSRAM"
-    board_build.arduino.memory_type: qio_opi
 
 # PSRAM
 psram:

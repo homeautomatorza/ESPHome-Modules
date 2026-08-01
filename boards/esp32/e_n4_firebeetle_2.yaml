@@ -19,7 +19,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/status_led.html
@@ -33,7 +33,17 @@
 # Reference: https://esphome.io/components/sensor/template.html
 # ------------------------------------------------------------------------------
 # Notes:
-#     - Tested OK
+#     - Uses ESP-IDF.
+#     - Removed the floating framework version pin.
+#     - GPIO2 and GPIO5 are strapping pins; verify attached hardware before boot.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Historical test only; current ESP-IDF retest pending
+#     - Validation status: Needs validation
 # ------------------------------------------------------------------------------
 # Reference: https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654
 # Spec:
@@ -75,7 +85,6 @@ esp32:
   board: esp32dev #dfrobot_firebeetle2_esp32e
   framework:
     type: esp-idf
-    version: latest
 
 # Status led
 status_led:
@@ -93,7 +102,6 @@ light:
     rgb_order: GRB
     pin: GPIO5 #D8
     num_leds: 1
-    rmt_channel: 0
     restore_mode: ALWAYS_OFF
     chipset: ws2812
     entity_category: config

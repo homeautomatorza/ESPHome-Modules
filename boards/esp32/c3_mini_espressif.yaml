@@ -19,7 +19,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/light/index.html
@@ -34,7 +34,16 @@
 # Reference: https://esphome.io/components/text_sensor/template.html
 # ------------------------------------------------------------------------------
 # Notes:
-#     - Tested OK
+#     - Migrated from Arduino to ESP-IDF.
+#     - GPIO8 and GPIO2 are strapping pins; verify attached hardware before boot.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Not yet on the ESP-IDF migration
+#     - Validation status: Needs validation
 # ------------------------------------------------------------------------------
 # Reference: https://docs.espressif.com/projects/arduino-esp32/en/latest/boards/ESP32-C3-DevKitM-1.html
 # Spec:
@@ -56,9 +65,12 @@
 ################################################################################
 esp32:
   board: esp32-c3-devkitm-1
+  variant: esp32c3
+  flash_size: 4MB
   framework:
-    type: arduino
-    version: latest
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_ESPTOOLPY_FLASHSIZE_4MB: y
 
 # Internal LEDs
 light:
@@ -119,7 +131,7 @@ sensor:
     update_interval: ${device_sampling_time}
     disabled_by_default: true
 
-# Board Model for referance
+# Board model for reference
 text_sensor:
   - platform: template
     name: Board Model

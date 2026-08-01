@@ -20,7 +20,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/i2c.html
@@ -111,6 +111,7 @@ display:
       width: 320
     rotation: 270°
     color_order: rgb
+    invert_colors: false
     auto_clear_enabled: false
     update_interval: never
 
@@ -134,7 +135,7 @@ text_sensor:
     name: Board Model
     id: ${device_internal_name}_board
     lambda: |-
-      return {"Makerfabs MaTouch_ESP32-C3(RISC-V) SPI TFT Touch 3.5" ILI9488"};
+      return {"Makerfabs MaTouch_ESP32-C3(RISC-V) SPI TFT Touch 3.5\" ILI9488"};
     icon: mdi:cpu-32-bit
     entity_category: diagnostic
     update_interval: ${device_sampling_time}

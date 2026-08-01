@@ -13,12 +13,15 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/font.html
 # Reference: https://pictogrammers.com/library/mdi/
 # ------------------------------------------------------------------------------
 # Notes:
+#       - Display packages are reusable samples/templates. They work as-is in
+#         Pascal's projects, but users should copy or override them when
+#         localizing glyphs/icons for their own project.
 #       - Only use this file if you are going to use glyphs (icons) in a lambda.
 #       - Only add glyphs that are going to be used in more than 1 project. For
 #         single project use add to the device file.
@@ -29,6 +32,14 @@
 # This code carries a "It works on my setup" disclaimer!
 # Meaning that it works on my setup but it may not work on yours.
 # Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Config validated: Not yet
+#     - Compile validated: Not yet
+#     - Hardware validated: Not yet
+#     - Validation status: Not tested
 ################################################################################
 font:
   - file: "fonts/materialdesignicons-webfont.ttf"

@@ -1,5 +1,5 @@
 ################################################################################
-# DFRobot Firebeetle 2 ESP 32 S3 N16R8 Board
+# DFRobot FireBeetle 2 ESP32-S3 N16R8 Board
 ################################################################################
 # Usage:
 #   Add the following code to package section in the device file
@@ -20,7 +20,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/esphome.html
@@ -41,19 +41,32 @@
 #         To use display backlight.
 #       - Right button is on GPIO47
 # ------------------------------------------------------------------------------
+# Compatibility:
+#       - Minimum ESPHome: 2026.6.0
+#       - Recommended ESPHome: 2026.7.3 or newer
+#       - Config validated: ESPHome 2026.7.3
+#       - Compile validated: ESPHome 2026.7.3
+#       - Hardware validated: Not yet
+#       - Validation status: Needs validation
+# ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
 # Meaning that it works on my setup but it may not work on yours.
 # Use at your own risk.
 ################################################################################
 esp32:
-  board: esp32-s3-devkitc-1
+  board: dfrobot_firebeetle2_esp32s3
   framework:
-    type: arduino
-    version: latest
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_OPENTHREAD_ENABLED: n      # Disable Thread!
+      CONFIG_ENABLE_WIFI_STATION: y     # Ensures the WiFi is up
+      CONFIG_USE_MINIMAL_MDNS: y
   flash_size: 16MB
 
 esphome:
+  build_flags:
+    - -DBOARD_HAS_PSRAM
 
 # PSRAM
 psram:
@@ -65,7 +78,7 @@ i2c:
   - id: ${device_internal_name}_i2c_bus0
     sda: GPIO1
     scl: GPIO2
-    scan: true
+    scan: false
 
 # UART
 uart:

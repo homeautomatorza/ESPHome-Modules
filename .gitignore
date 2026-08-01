@@ -2,7 +2,8 @@
 /secrets.yaml
 /.venv/
 /internal_documentation/
+/.codex/
+/tools/*
+/requirements_dev.txt
 /local_workbench/
 /sample_projects/
-/tools/
-/requirements_dev.txt

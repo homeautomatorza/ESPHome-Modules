@@ -14,7 +14,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.4.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/ethernet.html
 # Reference: https://esphome.io/components/text_sensor/index.html
@@ -36,6 +36,14 @@
 # Meaning that it works on my setup but it may not work on yours.
 ################################################################################
 # Ethernet Settings
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Config validated: Not yet
+#     - Compile validated: Not yet
+#     - Hardware validated: Not yet
+#     - Validation status: Not tested
 ################################################################################
 ethernet:
   type: LAN8720

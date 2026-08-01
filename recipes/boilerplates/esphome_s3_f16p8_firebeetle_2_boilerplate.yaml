@@ -1,0 +1,118 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: boilerplate
+status: needs_validation
+labels:
+  - recipe
+  - boilerplate
+  - esp32_s3
+  - firebeetle_2
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.7.3
+---
+################################################################################
+# FireBeetle 2 ESP32-S3 F16/P8 Boilerplate Device File
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Not recorded for this revision
+#     - Validation status: Needs validation
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - DFRobot FireBeetle 2 ESP32-S3 F16/P8
+#         - Enabled hardware and services:
+#             - WiFi
+#             - Web server
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/components/esp32.html
+# ------------------------------------------------------------------------------
+# Usage:
+#   Copy this boilerplate into the ESPHome root folder and rename it for the
+#   intended device. Keep it beside `boards/`, `common/`, `peripherals/`, and
+#   `sensors/`, then adjust the substitutions before compiling.
+# ------------------------------------------------------------------------------
+# This boilerplate exposes:
+#   - ESPHome base settings
+#   - Home Assistant time
+#   - WiFi and web server support
+#   - FireBeetle 2 ESP32-S3 F16/P8 board support
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Package paths are relative to a device file in the ESPHome root folder.
+#     - Public boilerplates use dynamic IP addressing.
+#     - The board status LED shares GPIO21 with the GDI display backlight.
+#       Remove the status LED when using that display backlight.
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: esphome_firebeetle_2_esp32_s3
+  device_wifi_name: esphome-firebeetle-2-esp32-s3
+  device_friendly_name: ESPHome FireBeetle 2 ESP32-S3 F16 P8
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include boards/esp32/s3_firebeetle_2.yaml
+
+  # Core packages
+  settings: !include common/core/settings.yaml
+  time: !include common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include common/network/wifi.yaml
+  wifi_dynamic: !include common/network/wifi_dynamicip.yaml
+  webserver: !include common/network/webserver.yaml
+
+  # Peripheral packages
+  # Add reusable peripheral packages here.
+
+  # Sensor packages
+  # Add reusable sensor packages here.
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: FireBeetle 2 ESP32-S3 F16/P8 boilerplate
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+# Remove or override package defaults here.
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add device-specific local YAML here.

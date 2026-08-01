@@ -1,5 +1,5 @@
 ################################################################################
-# DFRobot Firebeetle 2 ESP32-E (N16R2)
+# DFRobot FireBeetle 2 ESP32-E (N16R2)
 ################################################################################
 # Usage:
 #   Add the following code to package section in the device file
@@ -21,7 +21,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/esphome.html
@@ -37,7 +37,16 @@
 # Reference: https://esphome.io/components/sensor/template.html
 # ------------------------------------------------------------------------------
 # Notes:
-#     - Tested OK
+#     - ESP-IDF is intentionally not pinned. ESPHome selects the supported
+#       framework version for the installed ESPHome release.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Historical validation; current retest pending
+#     - Validation status: Needs validation
 # ------------------------------------------------------------------------------
 # Reference: https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654
 # Spec:
@@ -80,16 +89,14 @@ esp32:
   board: esp32dev #dfrobot_firebeetle2_esp32e
   framework:
     type: esp-idf
-    version: latest
     sdkconfig_options:
       CONFIG_ENABLE_WIFI_STATION: y     # Ensures the WiFi is up
       CONFIG_USE_MINIMAL_MDNS: y
   flash_size: 16MB
 
 esphome:
-  platformio_options:
-    build_flags: "-DBOARD_HAS_PSRAM"
-    board_build.arduino.memory_type: qio_opi
+  build_flags:
+    - -DBOARD_HAS_PSRAM
 
 psram:
   mode: quad

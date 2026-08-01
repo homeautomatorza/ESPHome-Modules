@@ -1,5 +1,5 @@
 ################################################################################
-# ESP 8266 D1 Mini Pro
+# ESP8266 D1 Mini Pro
 ################################################################################
 # Usage:
 #   Add the following code to package section in the device file
@@ -18,7 +18,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.0.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp8266.html
 # Reference: https://esphome.io/components/status_led.html
@@ -29,7 +29,16 @@
 # Reference: https://esphome.io/components/sensor/adc.html
 # ------------------------------------------------------------------------------
 # Notes:
-#     - Tested OK
+#     - ESP8266 uses its supported Arduino framework.
+#     - Removed the floating framework version pin.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Historical test only; current retest pending
+#     - Validation status: Needs validation
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
@@ -38,8 +47,6 @@
 ################################################################################
 esp8266:
   board: d1_mini_pro
-  framework:
-    version: latest
 
 # Status led
 status_led:

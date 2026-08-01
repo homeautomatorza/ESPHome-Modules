@@ -13,7 +13,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 1.4.0
+# Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/wifi.html
 # ------------------------------------------------------------------------------
@@ -30,6 +30,14 @@
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
 # Meaning that it works on my setup but it may not work on yours.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Config validated: Not yet
+#     - Compile validated: Not yet
+#     - Hardware validated: Not yet
+#     - Validation status: Not tested
 ################################################################################
 wifi:
   id: ${device_internal_name}_wifi
@@ -37,7 +45,8 @@ wifi:
   networks:
     - ssid: !secret wifi_ssid
       password: !secret wifi_password
-  min_auth_mode: WPA2 # Requires ESPHome 2025.11 +
+  # Explicitly keep the modern ESPHome 2026.6+ default for ESP8266 and ESP32.
+  min_auth_mode: WPA2
 
   manual_ip:
     static_ip: ${device_ip_address}
