@@ -1,139 +1,191 @@
-# HAZA ESPHome Modular Framework
+<h1 align="center">
+  <img src=".github/images/logo.png" alt="HAZA ESPHome Modular Framework" width="100" align="absmiddle"> <span style="font-size:2em; font-weight:bold">Home Automator ZA <br/> ESPHome Modular Framework</span>
+</h1>
 
-HAZA, or Home Automator ZA, this project is Pascal Parent's ESPHome modular
-framework. It is being rebuilt as a practical cookbook of reusable ESPHome
-boards, common packages, peripherals, sensors, and project recipes that are
-cleaned up, validated, documented, and proven from real use.
+<span align="center">
 
-The original project is here:
+![GitHub License](https://img.shields.io/github/license/homeautomatorza/ESPHome-Modules)
+![GitHub Repo Stars](https://img.shields.io/github/stars/homeautomatorza/ESPHome-Modules?style=flat)
+![GitHub Contributors](https://img.shields.io/github/contributors/homeautomatorza/ESPHome-Modules)
+![GitHub Last Commit](https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules)
 
-- YouTube: https://www.youtube.com/@homeautomatorza
-- Original modules: https://github.com/homeautomatorza/ESPHome-Modules
+[![version](https://img.shields.io/badge/version-2026.0.0-success.svg)](wiki/changelog.md)
+![GitHub Issues](https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules)
+![GitHub Issues](https://img.shields.io/github/issues-closed/homeautomatorza/ESPHome-Modules)
 
-## Current State
+[![Home Assistant](https://img.shields.io/badge/Home_Assistant-2026.0.0_+-41BDF5.svg)](https://www.home-assistant.io/)
+[![ESPHome](https://img.shields.io/badge/ESPHome-2026.7.0_+-000000.svg)](https://esphome.io/)
 
-This repository is being reset around physical validation and project recipes.
-Automated ESPHome config and compile checks are useful evidence, but they do not
-make a module `Tested`. A module becomes public-ready only after Pascal has used
-it on real hardware and approved the user-facing documentation.
+</span>
 
-The large historical `documentation/` tree has been temporarily removed from the
-public repository while the cookbook is rebuilt. The old material is preserved
-locally in the ignored workbench so useful notes can be reused, corrected, or
-discarded as each project is physically tested.
+A practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
 
-## Public Folders
+---
 
-| Path | Purpose |
-| --- | --- |
-| `boards/` | Board package files and hardware defaults. |
-| `common/` | Shared core, display, network, and time packages. |
-| `fonts/` | Font assets used by display packages. |
-| `peripherals/` | Reusable peripheral packages. |
-| `recipes/` | Boilerplates, focused samples, and future cookbook projects. |
-| `sensors/` | Reusable sensor packages grouped by bus or type. |
-| `sample_secrets.yaml` | Public example of required secret keys. |
+> [!WARNING]
+> This code comes with an "it works on my setup" guarantee, a.k.a. use it at your own risk.
+>
 
-Local workbench content is intentionally ignored by git. Unfinished modules,
-draft documentation, private validation devices, and archived notes stay under
-`local_workbench/` until they are ready for review and promotion.
+---
 
-## Cookbook Workflow
+## Disclaimer
 
-Documentation will be rebuilt project by project.
+- This project is under **very active** development, at least in the dev branch.
+- Expect bugs, rough edges, and breaking changes.
 
-For each new cookbook project:
+---
 
-1. Physically test the board, sensors, peripherals, and common packages used by
-   the project.
-2. Create or revisit the documentation for every component in that project.
-3. If a module has no documentation, draft the first version from the file
-   frontmatter and header.
-4. Show the draft documentation to Pascal for additions, corrections, and
-   approval.
-5. Publish only the approved documentation for that project and its components.
-6. Record compatibility honestly: automated checks remain `Needs validation`;
-   physical hardware proof is required before anything is called `Tested`.
+## Quick Start
 
-This keeps the cookbook useful without forcing every module to be documented up
-front. Many projects share the same boards and sensors, so approved component
-documentation can be reused and improved as the cookbook grows.
+### Download the ZIP
 
-## AI Transparency
+Download the latest ZIP file from the Code button above and copy the modules you need into your ESPHome setup.
+Find the instructions [here](wiki/installation.md#zip).
 
-This is a human-led, AI-assisted project.
+### Clone the repository
 
-Pascal lives with CRPS, which limits how much hands-on development and writing he
-can do in one sitting. He uses ChatGPT Codex as a practical assistant so he can
-continue working on ESPHome, Home Assistant, IoT, home automation, education, and
-knowledge sharing.
+Clone the project from the Code button above, or use your favourite Git software, when you want to keep the framework available locally.
+Find the instructions [here](wiki/installation.md#clone).
 
-Codex helps with tasks such as spelling, cleanup, refactoring, debugging,
-validation runs, documentation drafts, and Kanban tracking. That includes this
-README, which was drafted with AI assistance and then reviewed and edited by
-Pascal.
+### Use remotely
 
-The ideas, project direction, hardware choices, and final decisions remain
-Pascal's. Most of these projects existed, or were planned, before AI became part
-of his workflow. AI may help express, organize, and test the work, but it does
-not replace Pascal's engineering judgement or physical hardware validation.
+Reference this repository directly from ESPHome packages when you want to pull modules from GitHub without copying the files by hand.
+Find the instructions [here](wiki/installation.md#remote).
 
-If you communicate with Pascal through any public channel, you are communicating
-with Pascal. AI may help him with spelling, formatting, or drafting, but the
-voice, decisions, and accountability remain his.
+---
 
-Pascal also plans to relaunch his personal site,
-http://www.onlyinsouthafrica.com, where he will share more about this and other
-projects. For now, the focus is this ESPHome framework and the cookbook that will
-grow from it.
+## Minimum Requirements
 
-## Validation Framework
+- ESPHome installed and working.
+- A compatible ESP32 or ESP8266 board.
+- A way to edit YAML files, such as Visual Studio Code.
+- A USB cable or other supported flashing method for your board.
 
-This project uses layered validation. Each layer answers a different question,
-and no single layer replaces the others.
+Git is recommended if you want to clone the repository or keep your local copy updated, but it is not required if you use the ZIP download method.
 
-1. **Structure review:** files are checked for spelling, naming, folder
-   placement, package shape, headers, substitutions, and obvious copy/paste
-   errors.
-2. **ESPHome config validation:** `esphome config` confirms that ESPHome can
-   parse and resolve the YAML for the selected validation profile.
-3. **ESPHome compile validation:** `esphome compile` confirms that the generated
-   firmware can build for the selected board or profile.
-4. **Physical validation:** Pascal tests the module on real hardware, with the
-   actual board, sensor, peripheral, wiring, and project context.
-5. **Documentation approval:** user-facing documentation is drafted, edited, and
-   reviewed by Pascal before publication.
+See the [System Requirements wiki page](wiki/system-requirements.md) for more details.
 
-Automated checks can prove that a file parses and compiles. They cannot prove
-that a sensor is wired correctly, calibrated correctly, physically accurate, or
-useful in a real Home Assistant project. For that reason, automated success is
-recorded as `Needs validation`. The word `Tested` is reserved for physical
-hardware validation by Pascal.
+---
 
-AI support helps keep the validation work organized:
+## About
 
-- inspecting modules for consistency, stale references, and incomplete work
-- running and summarizing ESPHome config and compile checks
-- tracking unfinished work that remains in `local_workbench/`
-- drafting documentation from file frontmatter and headers
-- keeping Kanban follow-up items and compatibility evidence aligned
-- flagging calibration, physical validation, and Pascal approval gaps
+As an enterprise architect, software developer, and hardware tinkerer, I found ESPHome easy to start with but harder to maintain as my devices grew. Too many projects relied on repeated copy-paste blocks, and small changes quickly became difficult to track across multiple devices.
 
-Unfinished or experimental modules stay in `local_workbench/`. Public promotion
-requires implementation, examples, documentation, validation evidence, and
-Pascal approval.
+This framework grew out of that problem. ESPHome packages made it possible to write a module once, reuse it across devices, and still add or remove features at the device file level when a project needed something different.
 
-## Secrets
+What started as a personal modular setup grew alongside the Home Automator ZA YouTube channel and became a passion project for anyone who wanted a more structured way to build with ESPHome. The 2026 version is being reviewed, reorganized, documented at module level, and supported by a dedicated wiki.
 
-Use `sample_secrets.yaml` as the public reference for required secret keys.
-Create a local `secrets.yaml` in the repository root for real values. Do not
-commit real passwords, tokens, API keys, WiFi credentials, or private network
-details.
+And yes, this is the same framework I use for my own projects.
+
+Read more in the [About wiki page](wiki/about.md).
+
+---
+
+## The YouTube Channel
+
+[![Watch the video](.github/images/Splash_Screen_1_1.jpg)](https://youtube.com/playlist?list=PLJ3MNJX_MOUnMWzUNDatN3LWAN8l99v5I)
+
+---
+
+## Features
+
+- **Reusable ESPHome packages:** Build devices from shared board, network, display, sensor, and peripheral modules instead of repeating the same YAML in every project.
+- **Less copy-paste, fewer mistakes:** Fix common logic in one module and reuse it across multiple devices, instead of hunting the same bug through several device files.
+- **Faster project starts:** Use boilerplates and cookbook projects as working starting points for common ESPHome builds.
+- **Modular by design:** Add, remove, or override features at the device file level while keeping the reusable parts clean and consistent.
+- **Board-aware structure:** Keep board defaults, pins, flash settings, and hardware notes separate from sensors, peripherals, and project-specific behavior.
+- **Common building blocks:** Share Wi-Fi, Ethernet, Bluetooth, web server, time, display, colour, font, and core settings across projects.
+- **Documented module intent:** Module headers and wiki pages are being rebuilt so each reusable part explains what it does, where it belongs, and what still needs validation.
+- **Honest validation model:** Config and compile checks are useful evidence, but hardware testing is tracked separately so the project does not claim more certainty than it has.
+- **Cookbook-friendly workflow:** Real projects can become practical examples that show how the framework pieces fit together in a complete ESPHome device.
+
+---
+
+## Documentation
+
+Documentation is being rebuilt alongside the 2026 framework cleanup.
+
+- Start with the [wiki home page](wiki/Home.md) for the public documentation structure.
+- Use the [installation guide](wiki/installation.md) for ZIP, clone, and remote package options.
+- Check the [system requirements](wiki/system-requirements.md) before building your first device.
+- Browse the [module catalogue](wiki/module-catalogue.md) as reusable boards, common packages, peripherals, and sensors are documented.
+- Read the [validation guide](wiki/validation.md) to understand the difference between config checks, compile checks, and real hardware testing.
+
+The wiki is still a work in progress, so some pages are placeholders until the related modules and projects have been reviewed.
+
+---
+
+## Roadmap
+
+I am currently rebuilding my own projects against this version of the framework so they can be cleaned up, validated, and documented properly.
+
+Once that work is further along, I will publish a public roadmap that people can vote on. In the meantime, suggestions and ideas for future [cookbook projects](recipes/projects/README.md) are welcome.
+
+Please [open an issue](https://github.com/homeautomatorza/ESPHome-Modules/issues) and mark it as a cookbook suggestion.
+
+Read more in the [Roadmap wiki page](wiki/roadmap.md).
+
+---
+
+## Contributing
+
+Contributions are welcome, especially tested modules, documentation fixes, cookbook ideas, and clear bug reports.
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
+
+---
+
+## Bugs
+
+Found a bug, broken example, stale module, or confusing bit of documentation?
+
+Please [open an issue](https://github.com/homeautomatorza/ESPHome-Modules/issues).
+
+> [!TIP]
+> Include the board, module, ESPHome version, what you expected, and what actually happened.
+
+> [!IMPORTANT]
+> Please remove Wi-Fi details, API keys, tokens, private hostnames, and other secrets before sharing logs or YAML.
+
+Read more in the [Bugs wiki page](wiki/bugs.md).
+
+---
+
+## Updates
+
+Version notes, module changes, breaking changes, and rebuild progress will be tracked in the [Wiki Changelog page](wiki/changelog.md).
+
+---
+
+## Acknowledgments
+
+- **Nabu Casa** and **The Open Home Foundation**: For supporting the open home ecosystem that makes projects like this possible.
+- **The ESPHome community**: For the tools, examples, ideas, and shared knowledge that make ESPHome such a practical platform to build on.
+- **My wife**: For the patience, support, and space that make it possible for me to keep working on this passion project.
+
+---
+
+## Contact
+
+Questions, build ideas, or want to share a project?
+
+- For bugs or broken examples, please [open an issue](https://github.com/homeautomatorza/ESPHome-Modules/issues).
+- For questions, project ideas, or cookbook suggestions, please open an issue and mark it clearly in the title or description.
+- For general discussion, use [GitHub Discussions](https://github.com/homeautomatorza/ESPHome-Modules/discussions) when available.
+
+> [!IMPORTANT]
+> Please do not share Wi-Fi details, API keys, tokens, private hostnames, or other secrets in public issues or discussions.
+
+---
 
 ## Licence
 
-The original ESPHome Modules project uses CC0 1.0 Universal. Keep licence
-metadata in module headers aligned with the project licence unless a file has a
-specific reason to do otherwise.
+This project uses CC0 1.0 Universal unless a file says otherwise. Keep licence metadata in module headers aligned with the project licence unless a file has a specific reason to use different terms.
 
-See `LICENSE` for the full licence text.
+See [`LICENSE`](LICENSE) for the full licence text.
+
+Read more in the [Licence wiki page](wiki/licence.md).
+
+---
+
+> **Trademark & Branding Notice**: CC0 applies to the project files, but it does not grant permission to use the project name, "Home Automator ZA", logos, app icons, or branding in derivative works or redistributions. Modified versions or redistributions must remove or replace official project branding.
