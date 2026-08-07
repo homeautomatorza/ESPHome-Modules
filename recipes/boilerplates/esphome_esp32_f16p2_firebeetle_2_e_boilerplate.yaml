@@ -16,6 +16,7 @@ recommended_esphome: 2026.7.3
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/boilerplates/esphome_esp32_f16p2_firebeetle_2_e_boilerplate.yaml
 # Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------

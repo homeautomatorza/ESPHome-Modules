@@ -18,7 +18,8 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 2026.0.0b
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/bh1750.yaml
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/bh1750.html
@@ -31,11 +32,11 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
+#     - Validation status: Hardware validated
 ################################################################################
 sensor:
   - platform: bh1750

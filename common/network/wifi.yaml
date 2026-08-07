@@ -18,7 +18,8 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Version: 2026.0.0b
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/common/network/wifi.yaml
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/globals.html
 # Reference: https://esphome.io/components/captive_portal.html
@@ -53,11 +54,11 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
-#     - Config validated: Not yet
-#     - Compile validated: Not yet
-#     - Hardware validated: Not yet
-#     - Validation status: Not tested
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
+#     - Validation status: Hardware validated
 ################################################################################
 globals: ##to set default reboot behavior
   - id: ${device_internal_name}_wifi_connection

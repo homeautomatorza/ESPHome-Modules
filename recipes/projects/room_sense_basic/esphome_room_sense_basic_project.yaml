@@ -1,23 +1,24 @@
 ---
 author: Pascal Parent
-version: 2026.0.0b
-classification: boilerplate
-status: needs_validation
+version: 2026.0.0
+classification: project
+status: hardware_validated
 labels:
   - recipe
-  - boilerplate
-  - esp32
-  - firebeetle_2
+  - project
+  - room_sense
+  - esp32_c3
+  - repo_first
 minimum_esphome: 2026.7.0
 recommended_esphome: 2026.7.3
 ---
 ################################################################################
-# FireBeetle 2 ESP32-E F4/P0 Boilerplate Device File
+# HAZA Room Sense Basic Project
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
-# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/boilerplates/esphome_esp32_f4p0_firebeetle_2_e_boilerplate.yaml
-# Version: 2026.0.0b
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense_basic/README.md
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
 # WARNING:
@@ -30,43 +31,55 @@ recommended_esphome: 2026.7.3
 #     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not recorded for this revision
-#     - Validation status: Needs validation
+#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
+#     - Validation status: Hardware validated; documentation approval pending
 # ------------------------------------------------------------------------------
 # Bill of Materials:
-#     - DFRobot FireBeetle 2 ESP32-E F4/P0
-#         - Enabled hardware and services:
-#             - WiFi
-#             - Web server
+#     - Board:
+#         - ESP32-C3 Super Mini
+#         - Used as the initial low-power room-sense baseline
+#     - Sensors:
+#         - BH1750 illuminance sensor on I2C address 0x23
+#         - AHT20 temperature and humidity sensor on I2C address 0x38
+#     - Services:
+#         - WiFi
+#         - Encrypted Home Assistant API
+#         - OTA
+#         - Web server
+#     - Wiring:
+#         - Review and document the physical Guest Room wiring before hardware
+#           validation.
 # ------------------------------------------------------------------------------
 # References:
-#     - https://wiki.dfrobot.com/FireBeetle_Board_ESP32_E_SKU_DFR0654
+#     - https://esphome.io/
 #     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/bh1750.html
+#     - https://esphome.io/components/sensor/aht10.html
 # ------------------------------------------------------------------------------
 # Usage:
-#   Copy this boilerplate into the ESPHome root folder and rename it for the
-#   intended device. Keep it beside `boards/`, `common/`, `peripherals/`, and
-#   `sensors/`, then adjust the substitutions before compiling.
+#   Compile this project from its recipe folder inside the repository. If you
+#   copy only this YAML file into an ESPHome root folder, adjust the package
+#   paths to match the new location before compiling.
 # ------------------------------------------------------------------------------
-# This boilerplate exposes:
-#   - ESPHome base settings
-#   - Home Assistant time
-#   - WiFi and web server support
-#   - FireBeetle 2 ESP32-E F4/P0 board support
+# This project exposes:
+#   - room temperature and humidity
+#   - room illuminance
+#   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
 # ------------------------------------------------------------------------------
 # Notes:
-#     - Package paths are relative to a device file in the ESPHome root folder.
-#     - Public boilerplates use dynamic IP addressing.
-#     - Board-defined status and RGB LEDs remain available.
+#     - This project starts from Pascal's existing Guest Room device.
+#     - Guest Room is not truly basic, but it is the first migration baseline.
+#     - Public promotion requires Pascal-approved documentation.
 ################################################################################
 
 ################################################################################
 # Substitutions
 ################################################################################
 substitutions:
-  device_internal_name: esphome_firebeetle_2_esp32_e
-  device_wifi_name: esphome-firebeetle-2-esp32-e
-  device_friendly_name: ESPHome FireBeetle 2 ESP32-E F4 P0
+  device_internal_name: haza_room_sense_basic
+  device_wifi_name: haza-room-sense-basic
+  device_friendly_name: HAZA Room Sense Basic
   device_sampling_time: 30s
 
 ################################################################################
@@ -74,34 +87,45 @@ substitutions:
 ################################################################################
 packages:
   # Board package
-  board: !include boards/esp32/e_n4_firebeetle_2.yaml
+  board: !include ../../../boards/esp32/c3_super_mini.yaml
 
   # Core packages
-  settings: !include common/core/settings.yaml
-  time: !include common/time/home_assistant.yaml
+  settings: !include ../../../common/core/settings.yaml
+  time: !include ../../../common/time/home_assistant.yaml
 
   # Network packages
-  wifi_base: !include common/network/wifi.yaml
-  wifi_dynamic: !include common/network/wifi_dynamicip.yaml
-  webserver: !include common/network/webserver.yaml
-
-  # Peripheral packages
-  # Add reusable peripheral packages here.
+  wifi_base: !include ../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../common/network/webserver.yaml
 
   # Sensor packages
-  # Add reusable sensor packages here.
+  bh1750: !include
+    file: ../../../sensors/i2c/bh1750.yaml
+    vars:
+      i2c_address: 0x23
+
+  aht20: !include
+    file: ../../../sensors/i2c/aht2x_3x.yaml
+    vars:
+      i2c_address: 0x38
 
 ################################################################################
 # ESPHome Overrides / Project Metadata
 ################################################################################
 esphome:
   min_version: 2026.7.0
-  comment: FireBeetle 2 ESP32-E F4/P0 boilerplate
+  comment: HAZA Room Sense Basic project
+
+  project:
+    name: haza.room_sense_basic
+    version: 2026.0.0
 
 ################################################################################
 # Remove Or Override Package Defaults
 ################################################################################
-# Remove or override package defaults here.
+status_led: !remove
+uart: !remove
+spi: !remove
 
 ################################################################################
 # Add Custom Peripherals
@@ -116,4 +140,5 @@ esphome:
 ################################################################################
 # Add Custom Local Logic
 ################################################################################
-# Add device-specific local YAML here.
+# Add custom local logic here when it belongs to this project rather than a
+# reusable package.

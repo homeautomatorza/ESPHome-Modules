@@ -1,5 +1,5 @@
 ################################################################################
-# AS3935 Lighning Sensor
+# AS3935 Lightning Sensor
 ################################################################################
 # Usage:
 #   Add the following code to package section in the device file changing the 
@@ -15,6 +15,7 @@
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/as3935.yaml
 # Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/as3935.html

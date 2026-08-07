@@ -1,5 +1,3 @@
-# HAZA ESPHome Modular Framework Wiki
-
 This wiki is a placeholder while the public documentation is being rebuilt.
 
 It will become the user-facing guide for the HAZA ESPHome Modular Framework,

@@ -3,6 +3,7 @@
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/boards/esp32/s3_super_mini.yaml
 # Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------

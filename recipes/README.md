@@ -1,63 +1,20 @@
 # Recipes
 
-This folder is reserved for reusable boilerplates, complete example device
-projects, and smaller samples that show how the reusable modules fit together.
+Recipes are practical starting points for using the HAZA ESPHome Modular
+Framework in real ESPHome projects.
 
-Keep real secrets out of examples. Use substitutions, package includes, and
-references to `sample_secrets.yaml` where credentials or private network details
-would otherwise be needed.
+This code carries an "it works in my environment" disclaimer. These examples are
+based on Pascal's hardware, wiring, WiFi, Home Assistant setup, and physical test
+process. Use them as working patterns, not guaranteed drop-in firmware for every
+device or home.
 
-Use `common/network/wifi_dynamicip.yaml` as the default WiFi package for public
-samples. Use `common/network/wifi_fixedip.yaml` only when the example is
-intentionally demonstrating static networking.
+## Recipe Types
 
-Use `recipes/boilerplates/` for reusable starter device files that still need
-board, network, or package choices before becoming complete examples.
-
-Use `recipes/projects/` for fully cooked, end-to-end device builds.
-
-Use `recipes/samples/` for smaller focused examples and learning snippets.
-
-## Boilerplate Standard
-
-Boilerplates are the starter files most users will copy first, so they should be
-consistent, predictable, and beginner-friendly.
-
-Use this structure for boilerplate YAML files:
-
-1. File header.
-2. Substitutions.
-3. Packages.
-4. ESPHome overrides or project metadata.
-5. Remove or override package defaults.
-6. Add custom peripherals.
-7. Add custom sensors.
-8. Add custom local logic.
-
-Inside `packages:`, keep package types grouped in this order:
-
-1. Core packages.
-2. Network packages.
-3. Board package.
-4. Peripheral packages.
-5. Sensor packages.
-
-Public boilerplates should default to dynamic WiFi:
-
-```yaml
-wifi_dynamicip: !include ../../common/network/wifi_dynamicip.yaml
-```
-
-Use fixed IP examples only when the recipe is specifically demonstrating static
-networking, or when a private workbench device needs it.
-
-Boilerplates should compile with minimal edits wherever possible. If a
-boilerplate needs user-specific changes before compiling, call that out in the
-header notes.
-
-Prefer reusable board, peripheral, and sensor packages before adding custom YAML.
-Use the `Add Custom ...` sections when a reusable package would be awkward,
-misleading, or too device-specific, such as a garage door controller.
-
-Keep the visible sections even when they only contain comments. That makes the
-copy/paste pattern easier for new users to follow.
+- [Boilerplates](boilerplates/README.md): starter YAML files for common ESP32
+  boards. Use these when you want a clean base and will choose your own sensors
+  and peripherals.
+- [Projects](projects/README.md): complete or planned cookbook builds. These
+  are the main end-to-end examples, starting with
+  [HAZA Room Sense Basic](projects/room_sense_basic/README.md).
+- [Samples](samples/README.md): focused examples and learning snippets that
+  demonstrate one idea, sensor behavior, or small project pattern.
