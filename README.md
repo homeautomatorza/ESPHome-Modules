@@ -1,69 +1,52 @@
-<h1 align="center">
-  <img src=".github/images/logo.png" alt="HAZA ESPHome Modular Framework" width="100" align="absmiddle"> <span style="font-size:2em; font-weight:bold">Home Automator ZA <br/> ESPHome Modular Framework</span>
-</h1>
+<p align="center">
+  <img src="./.github/images/readme/haza-framework-hero.svg" width="100%" alt="Home Automator ZA ESPHome Modular Framework: reusable YAML building blocks for ESPHome maker projects">
+</p>
 
-<span align="center">
-
-![GitHub License](https://img.shields.io/github/license/homeautomatorza/ESPHome-Modules)
-![GitHub Repo Stars](https://img.shields.io/github/stars/homeautomatorza/ESPHome-Modules?style=flat)
-![GitHub Contributors](https://img.shields.io/github/contributors/homeautomatorza/ESPHome-Modules)
-![GitHub Last Commit](https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules)
-
-[![version](https://img.shields.io/badge/version-2026.0.0-success.svg)](wiki/changelog.md)
-![GitHub Issues](https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules)
-![GitHub Issues](https://img.shields.io/github/issues-closed/homeautomatorza/ESPHome-Modules)
-
-[![Home Assistant](https://img.shields.io/badge/Home_Assistant-2026.0.0_+-41BDF5.svg)](https://www.home-assistant.io/)
-[![ESPHome](https://img.shields.io/badge/ESPHome-2026.7.0_+-000000.svg)](https://esphome.io/)
-
-</span>
+<p align="center">
+  <a href="wiki/changelog.md"><img src="https://img.shields.io/badge/version-2026.0.0-success.svg" alt="Version 2026.0.0"></a>
+  <a href="https://esphome.io/"><img src="https://img.shields.io/badge/ESPHome-2026.7.0_+-19BCF2.svg" alt="ESPHome 2026.7.0 or newer"></a>
+  <a href="https://www.home-assistant.io/"><img src="https://img.shields.io/badge/Home_Assistant-2026.0.0_+-00C9FF.svg" alt="Home Assistant 2026.0.0 or newer"></a>
+  <br>
+  <img src="https://img.shields.io/github/license/homeautomatorza/ESPHome-Modules" alt="GitHub license">
+  <img src="https://img.shields.io/github/stars/homeautomatorza/ESPHome-Modules?style=flat" alt="GitHub stars">
+  <img src="https://img.shields.io/github/contributors/homeautomatorza/ESPHome-Modules" alt="GitHub contributors">
+  <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/dev" alt="Last commit on dev">
+  <img src="https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules" alt="Open GitHub issues">
+</p>
 
 A practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
 
 ---
 
 > [!WARNING]
-> This code comes with an "it works on my setup" guarantee, a.k.a. use it at your own risk.
+> This code comes with an "it works on my setup" disclaimer. Use it at your own risk.
 >
 
 ---
 
 ## Disclaimer
 
-- This project is under **very active** development, at least in the dev branch.
-- Expect bugs, rough edges, and breaking changes.
+- This project is under **very active** development in the dev branch, if you want the latest that's where you will find it.
+- Expect bugs, rough edges, and breaking changes in the dev branch.
 
 ---
 
-## Quick Start
+## Look Here First
 
-### Download the ZIP
+If you are new to the framework, start with a working example before reading
+every folder.
 
-Download the latest ZIP file from the Code button above and copy the modules you need into your ESPHome setup.
-Find the instructions [here](wiki/installation.md#zip).
+| Goal | Start Here | Why |
+| --- | --- | --- |
+| Check requirements | [System requirements](wiki/system-requirements.md) | Lists the minimum ESPHome, board, editor, flashing, secrets, and substitution needs. |
+| See a real build | [HAZA Room Sense Basic](recipes/projects/room_sense_basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
+| Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense_basic/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
+| Browse reusable parts | [Module catalogue](wiki/module-catalogue.md) | Shows the boards, common packages, peripherals, and sensors as documentation is rebuilt. |
+| Install the framework | [Installation guide](wiki/installation.md) | Covers ZIP download, local clone, and remote package use. |
 
-### Clone the repository
-
-Clone the project from the Code button above, or use your favourite Git software, when you want to keep the framework available locally.
-Find the instructions [here](wiki/installation.md#clone).
-
-### Use remotely
-
-Reference this repository directly from ESPHome packages when you want to pull modules from GitHub without copying the files by hand.
-Find the instructions [here](wiki/installation.md#remote).
-
----
-
-## Minimum Requirements
-
-- ESPHome installed and working.
-- A compatible ESP32 or ESP8266 board.
-- A way to edit YAML files, such as Visual Studio Code.
-- A USB cable or other supported flashing method for your board.
-
-Git is recommended if you want to clone the repository or keep your local copy updated, but it is not required if you use the ZIP download method.
-
-See the [System Requirements wiki page](wiki/system-requirements.md) for more details.
+The Room Sense Basic project currently carries the strongest public end-to-end
+evidence. Other modules and cookbook projects are being cleaned up and
+documented as the 2026 framework rebuild continues.
 
 ---
 
@@ -75,7 +58,11 @@ This framework grew out of that problem. ESPHome packages made it possible to wr
 
 What started as a personal modular setup grew alongside the Home Automator ZA YouTube channel and became a passion project for anyone who wanted a more structured way to build with ESPHome. The 2026 version is being reviewed, reorganized, documented at module level, and supported by a dedicated wiki.
 
-And yes, this is the same framework I use for my own projects.
+And yes, this is the same framework I use for my own projects. That is also how
+I develop the cookbook projects and sample recipes: they come from real things I
+am building, cleaning up, and turning into something other people can follow.
+When a module is marked as hardware validated, it is because I have used it in a
+real build, not because it only passed an automated check.
 
 Read more in the [About wiki page](wiki/about.md).
 
@@ -87,31 +74,31 @@ Read more in the [About wiki page](wiki/about.md).
 
 ---
 
-## Features
+## What It Helps With
 
-- **Reusable ESPHome packages:** Build devices from shared board, network, display, sensor, and peripheral modules instead of repeating the same YAML in every project.
-- **Less copy-paste, fewer mistakes:** Fix common logic in one module and reuse it across multiple devices, instead of hunting the same bug through several device files.
-- **Faster project starts:** Use boilerplates and cookbook projects as working starting points for common ESPHome builds.
-- **Modular by design:** Add, remove, or override features at the device file level while keeping the reusable parts clean and consistent.
-- **Board-aware structure:** Keep board defaults, pins, flash settings, and hardware notes separate from sensors, peripherals, and project-specific behavior.
-- **Common building blocks:** Share Wi-Fi, Ethernet, Bluetooth, web server, time, display, colour, font, and core settings across projects.
-- **Documented module intent:** Module headers and wiki pages are being rebuilt so each reusable part explains what it does, where it belongs, and what still needs validation.
-- **Honest validation model:** Config and compile checks are useful evidence, but hardware testing is tracked separately so the project does not claim more certainty than it has.
-- **Cookbook-friendly workflow:** Real projects can become practical examples that show how the framework pieces fit together in a complete ESPHome device.
+- **Reusable packages:** Put board, network, display, sensor, and peripheral
+  logic in shared ESPHome packages instead of repeating the same YAML in every
+  project.
+- **Cleaner device files:** Keep project YAML focused on the device you are
+  building, while common behaviour stays in one place.
+- **Board-aware defaults:** Keep pins, flash settings, hardware notes, and board
+  choices separate from sensors and project behaviour.
+- **Cookbook projects:** Use real builds as starting points for your own
+  ESPHome devices.
+- **Honest validation:** Track config checks, compile checks, and physical
+  hardware testing separately.
 
 ---
 
 ## Documentation
 
-Documentation is being rebuilt alongside the 2026 framework cleanup.
+Documentation is being rebuilt alongside the 2026 framework cleanup. Start with
+the [wiki home page](wiki/Home.md), then use the [module catalogue](wiki/module-catalogue.md)
+and [validation guide](wiki/validation.md) when you need the deeper reference
+material.
 
-- Start with the [wiki home page](wiki/Home.md) for the public documentation structure.
-- Use the [installation guide](wiki/installation.md) for ZIP, clone, and remote package options.
-- Check the [system requirements](wiki/system-requirements.md) before building your first device.
-- Browse the [module catalogue](wiki/module-catalogue.md) as reusable boards, common packages, peripherals, and sensors are documented.
-- Read the [validation guide](wiki/validation.md) to understand the difference between config checks, compile checks, and real hardware testing.
-
-The wiki is still a work in progress, so some pages are placeholders until the related modules and projects have been reviewed.
+Some wiki pages are still draft outlines until the related modules and projects
+have been reviewed.
 
 ---
 
@@ -120,8 +107,6 @@ The wiki is still a work in progress, so some pages are placeholders until the r
 I am currently rebuilding my own projects against this version of the framework so they can be cleaned up, validated, and documented properly.
 
 Once that work is further along, I will publish a public roadmap that people can vote on. In the meantime, suggestions and ideas for future [cookbook projects](recipes/projects/README.md) are welcome.
-
-Please [open an issue](https://github.com/homeautomatorza/ESPHome-Modules/issues) and mark it as a cookbook suggestion.
 
 Read more in the [Roadmap wiki page](wiki/roadmap.md).
 
@@ -135,11 +120,14 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request.
 
 ---
 
-## Bugs
+## Issues And Questions
 
 Found a bug, broken example, stale module, or confusing bit of documentation?
 
 Please [open an issue](https://github.com/homeautomatorza/ESPHome-Modules/issues).
+For cookbook ideas, mark the issue clearly as a cookbook suggestion. For general
+discussion, use [GitHub Discussions](https://github.com/homeautomatorza/ESPHome-Modules/discussions)
+when available.
 
 > [!TIP]
 > Include the board, module, ESPHome version, what you expected, and what actually happened.
@@ -162,19 +150,6 @@ Version notes, module changes, breaking changes, and rebuild progress will be tr
 - **Nabu Casa** and **The Open Home Foundation**: For supporting the open home ecosystem that makes projects like this possible.
 - **The ESPHome community**: For the tools, examples, ideas, and shared knowledge that make ESPHome such a practical platform to build on.
 - **My wife**: For the patience, support, and space that make it possible for me to keep working on this passion project.
-
----
-
-## Contact
-
-Questions, build ideas, or want to share a project?
-
-- For bugs or broken examples, please [open an issue](https://github.com/homeautomatorza/ESPHome-Modules/issues).
-- For questions, project ideas, or cookbook suggestions, please open an issue and mark it clearly in the title or description.
-- For general discussion, use [GitHub Discussions](https://github.com/homeautomatorza/ESPHome-Modules/discussions) when available.
-
-> [!IMPORTANT]
-> Please do not share Wi-Fi details, API keys, tokens, private hostnames, or other secrets in public issues or discussions.
 
 ---
 
