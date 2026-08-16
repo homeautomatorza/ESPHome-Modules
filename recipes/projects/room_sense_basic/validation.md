@@ -12,7 +12,7 @@ Config and compile checks matter, but they are not physical hardware tests.
 | Compile validation | Passed | ESPHome `2026.7.3` produced firmware. |
 | Physical upload | Passed | `Room Sense Basic validation device`, 2026-08-02. |
 | BH1750 code revalidation | Passed | Human-readable illuminance label update compiled and was reinstalled successfully by OTA, 2026-08-16. |
-| Wi-Fi signal label review | Compile passed | Human-readable RSSI label update reviewed against common Wi-Fi guidance and compile-validated, 2026-08-16. OTA revalidation pending. |
+| Wi-Fi signal label review | Passed | Human-readable RSSI label update compiled, OTA installed, and returned expected values, 2026-08-16. |
 | Live sensor values | Passed | ESPHome web server and Home Assistant showed expected values without reported errors. |
 | Documentation approval | Pending | Draft documentation still needs Pascal review. |
 
@@ -73,7 +73,7 @@ Reported result:
 - Compile passed on the ESPHome beta server.
 - Firmware upload succeeded.
 - BH1750 human-readable illuminance label update was reinstalled successfully by OTA on 2026-08-16.
-- Wi-Fi signal-strength label update still needs OTA revalidation on the physical device.
+- Wi-Fi signal-strength label update was reinstalled successfully by OTA and returned expected values on 2026-08-16.
 - The device returned expected values.
 - ESPHome web server showed values without reported errors.
 - Home Assistant device page showed expected entities without reported errors.

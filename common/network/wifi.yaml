@@ -19,7 +19,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/common/network/wifi.yaml
-# Version: 2026.0.1b
+# Version: 2026.0.1
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/globals.html
 # Reference: https://esphome.io/components/captive_portal.html
@@ -61,6 +61,7 @@
 #     - Compile validated: ESPHome 2026.7.3
 #     - Hardware validated: Room Sense Basic validation device, 2026-08-02
 #     - Human-readable signal labels reviewed: 2026-08-16
+#     - Human-readable signal labels revalidated: OTA reinstall, 2026-08-16
 #     - Validation status: Hardware validated
 ################################################################################
 globals: ##to set default reboot behavior

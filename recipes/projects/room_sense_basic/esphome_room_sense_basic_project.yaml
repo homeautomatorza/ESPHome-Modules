@@ -1,6 +1,6 @@
 ---
 author: Pascal Parent
-version: 2026.0.1b
+version: 2026.0.1
 classification: project
 status: hardware_validated
 labels:
@@ -18,7 +18,7 @@ recommended_esphome: 2026.7.3
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense_basic/README.md
-# Version: 2026.0.1b
+# Version: 2026.0.1
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
 # WARNING:
@@ -32,7 +32,7 @@ recommended_esphome: 2026.7.3
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
 #     - Hardware validated: Room Sense Basic validation device, 2026-08-02
-#     - Validation status: Hardware validated; Wi-Fi label OTA revalidation pending; documentation approval pending
+#     - Validation status: Hardware validated; documentation approval pending
 # ------------------------------------------------------------------------------
 # Bill of Materials:
 #     - Board:

@@ -284,8 +284,8 @@ project later.
 
 ## Change Notes
 
-- 2026.0.1b: Reviewed Wi-Fi signal-strength labels against common RSSI guidance
-  and compile-validated the update. OTA revalidation is still pending.
+- 2026.0.1: Reviewed Wi-Fi signal-strength labels against common RSSI guidance
+  and revalidated the update with a successful OTA reinstall.
 - 2026.0.1: Updated BH1750 human-readable illuminance labels and revalidated
   the change with a successful OTA reinstall.
 - 2026.0.0: Drafted tutorial-style project documentation structure.

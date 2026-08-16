@@ -36,9 +36,8 @@ experimental. Boilerplates are the clean starting point when you already know
 what you want to build.
 
 Current validation evidence for Room Sense Basic lives in the project folder.
-BH1750 illuminance has been OTA revalidated after the label update. The Wi-Fi
-signal label update is config-validated and compile-validated, with OTA
-revalidation still pending.
+BH1750 illuminance and Wi-Fi signal labels have both been OTA revalidated after
+their label updates.
 
 If you are new to the framework, start with a
 [boilerplate](boilerplates/README.md) and work through the
