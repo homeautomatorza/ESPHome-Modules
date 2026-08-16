@@ -1,17 +1,23 @@
 # HAZA Room Sense Basic
 
+> [!WARNING]
+> **Disclaimer:** These files are shared as-is, with the usual "it works in my
+> environment" honesty baked in. They come from real builds, test
+> devices, and ongoing experiments, but they are not guaranteed to work safely
+> or correctly in your setup. Check the code, wiring, pins, power, secrets,
+> calibration, and local rules and regulations before using anything. If it can
+> switch mains power, move water, open a gate, affect safety, or ruin your
+> afternoon, test it properly first.
+
 `HAZA Room Sense Basic` is the first room-monitoring cookbook project for the
 HAZA ESPHome Modular Framework.
 
 It measures the simple environmental things that quietly shape how a room feels:
 temperature, humidity, and light.
 
-This version is based on Pascal's real Guest Room device. The public recipe is
-kept intentionally small so it can become a clean starting point for other room
+This version is based on a real private Room Sense Basic deployment. The public
+recipe stays small so it can work as a clean starting point for other room
 sensors.
-
-> It works in my environment. Use it as a guide, check your wiring, and adapt it
-> to your own hardware and network.
 
 ## YouTube Video
 
@@ -22,12 +28,13 @@ To do, if this project is filmed.
 - YAML recipe: `esphome_room_sense_basic_project.yaml`
 - Config validation: Passed on ESPHome `2026.7.3`
 - Compile validation: Passed on ESPHome `2026.7.3`
-- Physical validation: Passed on `Guest Room Sense Basic`, 2026-08-02
+- Physical validation: Passed on `Room Sense Basic validation device`,
+  2026-08-02
 - Documentation approval: Draft, pending Pascal review
 
 Full validation notes live in [validation.md](validation.md).
 
-## Why This Project Exists
+## Why Build This?
 
 Most rooms are not uncomfortable all at once. They drift.
 
@@ -35,8 +42,8 @@ The room gets a little warmer, a little more humid, or a little darker, and by
 the time you notice it you are already uncomfortable or the plants are already
 having a less-than-great day.
 
-This project gives Home Assistant a simple, dependable view of the room so later
-automations can make better decisions.
+This project gives Home Assistant a simple view of the room so later
+automations have real values to work from.
 
 ## What Problems It Solves
 
@@ -48,8 +55,7 @@ automations can make better decisions.
 
 ## What Possibilities It Creates
 
-This project does not control anything by itself, and that is on purpose. It is
-the sensing layer.
+This project does not control anything by itself. It is the sensing layer.
 
 Once the values are in Home Assistant, they can become inputs for things like:
 
@@ -108,8 +114,9 @@ The project YAML pulls board, common, network, and sensor packages from the HAZA
 framework. That keeps the device file small and makes the project easier to
 repeat.
 
-The first tested deployment was `Guest Room Sense Basic`. That local deployment
-used the same package stack, with room-specific names and fixed-IP networking.
+The first tested deployment was a private Room Sense Basic validation device.
+That private deployment used the same package stack, with device-specific names
+and fixed-IP networking.
 
 ## Hardware And Bill Of Materials
 
@@ -121,7 +128,7 @@ Add clean component photos here as they become available.
 [Image placeholder: ESP32-C3 Super Mini on a clean background]
 [Image placeholder: AHT20 temperature and humidity sensor]
 [Image placeholder: BH1750 illuminance sensor]
-[Image placeholder: assembled Guest Room Sense Basic device]
+[Image placeholder: assembled Room Sense Basic validation device]
 ```
 
 | Item | Recommended Part | Image | Viable Alternatives | Notes |
@@ -140,7 +147,7 @@ Pascal will provide the Fritzing diagram for the final build.
 [Image placeholder: assets/wiring-breadboard.png]
 ```
 
-Use the wiring table as the source of truth when checking the diagram.
+Use the wiring table when checking the diagram.
 
 | Component | Pin | Connects To | Notes |
 | --- | --- | --- | --- |
@@ -170,7 +177,7 @@ Power and safety notes:
 - Time: `common/time/home_assistant.yaml`
 - Network helpers: `common/network/wifi.yaml`
 - Public recipe network: `common/network/wifi_dynamicip.yaml`
-- Tested Guest Room deployment network: `common/network/wifi_fixedip.yaml`
+- Tested private deployment network: `common/network/wifi_fixedip.yaml`
 - Web server: `common/network/webserver.yaml`
 - Sensor: `sensors/i2c/bh1750.yaml`
 - Sensor: `sensors/i2c/aht2x_3x.yaml`
@@ -258,9 +265,9 @@ See [troubleshooting.md](troubleshooting.md).
 ## Known Limitations
 
 - This Basic version does not include eCO2, TVOC, PM2.5, movement, or presence.
-- It has only been physically validated on Pascal's Guest Room deployment so
-  far.
-- The public recipe uses dynamic IP, while the tested Guest Room deployment used
+- It has only been physically validated on one private Room Sense Basic
+  deployment so far.
+- The public recipe uses dynamic IP, while the tested private deployment used
   fixed IP.
 - Component images and final wiring diagrams are still being added.
 
@@ -277,10 +284,14 @@ project later.
 
 ## Change Notes
 
+- 2026.0.1b: Reviewed Wi-Fi signal-strength labels against common RSSI guidance
+  and compile-validated the update. OTA revalidation is still pending.
+- 2026.0.1: Updated BH1750 human-readable illuminance labels and revalidated
+  the change with a successful OTA reinstall.
 - 2026.0.0: Drafted tutorial-style project documentation structure.
 - 2026.0.0: Promoted the hardware-validated Room Sense Basic package stack out
   of beta status.
-- 2026.0.0: Physical upload and live-value validation passed on Guest Room Sense
-  Basic.
+- 2026.0.0: Physical upload and live-value validation passed on a private Room
+  Sense Basic validation device.
 - 2026.0.0: Config and compile validation passed on ESPHome `2026.7.3`.
 - 2026.0.0: Removed TTP223 and ENS160 from the Basic recipe scope.

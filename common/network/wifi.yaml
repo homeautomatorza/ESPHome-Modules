@@ -19,7 +19,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/common/network/wifi.yaml
-# Version: 2026.0.0
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/globals.html
 # Reference: https://esphome.io/components/captive_portal.html
@@ -32,6 +32,8 @@
 # Reference: https://esphome.io/components/switch/index.html
 # Reference: https://esphome.io/components/switch/template.html
 # Reference: https://esphome.io/components/interval.html
+# Reference: https://www.cisco.com/c/en/us/support/docs/wireless/5500-series-wireless-controllers/116057-site-survey-guidelines-wlan-00.html
+# Reference: https://digital.nhs.uk/services/networks-and-connectivity-centre-of-excellence/connectivity-hub/advice-and-guidance/wi-fi-metrics-and-measures/assessing-wi-fi-performance-metrics/
 # ------------------------------------------------------------------------------
 # Notes:
 #       - Requires the following substitution in the device file:
@@ -57,7 +59,8 @@
 #     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
+#     - Hardware validated: Room Sense Basic validation device, 2026-08-02
+#     - Human-readable signal labels reviewed: 2026-08-16
 #     - Validation status: Hardware validated
 ################################################################################
 globals: ##to set default reboot behavior
@@ -156,16 +159,23 @@ text_sensor:
     name: Wifi Signal Strength
     icon: mdi:wifi
     lambda: |-
-      if (id(${device_internal_name}_wifi_signal_percentage).state >= 85) {
-        return std::string("Excellent");
-      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 65) {
+      float rssi = id(${device_internal_name}_wifi_signal_db).state;
+      if (isnan(rssi)) {
+        return std::string("Unknown");
+      }
+
+      if (rssi >= -50) {
+        return std::string("Very Strong");
+      } else if (rssi >= -60) {
+        return std::string("Strong");
+      } else if (rssi >= -67) {
         return std::string("Good");
-      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 30) {
-        return std::string("Fair");
-      } else if (id(${device_internal_name}_wifi_signal_percentage).state > 10) {
+      } else if (rssi >= -75) {
+        return std::string("Usable");
+      } else if (rssi >= -80) {
         return std::string("Weak");
       } else {
-        return std::string("None");
+        return std::string("Very Weak");
       }
     entity_category: diagnostic
     update_interval: ${device_sampling_time}

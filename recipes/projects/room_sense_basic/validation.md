@@ -2,8 +2,7 @@
 
 This page records validation evidence for the Room Sense Basic project.
 
-Automated config and compile checks are useful, but they are not the same thing
-as a physical hardware test.
+Config and compile checks matter, but they are not physical hardware tests.
 
 ## Summary
 
@@ -11,7 +10,9 @@ as a physical hardware test.
 | --- | --- | --- |
 | Config validation | Passed | ESPHome `2026.7.3` accepted the recipe YAML. |
 | Compile validation | Passed | ESPHome `2026.7.3` produced firmware. |
-| Physical upload | Passed | `Guest Room Sense Basic`, 2026-08-02. |
+| Physical upload | Passed | `Room Sense Basic validation device`, 2026-08-02. |
+| BH1750 code revalidation | Passed | Human-readable illuminance label update compiled and was reinstalled successfully by OTA, 2026-08-16. |
+| Wi-Fi signal label review | Compile passed | Human-readable RSSI label update reviewed against common Wi-Fi guidance and compile-validated, 2026-08-16. OTA revalidation pending. |
 | Live sensor values | Passed | ESPHome web server and Home Assistant showed expected values without reported errors. |
 | Documentation approval | Pending | Draft documentation still needs Pascal review. |
 
@@ -29,7 +30,7 @@ The hardware pass validates this package stack for the Room Sense Basic build:
 - `sensors/i2c/aht2x_3x.yaml`
 
 The public recipe also includes `common/network/wifi_dynamicip.yaml`. That path
-config-validates and compile-validates, but the first physical Guest Room
+config-validates and compile-validates, but the first physical validation
 deployment used fixed IP.
 
 ## Automated Validation
@@ -50,6 +51,7 @@ Results:
 
 - Config validation passed.
 - Compile validation passed.
+- Wi-Fi signal-strength human-readable label update config-validated and compile-validated on 2026-08-16.
 - Known warning: GPIO9 is a strapping pin on the ESP32-C3 Super Mini.
 
 ## Physical Validation
@@ -57,7 +59,7 @@ Results:
 Physical test device:
 
 ```text
-Guest Room Sense Basic
+Room Sense Basic validation device
 ```
 
 Date:
@@ -70,6 +72,8 @@ Reported result:
 
 - Compile passed on the ESPHome beta server.
 - Firmware upload succeeded.
+- BH1750 human-readable illuminance label update was reinstalled successfully by OTA on 2026-08-16.
+- Wi-Fi signal-strength label update still needs OTA revalidation on the physical device.
 - The device returned expected values.
 - ESPHome web server showed values without reported errors.
 - Home Assistant device page showed expected entities without reported errors.
@@ -88,4 +92,3 @@ Still to add or approve:
 - BOM component photos.
 - Final device or installed-location photo, if useful.
 - Pascal documentation approval.
-

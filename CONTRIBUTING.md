@@ -4,10 +4,9 @@ Contributions are welcome. If you improve the framework, documentation, examples
 or cookbook projects, your work will be credited through GitHub's normal
 contributor history when it is merged.
 
-This project is still under active rebuild, so the standards are intentionally
-strict. The goal is not to make contributing difficult; the goal is to keep the
-framework useful, predictable, and honest for people building real ESPHome
-devices.
+This project is still under active rebuild, so the standards are strict on
+purpose. The aim is to keep the framework useful, predictable, and honest for
+people building real ESPHome devices.
 
 ## Good Contributions
 

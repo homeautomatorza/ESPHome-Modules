@@ -1,20 +1,46 @@
-# Recipes
+<p align="center">
+  <img src="../.github/images/readme/recipes-hero.svg" width="100%" alt="HAZA Recipes: boilerplates, samples, and cookbook builds for ESPHome maker projects">
+</p>
+
+> [!WARNING]
+> **Disclaimer:** These files are shared as-is, with the usual "it works in my
+> environment" honesty baked in. They come from real builds, test
+> devices, and ongoing experiments, but they are not guaranteed to work safely
+> or correctly in your setup. Check the code, wiring, pins, power, secrets,
+> calibration, and local rules and regulations before using anything. If it can
+> switch mains power, move water, open a gate, affect safety, or ruin your
+> afternoon, test it properly first.
 
 Recipes are practical starting points for using the HAZA ESPHome Modular
 Framework in real ESPHome projects.
 
-This code carries an "it works in my environment" disclaimer. These examples are
-based on Pascal's hardware, wiring, WiFi, Home Assistant setup, and physical test
-process. Use them as working patterns, not guaranteed drop-in firmware for every
-device or home.
+They are where the framework becomes less abstract: a board, a few shared
+packages, a sensor or two, and a device file that shows how the pieces fit
+together.
 
-## Recipe Types
+## What You'll Find Here
 
-- [Boilerplates](boilerplates/README.md): starter YAML files for common ESP32
-  boards. Use these when you want a clean base and will choose your own sensors
-  and peripherals.
-- [Projects](projects/README.md): complete or planned cookbook builds. These
-  are the main end-to-end examples, starting with
-  [HAZA Room Sense Basic](projects/room_sense_basic/README.md).
-- [Samples](samples/README.md): focused examples and learning snippets that
-  demonstrate one idea, sensor behavior, or small project pattern.
+This folder is split into three lanes: clean starting points, focused
+experiments, and complete cookbook builds.
+
+## Start Here
+
+| Goal | Start Here | Why |
+| --- | --- | --- |
+| Start with a board | [Boilerplates](boilerplates/README.md) | Clean starter YAML files for common ESP32 boards. |
+| See a full build | [Projects](projects/README.md) | Cookbook builds that show the framework working as a real device. |
+| Learn one idea | [Samples](samples/README.md) | Focused examples for one sensor, pattern, or small experiment. |
+
+Projects are the main end-to-end examples. Samples are smaller and more
+experimental. Boilerplates are the clean starting point when you already know
+what you want to build.
+
+Current validation evidence for Room Sense Basic lives in the project folder.
+BH1750 illuminance has been OTA revalidated after the label update. The Wi-Fi
+signal label update is config-validated and compile-validated, with OTA
+revalidation still pending.
+
+If you are new to the framework, start with a
+[boilerplate](boilerplates/README.md) and work through the
+[installation guide](../wiki/installation.md) before moving to a sample or
+project.

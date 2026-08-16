@@ -1,7 +1,7 @@
 # HAZA Room Sense Basic Troubleshooting
 
-This page collects the common things to check when the Room Sense Basic build
-does not behave as expected.
+This page lists the first things to check when the Room Sense Basic build does
+not behave as expected.
 
 Start simple. Most early problems are wiring, power, secrets, names, or a stale
 OTA password from old firmware.
@@ -17,7 +17,7 @@ Check:
 - The board still boots with the I2C sensors disconnected.
 
 GPIO9 is a strapping pin on the ESP32-C3 Super Mini. It worked in the validated
-Guest Room build, but it is still worth treating with care.
+Room Sense Basic build, but it is still worth treating with care.
 
 ## I2C Sensors Are Not Found
 
@@ -101,4 +101,3 @@ Check:
 - Another room sensor agrees roughly with temperature and humidity.
 
 For Basic, there is no project-specific calibration step yet.
-

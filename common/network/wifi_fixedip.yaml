@@ -37,7 +37,7 @@
 #     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
+#     - Hardware validated: Room Sense Basic validation device, 2026-08-02
 #     - Validation status: Hardware validated
 ################################################################################
 wifi:

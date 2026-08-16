@@ -1,6 +1,6 @@
 ---
 author: Pascal Parent
-version: 2026.0.0
+version: 2026.0.1b
 classification: project
 status: hardware_validated
 labels:
@@ -18,7 +18,7 @@ recommended_esphome: 2026.7.3
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense_basic/README.md
-# Version: 2026.0.0
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
 # WARNING:
@@ -31,8 +31,8 @@ recommended_esphome: 2026.7.3
 #     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
-#     - Validation status: Hardware validated; documentation approval pending
+#     - Hardware validated: Room Sense Basic validation device, 2026-08-02
+#     - Validation status: Hardware validated; Wi-Fi label OTA revalidation pending; documentation approval pending
 # ------------------------------------------------------------------------------
 # Bill of Materials:
 #     - Board:
@@ -47,7 +47,7 @@ recommended_esphome: 2026.7.3
 #         - OTA
 #         - Web server
 #     - Wiring:
-#         - Review and document the physical Guest Room wiring before hardware
+#         - Review and document the physical validation wiring before hardware
 #           validation.
 # ------------------------------------------------------------------------------
 # References:
@@ -68,8 +68,9 @@ recommended_esphome: 2026.7.3
 #     entities from the shared framework packages
 # ------------------------------------------------------------------------------
 # Notes:
-#     - This project starts from Pascal's existing Guest Room device.
-#     - Guest Room is not truly basic, but it is the first migration baseline.
+#     - This project starts from a private Room Sense Basic validation device.
+#     - The validation device is not truly basic, but it is the first migration
+#       baseline.
 #     - Public promotion requires Pascal-approved documentation.
 ################################################################################
 

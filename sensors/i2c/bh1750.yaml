@@ -19,12 +19,14 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/bh1750.yaml
-# Version: 2026.0.0
+# Version: 2026.0.1
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/bh1750.html
 # References: https://esphome.io/components/text_sensor/index.html
 # References: https://esphome.io/components/text_sensor/template.html
+# References: https://www.iso.org/standard/76342.html
+# References: https://ies.org/standards/lighting-library/illuminance-selector-faqs/
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
@@ -35,7 +37,8 @@
 #     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Guest Room Sense Basic, 2026-08-02
+#     - Hardware validated: Room Sense Basic validation device, 2026-08-02
+#     - Hardware revalidated: OTA reinstall after illuminance label update, 2026-08-16
 #     - Validation status: Hardware validated
 ################################################################################
 sensor:
@@ -57,28 +60,32 @@ text_sensor:
     name: BH1750 Illuminance Human Readable
     icon: mdi:sunglasses
     lambda: |-
+      float lux = id(${device_internal_name}_bh1750_illuminance).state;
+      if (isnan(lux)) {
+        return std::string("Unknown");
+      }
+
       std::string brightness = "";
-      int lux = id(${device_internal_name}_bh1750_illuminance).state;
-      if (lux <= 200) {
-        brightness = "Dark";
+      if (lux <= 100) {
+        brightness = "Very Low";
+      }
+      else if (lux <= 200) {
+        brightness = "Low";
       }
       else if (lux <= 300) {
-        brightness = "Dim";
+        brightness = "Basic";
       }
       else if (lux <= 500) {
-        brightness = "Ideal";
+        brightness = "General";
       }
       else if (lux <= 750) {
-        brightness = "Bright";
+        brightness = "Task";
       }
       else if (lux <= 1000) {
-        brightness = "Very Bright";
-      }
-      else if (lux >= 1000) {
-        brightness = "Too Bright";
+        brightness = "Detailed Task";
       }
       else {
-        brightness = "Unknown";
+        brightness = "High";
       }
       return brightness;
     update_interval: never

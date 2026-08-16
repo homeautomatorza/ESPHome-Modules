@@ -1,5 +1,6 @@
 # Fonts
 
-This is where you will store your font files.  
+Store project font files here.
 
-This project uses the material design icons webfont which you can find [here](https://github.com/Templarian/MaterialDesign-Webfont).
+This project uses the Material Design Icons webfont:
+[Templarian/MaterialDesign-Webfont](https://github.com/Templarian/MaterialDesign-Webfont).
