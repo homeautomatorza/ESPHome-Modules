@@ -80,7 +80,7 @@ sensor:
 # Human readable sensors
 text_sensor:
   - platform: template
-    name: "eCO2 Classification"
+    name: "ENS160 eCO2 Classification"
     id: ${device_internal_name}_ens160_eco2_classification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
@@ -107,7 +107,7 @@ text_sensor:
     update_interval: never
 
   - platform: template
-    name: "TVOC Concern"
+    name: "ENS160 TVOC Level"
     id: ${device_internal_name}_ens160_tvoc_classification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
@@ -134,7 +134,7 @@ text_sensor:
     update_interval: never
 
   - platform: template
-    name: "Air Quality Rating"
+    name: "ENS160 Air Quality Rating"
     id: ${device_internal_name}_ens160_aqi_classification
     icon: "mdi:air-filter"
     lambda: |-

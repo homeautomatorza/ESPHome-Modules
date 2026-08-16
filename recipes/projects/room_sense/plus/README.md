@@ -197,9 +197,9 @@ Expected user-facing entities:
 - ENS160 eCO2
 - ENS160 Total Volatile Organic Compounds
 - ENS160 Air Quality Index
-- eCO2 Classification
-- TVOC Concern
-- Air Quality Rating
+- ENS160 eCO2 Classification
+- ENS160 TVOC Level
+- ENS160 Air Quality Rating
 - Uptime
 - IP Address
 - Connected SSID
