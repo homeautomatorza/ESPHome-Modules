@@ -219,6 +219,10 @@ deployment.
 
 ## Screenshots And Visual Checks
 
+Documentation pass reminder: update these screenshots after the latest BH1750
+and Wi-Fi label changes, so the ESPHome web server and Home Assistant views
+match the validated `2026.0.1` build.
+
 ### ESPHome Web Server
 
 ![ESPHome web server view](assets/device-web-server.png)

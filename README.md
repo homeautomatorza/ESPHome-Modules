@@ -16,15 +16,18 @@
 
 A practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
 
----
-
 > [!WARNING]
-> This code comes with an "it works on my setup" disclaimer. Use it at your own risk.
->
+> **Disclaimer:** This project is shared as-is, with the usual "it works in my
+> environment" honesty baked in. These files come from real builds, test
+> devices, and ongoing experiments, but they are not guaranteed to work safely
+> or correctly in your setup. Check the code, wiring, pins, power, secrets,
+> calibration, and local rules before using anything. If it can switch mains
+> power, move water, open a gate, affect safety, or ruin your afternoon, test it
+> properly first.
 
 ---
 
-## Disclaimer
+## Development Note
 
 - This project is under **very active** development in the dev branch, if you want the latest that's where you will find it.
 - Expect bugs, rough edges, and breaking changes in the dev branch.
@@ -39,8 +42,8 @@ every folder.
 | Goal | Start Here | Why |
 | --- | --- | --- |
 | Check requirements | [System requirements](wiki/system-requirements.md) | Lists the minimum ESPHome, board, editor, flashing, secrets, and substitution needs. |
-| See a real build | [HAZA Room Sense Basic](recipes/projects/room_sense_basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
-| Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense_basic/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
+| See a real build | [HAZA Room Sense Basic](recipes/projects/room_sense/basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
+| Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense/basic/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
 | Browse reusable parts | [Module catalogue](wiki/module-catalogue.md) | Shows the boards, common packages, peripherals, and sensors as documentation is rebuilt. |
 | Install the framework | [Installation guide](wiki/installation.md) | Covers ZIP download, local clone, and remote package use. |
 

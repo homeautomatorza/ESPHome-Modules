@@ -17,7 +17,7 @@ recommended_esphome: 2026.7.3
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
-# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense_basic/README.md
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/basic/README.md
 # Version: 2026.0.1
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
@@ -88,25 +88,25 @@ substitutions:
 ################################################################################
 packages:
   # Board package
-  board: !include ../../../boards/esp32/c3_super_mini.yaml
+  board: !include ../../../../boards/esp32/c3_super_mini.yaml
 
   # Core packages
-  settings: !include ../../../common/core/settings.yaml
-  time: !include ../../../common/time/home_assistant.yaml
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
 
   # Network packages
-  wifi_base: !include ../../../common/network/wifi.yaml
-  wifi_dynamic: !include ../../../common/network/wifi_dynamicip.yaml
-  webserver: !include ../../../common/network/webserver.yaml
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
 
   # Sensor packages
   bh1750: !include
-    file: ../../../sensors/i2c/bh1750.yaml
+    file: ../../../../sensors/i2c/bh1750.yaml
     vars:
       i2c_address: 0x23
 
   aht20: !include
-    file: ../../../sensors/i2c/aht2x_3x.yaml
+    file: ../../../../sensors/i2c/aht2x_3x.yaml
     vars:
       i2c_address: 0x38
 
@@ -119,7 +119,7 @@ esphome:
 
   project:
     name: haza.room_sense_basic
-    version: 2026.0.0
+    version: 2026.0.1
 
 ################################################################################
 # Remove Or Override Package Defaults

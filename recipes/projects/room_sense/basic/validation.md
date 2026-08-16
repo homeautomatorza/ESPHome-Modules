@@ -38,7 +38,7 @@ deployment used fixed IP.
 Local recipe file:
 
 ```text
-recipes/projects/room_sense_basic/esphome_room_sense_basic_project.yaml
+recipes/projects/room_sense/basic/esphome_room_sense_basic_project.yaml
 ```
 
 Validated with:
@@ -87,6 +87,8 @@ Supporting screenshots:
 
 Still to add or approve:
 
+- Updated ESPHome web server and Home Assistant screenshots for the validated
+  `2026.0.1` build.
 - Fritzing wiring diagram.
 - Final wiring table confirmation against the physical build.
 - BOM component photos.
