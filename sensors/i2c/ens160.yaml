@@ -19,12 +19,14 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/ens160.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/ens160.html
 # References: https://esphome.io/components/text_sensor/index.html
 # References: https://esphome.io/components/text_sensor/template.html
+# References: https://www.sciosense.com/ens16x-digital-metal-oxide-multi-gas-sensor-family/
+# References: https://www.umweltbundesamt.de/en/topics/health/commissions-working-groups/german-committee-on-indoor-air-guide-values
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
@@ -49,6 +51,9 @@ sensor:
       state_class: measurement
       device_class: carbon_dioxide
       unit_of_measurement: PPM
+      on_value:
+        then:
+          component.update: ${device_internal_name}_ens160_eco2_classification
     tvoc:
       id: ${device_internal_name}_ens160_tvoc
       name: "ENS160 Total Volatile Organic Compounds"
@@ -57,9 +62,16 @@ sensor:
       state_class: measurement
       device_class: volatile_organic_compounds_parts
       unit_of_measurement: PPB
+      on_value:
+        then:
+          component.update: ${device_internal_name}_ens160_tvoc_classification
     aqi:
       id: ${device_internal_name}_ens160_aqi
       name: "ENS160 Air Quality Index"
+      icon: mdi:air-filter
+      on_value:
+        then:
+          component.update: ${device_internal_name}_ens160_aqi_classification
     #compensation:
     #  temperature: ${temperature}
     #  humidity: ${humidity}
@@ -69,58 +81,74 @@ sensor:
 text_sensor:
   - platform: template
     name: "eCO2 Classification"
-    id: ${device_internal_name}_eco2_clasification
+    id: ${device_internal_name}_ens160_eco2_classification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
-      if (int(id(${device_internal_name}_ens160_eco2).state) <= 400) {
-        return {"Excellent"};
+      float eco2 = id(${device_internal_name}_ens160_eco2).state;
+      if (isnan(eco2) || eco2 < 400) {
+        return std::string("Not Available");
       }
-      else if (int(id(${device_internal_name}_ens160_eco2).state) <= 1000) {
-        return {"Good"};
+
+      if (eco2 <= 600) {
+        return std::string("Excellent");
       }
-      else if (int(id(${device_internal_name}_ens160_eco2).state) <= 2000) {
-        return {"Poor"};
+      else if (eco2 <= 800) {
+        return std::string("Good");
       }
-      else if (int(id(${device_internal_name}_ens160_eco2).state) <= 5000) {
-        return {"Bad"};
+      else if (eco2 <= 1000) {
+        return std::string("Fair");
       }
-      else if (int(id(${device_internal_name}_ens160_eco2).state) >= 250) {
-        return {"Dangerous"};
+      else if (eco2 <= 1500) {
+        return std::string("Poor");
       }
       else {
-        return {"unknown"};
+        return std::string("Bad");
       }
+    update_interval: never
 
   - platform: template
     name: "TVOC Concern"
-    id: ${device_internal_name}_tvoc_clasification
+    id: ${device_internal_name}_ens160_tvoc_classification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
-      if (int(id(${device_internal_name}_ens160_tvoc).state) <= 300) {
-        return {"None"};
+      float tvoc = id(${device_internal_name}_ens160_tvoc).state;
+      if (isnan(tvoc) || tvoc < 0) {
+        return std::string("Not Available");
       }
-      else if (int(id(${device_internal_name}_ens160_tvoc).state) <= 500) {
-        return {"Low"};
+
+      if (tvoc <= 300) {
+        return std::string("Low");
       }
-      else if (int(id(${device_internal_name}_ens160_tvoc).state) <= 1000) {
-        return {"Moderate"};
+      else if (tvoc <= 1000) {
+        return std::string("Moderate");
       }
-      else if (int(id(${device_internal_name}_ens160_tvoc).state) <= 3000) {
-        return {"High"};
+      else if (tvoc <= 3000) {
+        return std::string("Elevated");
+      }
+      else if (tvoc <= 10000) {
+        return std::string("High");
       }
       else {
-        return {"unknown"};
+        return std::string("Very High");
       }
+    update_interval: never
 
   - platform: template
     name: "Air Quality Rating"
-    id: ${device_internal_name}_aqi_clasification
+    id: ${device_internal_name}_ens160_aqi_classification
+    icon: "mdi:air-filter"
     lambda: |-
-      switch ( (int) (id(${device_internal_name}_ens160_aqi).state) ) {
-        case 1: return {"Excellent"};
-        case 2: return {"Good"};
-        case 3: return {"Moderate"};
-        case 4: return {"Poor"};
-        case 5: return {"Unhealthy"};
-        default: return {"Not Available"};
+      float aqi = id(${device_internal_name}_ens160_aqi).state;
+      if (isnan(aqi)) {
+        return std::string("Not Available");
       }
+
+      switch ((int) aqi) {
+        case 1: return std::string("Excellent");
+        case 2: return std::string("Good");
+        case 3: return std::string("Moderate");
+        case 4: return std::string("Poor");
+        case 5: return std::string("Unhealthy");
+        default: return std::string("Not Available");
+      }
+    update_interval: never

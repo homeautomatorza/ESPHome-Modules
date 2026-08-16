@@ -12,9 +12,9 @@ physically tested.
 | Layer | Status | Evidence |
 | --- | --- | --- |
 | Config validation | Passed | ESPHome `2026.7.3` accepted the recipe YAML. |
-| Compile validation | Passed | ESPHome `2026.7.3` produced firmware. |
-| Physical upload | Pending | Needs OTA or serial install on a real Room Sense Plus device. |
-| Live sensor values | Pending | Needs ESPHome web server and Home Assistant value checks. |
+| Compile validation | Passed | ESPHome `2026.7.3` produced firmware; Pascal also reported local compile pass on `2026-08-16`. |
+| Physical upload | Pending | Serial upload result pending on the Room Sense Plus validation device. |
+| Live sensor values | Pending | Needs ESPHome web server and Home Assistant value checks after upload. |
 | Documentation approval | Pending | Draft documentation still needs Pascal review. |
 
 ## Package Stack Under Test
@@ -49,6 +49,9 @@ Results:
 
 - Config validation passed.
 - Compile validation passed.
+- Local validation-device compile passed, reported by Pascal on `2026-08-16`.
+- ENS160 text-sensor fixes config and compile validated on ESPHome `2026.7.3`
+  on `2026-08-16`; hardware confirmation still pending.
 - Known board note: GPIO9 is a strapping pin on the ESP32-C3 Super Mini.
 
 ## Physical Validation
@@ -61,7 +64,7 @@ Pending
 
 Reported result:
 
-- Firmware upload pending.
+- Serial firmware upload pending.
 - ENS160 eCO2, TVOC, and air quality values pending.
 - ESPHome web server screenshot pending.
 - Home Assistant device screenshot pending.
@@ -71,6 +74,8 @@ Reported result:
 Still to add or approve:
 
 - ESPHome web server and Home Assistant screenshots for the Plus build.
+  Reminder for Pascal: capture these after the successful serial upload and
+  first visual value check.
 - Fritzing wiring diagram with ENS160 added.
 - Final wiring table confirmation against the physical build.
 - BOM component photos, including ENS160.
