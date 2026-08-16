@@ -19,7 +19,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/sgp30.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/sgp30.html
@@ -100,7 +100,7 @@ sensor:
 # Human readable sensors
 text_sensor:
   - platform: template
-    name: "eCO2 Classification"
+    name: "SGP30 eCO2 Classification"
     id: ${device_internal_name}_eco2_clasification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
@@ -124,7 +124,7 @@ text_sensor:
       }
 
   - platform: template
-    name: "TVOC Concern"
+    name: "SGP30 TVOC Level"
     id: ${device_internal_name}_tvoc_clasification
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
