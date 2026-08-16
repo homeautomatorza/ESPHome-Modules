@@ -85,7 +85,10 @@ text_sensor:
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
       float eco2 = id(${device_internal_name}_ens160_eco2).state;
-      if (isnan(eco2) || eco2 < 400) {
+      if (isnan(eco2)) {
+        return std::string("Waiting For Data");
+      }
+      if (eco2 < 400) {
         return std::string("Not Available");
       }
 
@@ -112,7 +115,10 @@ text_sensor:
     icon: "mdi:checkbox-marked-circle-outline"
     lambda: |-
       float tvoc = id(${device_internal_name}_ens160_tvoc).state;
-      if (isnan(tvoc) || tvoc < 0) {
+      if (isnan(tvoc)) {
+        return std::string("Waiting For Data");
+      }
+      if (tvoc < 0) {
         return std::string("Not Available");
       }
 
@@ -140,7 +146,7 @@ text_sensor:
     lambda: |-
       float aqi = id(${device_internal_name}_ens160_aqi).state;
       if (isnan(aqi)) {
-        return std::string("Not Available");
+        return std::string("Waiting For Data");
       }
 
       switch ((int) aqi) {

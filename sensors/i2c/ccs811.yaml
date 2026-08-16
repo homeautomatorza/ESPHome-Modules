@@ -102,23 +102,28 @@ sensor:
 #     id: ${device_internal_name}_eco2_clasification
 #     icon: "mdi:checkbox-marked-circle-outline"
 #     lambda: |-
-#       if (int(id(${device_internal_name}_ccs811_eco2).state) <= 400) {
-#         return {"Excellent"};
+#       float eco2 = id(${device_internal_name}_ccs811_eco2).state;
+#       if (isnan(eco2)) {
+#         return std::string("Waiting For Data");
 #       }
-#       else if (int(id(${device_internal_name}_ccs811_eco2).state) <= 1000) {
-#         return {"Good"};
+#       if (eco2 < 400) {
+#         return std::string("Not Available");
 #       }
-#       else if (int(id(${device_internal_name}_ccs811_eco2).state) <= 2000) {
-#         return {"Poor"};
+#
+#       if (eco2 <= 600) {
+#         return std::string("Excellent");
 #       }
-#       else if (int(id(${device_internal_name}_ccs811_eco2).state) <= 5000) {
-#         return {"Bad"};
+#       else if (eco2 <= 800) {
+#         return std::string("Good");
 #       }
-#       else if (int(id(${device_internal_name}_ccs811_eco2).state) >= 250) {
-#         return {"Dangerous"};
+#       else if (eco2 <= 1000) {
+#         return std::string("Fair");
+#       }
+#       else if (eco2 <= 1500) {
+#         return std::string("Poor");
 #       }
 #       else {
-#         return {"unknown"};
+#         return std::string("Bad");
 #       }
 
   # - platform: template
@@ -126,18 +131,26 @@ sensor:
   #   id: ${device_internal_name}_tvoc_clasification
   #   icon: "mdi:checkbox-marked-circle-outline"
   #   lambda: |-
-  #     if (int(id(${device_internal_name}_ccs811_tvoc).state) <= 300) {
-  #       return {"None"};
+  #     float tvoc = id(${device_internal_name}_ccs811_tvoc).state;
+  #     if (isnan(tvoc)) {
+  #       return std::string("Waiting For Data");
   #     }
-  #     else if (int(id(${device_internal_name}_ccs811_tvoc).state) <= 500) {
-  #       return {"Low"};
+  #     if (tvoc < 0) {
+  #       return std::string("Not Available");
   #     }
-  #     else if (int(id(${device_internal_name}_ccs811_tvoc).state) <= 1000) {
-  #       return {"Moderate"};
+  #
+  #     if (tvoc <= 300) {
+  #       return std::string("Low");
   #     }
-  #     else if (int(id(${device_internal_name}_ccs811_tvoc).state) <= 3000) {
-  #       return {"High"};
+  #     else if (tvoc <= 1000) {
+  #       return std::string("Moderate");
+  #     }
+  #     else if (tvoc <= 3000) {
+  #       return std::string("Elevated");
+  #     }
+  #     else if (tvoc <= 10000) {
+  #       return std::string("High");
   #     }
   #     else {
-  #       return {"unknown"};
+  #       return std::string("Very High");
   #     }

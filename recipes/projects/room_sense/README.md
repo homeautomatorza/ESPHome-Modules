@@ -17,7 +17,7 @@ The family exists to answer practical questions:
 | --- | --- | --- |
 | [Basic](basic/README.md) | Available | Temperature, humidity, dew point, and illuminance. |
 | [Plus](plus/README.md) | Beta | Basic plus eCO2 and TVOC. |
-| Air | Coming soon | Plus plus PM2.5 or particulate sensing. |
+| [Air](air/README.md) | Beta | C6 staged air-sensing build, starting with BME280. |
 | Presence | Coming soon | Movement and presence focused sensing. |
 | Max | Coming soon | Reserved for the full combined room sensor. |
 

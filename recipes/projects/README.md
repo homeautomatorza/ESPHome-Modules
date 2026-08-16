@@ -45,7 +45,7 @@ when those signals are useful.
 | --- | --- | --- |
 | [Room Sense Basic](room_sense/basic/README.md) | Available | Temperature, humidity, dew point, and illuminance. |
 | [Room Sense Plus](room_sense/plus/README.md) | Beta | Basic plus eCO2 and TVOC. |
-| Room Sense Air | Coming soon | Plus plus PM2.5 or particulate sensing. |
+| [Room Sense Air](room_sense/air/README.md) | Beta | C6 staged air-sensing build, starting with BME280. |
 | Room Sense Presence | Coming soon | Movement and presence focused sensing. |
 | Room Sense Tracker | Coming soon | Bluetooth-based person tracking or room presence experiments. |
 | Room Sense Max | Coming soon | Reserved for the full combined room sensor. |

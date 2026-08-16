@@ -1,0 +1,132 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: project
+status: staged_beta
+labels:
+  - recipe
+  - project
+  - room_sense
+  - esp32_c6
+  - repo_first
+  - staged_bringup
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.7.3
+---
+################################################################################
+# HAZA Room Sense Air Project - C6 BME280 Bring-Up
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/air/README.md
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Pending staged BME280 test
+#     - Validation status: Needs staged hardware validation
+# ------------------------------------------------------------------------------
+# Bill of Materials For This Stage:
+#     - Board:
+#         - ESP32-C6 Super Mini
+#     - Sensors:
+#         - BH1750 illuminance sensor on I2C address 0x23
+#         - BME280 temperature, humidity, pressure, and dew point sensor on
+#           I2C address 0x76
+#     - Later staged additions:
+#         - SGP30 eCO2 and TVOC sensor on I2C address 0x58
+#         - SPS30 particulate matter sensor on I2C address 0x69
+#         - PIR movement sensor
+#         - HLK-LD2410C presence sensor
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/bh1750.html
+#     - https://esphome.io/components/sensor/bme280.html
+# ------------------------------------------------------------------------------
+# This staged project exposes:
+#   - BME280 temperature, humidity, atmospheric pressure, and dew point
+#   - BH1750 illuminance and human-readable illuminance label
+#   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_room_sense_air
+  device_wifi_name: haza-room-sense-air
+  device_friendly_name: HAZA Room Sense Air
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../../../boards/esp32/c6_super_mini.yaml
+
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Sensor packages
+  bh1750: !include
+    file: ../../../../sensors/i2c/bh1750.yaml
+    vars:
+      i2c_address: 0x23
+
+  bme280: !include
+    file: ../../../../sensors/i2c/bme280.yaml
+    vars:
+      i2c_address: 0x76
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Room Sense Air C6 staged BME280 bring-up
+
+  project:
+    name: haza.room_sense_air
+    version: 2026.0.0b
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+uart: !remove
+spi: !remove
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Later staged additions will add SGP30, SPS30, PIR, and LD2410C packages.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add custom local logic here when it belongs to this project rather than a
+# reusable package.

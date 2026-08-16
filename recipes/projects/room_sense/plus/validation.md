@@ -13,8 +13,8 @@ physically tested.
 | --- | --- | --- |
 | Config validation | Passed | ESPHome `2026.7.3` accepted the recipe YAML. |
 | Compile validation | Passed | ESPHome `2026.7.3` produced firmware; Pascal also reported local compile pass on `2026-08-16`. |
-| Physical upload | Pending | Serial upload result pending on the Room Sense Plus validation device. |
-| Live sensor values | Pending | Needs ESPHome web server and Home Assistant value checks after upload. |
+| Physical upload | Passed | Pascal reported OTA upload passed on `2026-08-16`. |
+| Live sensor values | Passed | Pascal reported web visual confirmation passed on `2026-08-16`; screenshots still need to be captured for documentation. |
 | Documentation approval | Pending | Draft documentation still needs Pascal review. |
 
 ## Package Stack Under Test
@@ -59,14 +59,17 @@ Results:
 Physical test device:
 
 ```text
-Pending
+Private Room Sense Plus validation deployment
 ```
 
 Reported result:
 
-- Serial firmware upload pending.
-- ENS160 eCO2, TVOC, and air quality values pending.
-- ESPHome web server screenshot pending.
+- Compile passed.
+- OTA upload passed.
+- Web visual confirmation passed.
+- Initial waiting-for-data state should use the standard `Waiting For Data`
+  label rather than a blank value.
+- ESPHome web server screenshot pending for documentation.
 - Home Assistant device screenshot pending.
 
 ## Remaining Documentation Evidence
