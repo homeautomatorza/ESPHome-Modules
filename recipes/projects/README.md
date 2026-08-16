@@ -28,6 +28,7 @@ together in a real device.
 | Status | Meaning |
 | --- | --- |
 | Available | Public documentation and project files exist. Check the project page for exact validation evidence. |
+| Beta | Project files exist and automated validation may pass, but physical validation is still pending or incomplete. |
 | Coming soon | Intended project or variant, but not ready as a public build guide yet. |
 | Planned | A direction for the framework, not a build claim. |
 
@@ -43,7 +44,7 @@ when those signals are useful.
 | Project | Status | What It Adds |
 | --- | --- | --- |
 | [Room Sense Basic](room_sense/basic/README.md) | Available | Temperature, humidity, dew point, and illuminance. |
-| Room Sense Plus | Coming soon | Basic plus eCO2 and TVOC. |
+| [Room Sense Plus](room_sense/plus/README.md) | Beta | Basic plus eCO2 and TVOC. |
 | Room Sense Air | Coming soon | Plus plus PM2.5 or particulate sensing. |
 | Room Sense Presence | Coming soon | Movement and presence focused sensing. |
 | Room Sense Tracker | Coming soon | Bluetooth-based person tracking or room presence experiments. |

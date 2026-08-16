@@ -16,7 +16,7 @@ The family exists to answer practical questions:
 | Model | Status | What It Adds |
 | --- | --- | --- |
 | [Basic](basic/README.md) | Available | Temperature, humidity, dew point, and illuminance. |
-| Plus | Coming soon | Basic plus eCO2 and TVOC. |
+| [Plus](plus/README.md) | Beta | Basic plus eCO2 and TVOC. |
 | Air | Coming soon | Plus plus PM2.5 or particulate sensing. |
 | Presence | Coming soon | Movement and presence focused sensing. |
 | Max | Coming soon | Reserved for the full combined room sensor. |
