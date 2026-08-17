@@ -18,7 +18,7 @@ together in a real device.
 
 | Goal | Start Here | Why |
 | --- | --- | --- |
-| Build the first available project | [HAZA Room Sense Basic](room_sense/basic/README.md) | Small room sensor using shared board, network, and sensor packages. |
+| Build the first hardware-validated project | [HAZA Room Sense Basic](room_sense/basic/README.md) | Small room sensor using shared board, network, and sensor packages. |
 | Check validation evidence | [Room Sense Basic validation](room_sense/basic/validation.md) | Shows what passed config, compile, physical upload, and live-value checks. |
 | Troubleshoot that build | [Room Sense Basic troubleshooting](room_sense/basic/troubleshooting.md) | Captures known setup, wiring, and runtime checks for the first project. |
 | Browse future families | [Available and Future Projects](#available-and-future-projects) | Shows planned project families without treating them as finished builds. |
@@ -27,7 +27,7 @@ together in a real device.
 
 | Status | Meaning |
 | --- | --- |
-| Available | Public documentation and project files exist. Check the project page for exact validation evidence. |
+| Hardware-validated | Project files exist and have passed config, compile, physical upload, and live-value checks on real hardware. Check the project page for exact validation evidence. |
 | Beta | Project files exist and automated validation may pass, but physical validation is still pending or incomplete. |
 | Coming soon | Intended project or variant, but not ready as a public build guide yet. |
 | Planned | A direction for the framework, not a build claim. |
@@ -43,12 +43,13 @@ when those signals are useful.
 
 | Project | Status | What It Adds |
 | --- | --- | --- |
-| [Room Sense Basic](room_sense/basic/README.md) | Available | Temperature, humidity, dew point, and illuminance. |
-| [Room Sense Plus](room_sense/plus/README.md) | Beta | Basic plus eCO2 and TVOC. |
-| [Room Sense Air](room_sense/air/README.md) | Beta | C6 staged air-sensing build, starting with BME280. |
-| Room Sense Presence | Coming soon | Movement and presence focused sensing. |
+| [Room Sense Basic](room_sense/basic/README.md) | Hardware-validated | Temperature, humidity, dew point, and illuminance device. |
+| [Room Sense Plus](room_sense/plus/README.md) | Hardware-validated | Room Basic plus eCO2 and TVOC device. |
+| [Room Sense Air](room_sense/air/README.md) | Hardware-validated | Room Plus plus Particulate Matter (PM2.5/PM10). |
+| [Room Sense Motion](room_sense/motion/README.md) | Hardware-validated | Room Basic plus PIR. |
+| [Room Sense Presence](room_sense/presence/README.md) | Hardware-validated | Room Motion plus Presence. |
 | Room Sense Tracker | Coming soon | Bluetooth-based person tracking or room presence experiments. |
-| Room Sense Max | Coming soon | Reserved for the full combined room sensor. |
+| [Room Sense Max](room_sense/max/README.md) | Hardware-validated | A fully combined room sensor with all the Air, Motion, and Presence abilities. |
 | Room Remote | Coming soon | IR blaster project for controlling room devices such as TVs, fans, sound systems, or air conditioners. |
 
 Room Sense is the sensing ladder. Room Remote is kept separate because it is a

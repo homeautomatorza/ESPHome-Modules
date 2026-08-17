@@ -1,0 +1,6 @@
+openpyxl
+pypdf
+pdfplumber
+reportlab
+pillow
+xlsx2csv

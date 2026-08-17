@@ -1,7 +1,7 @@
 # HAZA Room Sense
 
 Room Sense projects are room-monitoring builds that start simple and grow only
-when the extra signals are useful.
+when the extra sensors are useful.
 
 The family exists to answer practical questions:
 
@@ -15,11 +15,12 @@ The family exists to answer practical questions:
 
 | Model | Status | What It Adds |
 | --- | --- | --- |
-| [Basic](basic/README.md) | Available | Temperature, humidity, dew point, and illuminance. |
-| [Plus](plus/README.md) | Beta | Basic plus eCO2 and TVOC. |
-| [Air](air/README.md) | Beta | C6 staged air-sensing build, starting with BME280. |
-| Presence | Coming soon | Movement and presence focused sensing. |
-| Max | Coming soon | Reserved for the full combined room sensor. |
+| [Basic](basic/README.md) | Hardware-validated | Temperature, humidity, dew point, and illuminance device. |
+| [Plus](plus/README.md) | Hardware-validated | Room Basic plus eCO2 and TVOC device. |
+| [Air](air/README.md) | Hardware-validated | Room Plus plus Particulate Matter (PM2.5/PM10). |
+| [Motion](motion/README.md) | Hardware-validated | Room Basic plus PIR. |
+| [Presence](presence/README.md) | Hardware-validated | Room Motion plus Presence. |
+| [Max](max/README.md) | Hardware-validated | A fully combined room sensor with all the Air, Motion, and Presence abilities. |
 
 Each model keeps its own project files, documentation, validation evidence,
 troubleshooting notes, and assets in its model folder.

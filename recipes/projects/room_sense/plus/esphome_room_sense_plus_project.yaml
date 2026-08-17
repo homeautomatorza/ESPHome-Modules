@@ -1,8 +1,8 @@
 ---
 author: Pascal Parent
-version: 2026.0.0b
+version: 2026.0.0
 classification: project
-status: beta_needs_hardware_validation
+status: hardware_validated
 labels:
   - recipe
   - project
@@ -18,7 +18,7 @@ recommended_esphome: 2026.7.3
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/plus/README.md
-# Version: 2026.0.0b
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
 # WARNING:
@@ -31,8 +31,9 @@ recommended_esphome: 2026.7.3
 #     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs hardware validation
+#     - Hardware validated: Private validation device, 2026-08-16
+#     - Validation status: ENS160 recipe passed compile, OTA upload, and web
+#       visual confirmation
 # ------------------------------------------------------------------------------
 # Bill of Materials:
 #     - Board:
@@ -117,7 +118,7 @@ esphome:
 
   project:
     name: haza.room_sense_plus
-    version: 2026.0.0b
+    version: 2026.0.0
 
 ################################################################################
 # Remove Or Override Package Defaults

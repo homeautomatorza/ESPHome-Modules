@@ -24,10 +24,13 @@ To do, if this project is filmed.
 ## Current Status
 
 - YAML recipe: `esphome_room_sense_plus_project.yaml`
+- Alternate YAML recipe: `esphome_room_sense_plus_project_alternate.yaml`
 - Config validation: Passed on ESPHome `2026.7.3`
 - Compile validation: Passed on ESPHome `2026.7.3`
-- Physical validation: Pending on an existing private ENS160-equipped Room
-  Sense validation device
+- Physical validation: ENS160 recipe passed OTA and web visual confirmation on
+  a private validation device
+- Verified alternate: ESP32-C6, BME280, BH1750, and SGP30 passed config,
+  compile, OTA, web access, and live-value checks on a private validation device
 - Documentation approval: Draft, pending Pascal review
 
 Full validation notes live in [validation.md](validation.md).
@@ -41,7 +44,10 @@ fresh air, or it may have cleaning-product fumes, printer smells, cooking
 residue, or general indoor-air buildup.
 
 Room Sense Plus adds a VOC and eCO2 view so we can start seeing those patterns.
-It does not make the device a certified air-quality monitor. It gives Home
+The main recipe uses ENS160. The alternate recipe uses SGP30 where that module
+is a better fit or is what you already have on hand.
+
+Neither version makes the device a certified air-quality monitor. It gives Home
 Assistant a practical signal that can help with ventilation experiments and
 future automations.
 
@@ -155,11 +161,16 @@ Use the wiring table when checking the diagram.
 | ENS160 | SDA | GPIO9 | Shared I2C bus. |
 | ENS160 | SCL | GPIO10 | Shared I2C bus. |
 
+For the SGP30 alternate, use the same shared I2C idea, but follow the board
+package used by that YAML. The verified alternate uses the ESP32-C6 Super Mini,
+BME280, BH1750, and SGP30.
+
 Expected I2C addresses:
 
 - BH1750: `0x23`
 - AHT20: `0x38`
 - ENS160: `0x53`
+- SGP30 alternate: `0x58`
 
 ## Framework Packages Used
 
@@ -172,6 +183,12 @@ Expected I2C addresses:
 - Sensor: `sensors/i2c/bh1750.yaml`
 - Sensor: `sensors/i2c/aht2x_3x.yaml`
 - Sensor: `sensors/i2c/ens160.yaml`
+
+The SGP30 alternate uses:
+
+- Board: `boards/esp32/c6_super_mini.yaml`
+- Sensor: `sensors/i2c/bme280.yaml`
+- Sensor: `sensors/i2c/sgp30.yaml`
 
 ## Setup
 
@@ -208,6 +225,14 @@ Expected user-facing entities:
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
+The SGP30 alternate exposes these air-quality entities instead of the ENS160
+entities:
+
+- SGP30 eCO2
+- SGP30 eCO2 Classification
+- SGP30 TVOC
+- SGP30 TVOC Level
+
 ## Screenshots And Visual Checks
 
 To add during physical validation:
@@ -242,8 +267,11 @@ See [troubleshooting.md](troubleshooting.md).
 
 ## Known Limitations
 
-- This Plus version has not been physically validated yet.
+- The ENS160 Plus recipe still needs its final documentation screenshots.
+- The SGP30 alternate was validated on a private C6/BME280 validation device.
 - ENS160 readings are practical indoor-air indicators, not certified
+  measurements.
+- SGP30 readings are also practical indoor-air indicators, not certified
   measurements.
 - PM2.5, movement, and presence are not part of Plus.
 - Component images and final wiring diagrams are still being added.
@@ -258,5 +286,7 @@ See [troubleshooting.md](troubleshooting.md).
 
 ## Change Notes
 
-- 2026.0.0b: Created the Room Sense Plus beta project from Room Sense Basic and
+- 2026-08-17: Added `esphome_room_sense_plus_project_alternate.yaml` as a
+  verified SGP30 alternate using ESP32-C6, BME280, BH1750, and SGP30.
+- 2026.0.0: Created the Room Sense Plus project from Room Sense Basic and
   added the ENS160 VOC/eCO2 package.

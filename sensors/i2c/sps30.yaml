@@ -19,7 +19,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/sps30.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/sps30.html
@@ -32,11 +32,12 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Hardware validated: ESPHome 2026.7.4 on private Room Sense Air hardware,
+#       2026-08-17
+#     - Validation status: Hardware validated
 ################################################################################
 sensor:
   - platform: sps30

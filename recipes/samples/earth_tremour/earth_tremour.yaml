@@ -30,7 +30,7 @@ depends_on:
 #     file: sensors/i2c/mpu6050.yaml
 #     vars:
 #       i2c_address: 0x68
-#   earth_tremour: !include recipes/samples/earth_tremour.yaml
+#   earth_tremour: !include recipes/samples/earth_tremour/earth_tremour.yaml
 # ------------------------------------------------------------------------------
 # This sample exposes:
 #   - global state helpers
@@ -40,7 +40,7 @@ depends_on:
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
-# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/samples/earth_tremour.yaml
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/samples/earth_tremour/earth_tremour.yaml
 # Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/globals.html

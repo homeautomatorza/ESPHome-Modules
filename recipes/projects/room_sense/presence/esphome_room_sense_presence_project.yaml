@@ -14,11 +14,11 @@ minimum_esphome: 2026.7.0
 recommended_esphome: 2026.7.4
 ---
 ################################################################################
-# HAZA Room Sense Air Project - C6 Air Sensor Bring-Up
+# HAZA Room Sense Presence Project - C6 Presence Bring-Up
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
-# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/air/README.md
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/presence/README.md
 # Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
@@ -31,10 +31,10 @@ recommended_esphome: 2026.7.4
 #     - Minimum ESPHome: 2026.7.0
 #     - Recommended ESPHome: 2026.7.4 or newer
 #     - Config validated: ESPHome 2026.7.3
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Stage 3 validated on private hardware, 2026-08-17
-#     - Validation status: Stage 3 SPS30 compile, OTA, log, and web checks
-#       passed
+#     - Compile validated: ESPHome 2026.7.3, 2026-08-17
+#     - Hardware validated: Room Sense Presence validation device, 2026-08-17
+#     - Validation status: Passed serial upload, log check, web check, and
+#       LD2410C presence-observed confirmation with ESPHome 2026.7.4
 # ------------------------------------------------------------------------------
 # Bill of Materials For This Stage:
 #     - Board:
@@ -43,25 +43,25 @@ recommended_esphome: 2026.7.4
 #         - BH1750 illuminance sensor on I2C address 0x23
 #         - BME280 temperature, humidity, pressure, and dew point sensor on
 #           I2C address 0x76
-#         - SGP30 eCO2 and TVOC sensor on I2C address 0x58
-#         - SPS30 particulate matter sensor on I2C address 0x69
-#     - Later staged additions:
-#         - PIR movement sensor
-#         - HLK-LD2410C presence sensor
+#         - HC-SR501 PIR movement sensor on GPIO1
+#         - HLK-LD2410C presence sensor on UART TX GPIO3, RX GPIO4, and
+#           presence GPIO0
 # ------------------------------------------------------------------------------
 # References:
 #     - https://esphome.io/
 #     - https://esphome.io/components/esp32.html
 #     - https://esphome.io/components/sensor/bh1750.html
 #     - https://esphome.io/components/sensor/bme280.html
-#     - https://esphome.io/components/sensor/sgp30.html
-#     - https://esphome.io/components/sensor/sps30.html
+#     - https://esphome.io/components/binary_sensor/gpio.html
+#     - https://esphome.io/components/sensor/ld2410.html
+#     - https://esphome.io/components/uart.html
 # ------------------------------------------------------------------------------
 # This staged project exposes:
 #   - BME280 temperature, humidity, atmospheric pressure, and dew point
 #   - BH1750 illuminance and human-readable illuminance label
-#   - SGP30 eCO2 and TVOC sensing with BME280 compensation
-#   - SPS30 particulate matter sensing
+#   - HC-SR501 PIR movement detection
+#   - HLK-LD2410C mmWave presence detection
+#   - combined occupancy state from PIR movement and LD2410C GPIO presence
 #   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
 #     entities from the shared framework packages
 ################################################################################
@@ -70,9 +70,9 @@ recommended_esphome: 2026.7.4
 # Substitutions
 ################################################################################
 substitutions:
-  device_internal_name: haza_room_sense_air
-  device_wifi_name: haza-room-sense-air
-  device_friendly_name: HAZA Room Sense Air
+  device_internal_name: haza_room_sense_presence
+  device_wifi_name: haza-room-sense-presence
+  device_friendly_name: HAZA Room Sense Presence
   device_sampling_time: 30s
 
 ################################################################################
@@ -102,45 +102,57 @@ packages:
     vars:
       i2c_address: 0x76
 
-  sgp30: !include
-    file: ../../../../sensors/i2c/sgp30.yaml
+  hc_sr501: !include
+    file: ../../../../sensors/binary/hc_sr501.yaml
     vars:
-      i2c_address: 0x58
-      humidity: ${device_internal_name}_bme280_humidity
-      temperature: ${device_internal_name}_bme280_temperature_c
+      pin: GPIO1
 
-  sps30: !include
-    file: ../../../../sensors/i2c/sps30.yaml
+  ld2410c: !include
+    file: ../../../../sensors/uart/hlk_ld2410c_minimal.yaml
     vars:
-      i2c_address: 0x69
+      presence_pin: GPIO0
+      uart_port: ${device_internal_name}_uart_bus1
 
 ################################################################################
 # ESPHome Overrides / Project Metadata
 ################################################################################
 esphome:
   min_version: 2026.7.0
-  comment: HAZA Room Sense Air C6 staged SPS30 bring-up
+  comment: HAZA Room Sense Presence C6 staged presence bring-up
 
   project:
-    name: haza.room_sense_air
+    name: haza.room_sense_presence
     version: 2026.0.0
 
 ################################################################################
 # Remove Or Override Package Defaults
 ################################################################################
 status_led: !remove
-uart: !remove
 spi: !remove
 
 ################################################################################
 # Add Custom Peripherals
 ################################################################################
-# Later staged additions will add PIR and LD2410C packages.
+uart:
+  id: ${device_internal_name}_uart_bus1
+  tx_pin: GPIO3
+  rx_pin: GPIO4
+  baud_rate: 256000
+  parity: NONE
+  stop_bits: 1
 
 ################################################################################
 # Add Custom Sensors
 ################################################################################
-# Add custom sensor YAML here when a reusable package is not viable.
+binary_sensor:
+  - platform: template
+    id: ${device_internal_name}_occupancy
+    name: Room Occupancy
+    icon: mdi:account-check
+    device_class: occupancy
+    lambda: |-
+      return id(${device_internal_name}_ld2410_gpio_presence).state ||
+             id(${device_internal_name}_movement).state;
 
 ################################################################################
 # Add Custom Local Logic

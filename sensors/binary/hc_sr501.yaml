@@ -18,7 +18,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/binary/hc_sr501.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/binary_sensor/index.html
 # References: https://esphome.io/components/binary_sensor/gpio.html
@@ -29,11 +29,12 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Recommended ESPHome: 2026.7.4 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Hardware validated: Room Sense Motion validation device, 2026-08-17
+#     - Validation status: Passed serial upload, log check, web check, and PIR
+#       movement on/off confirmation with ESPHome 2026.7.4
 ################################################################################
 binary_sensor:
   - platform: gpio

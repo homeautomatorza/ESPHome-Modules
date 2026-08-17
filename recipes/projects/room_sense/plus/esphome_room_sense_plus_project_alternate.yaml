@@ -2,23 +2,23 @@
 author: Pascal Parent
 version: 2026.0.0
 classification: project
-status: hardware_validated
+status: hardware_validated_alternate
 labels:
   - recipe
   - project
   - room_sense
   - esp32_c6
   - repo_first
-  - staged_bringup
+  - alternate
 minimum_esphome: 2026.7.0
-recommended_esphome: 2026.7.4
+recommended_esphome: 2026.7.3
 ---
 ################################################################################
-# HAZA Room Sense Air Project - C6 Air Sensor Bring-Up
+# HAZA Room Sense Plus Project - SGP30 Alternate
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
-# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/air/README.md
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/plus/README.md
 # Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
@@ -29,14 +29,13 @@ recommended_esphome: 2026.7.4
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.7.0
-#     - Recommended ESPHome: 2026.7.4 or newer
+#     - Recommended ESPHome: 2026.7.3 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Stage 3 validated on private hardware, 2026-08-17
-#     - Validation status: Stage 3 SPS30 compile, OTA, log, and web checks
-#       passed
+#     - Hardware validated: Private validation device, 2026-08-17
+#     - Validation status: Hardware validated alternate
 # ------------------------------------------------------------------------------
-# Bill of Materials For This Stage:
+# Bill of Materials:
 #     - Board:
 #         - ESP32-C6 Super Mini
 #     - Sensors:
@@ -44,10 +43,11 @@ recommended_esphome: 2026.7.4
 #         - BME280 temperature, humidity, pressure, and dew point sensor on
 #           I2C address 0x76
 #         - SGP30 eCO2 and TVOC sensor on I2C address 0x58
-#         - SPS30 particulate matter sensor on I2C address 0x69
-#     - Later staged additions:
-#         - PIR movement sensor
-#         - HLK-LD2410C presence sensor
+#     - Services:
+#         - WiFi
+#         - Encrypted Home Assistant API
+#         - OTA
+#         - Web server
 # ------------------------------------------------------------------------------
 # References:
 #     - https://esphome.io/
@@ -55,13 +55,16 @@ recommended_esphome: 2026.7.4
 #     - https://esphome.io/components/sensor/bh1750.html
 #     - https://esphome.io/components/sensor/bme280.html
 #     - https://esphome.io/components/sensor/sgp30.html
-#     - https://esphome.io/components/sensor/sps30.html
 # ------------------------------------------------------------------------------
-# This staged project exposes:
-#   - BME280 temperature, humidity, atmospheric pressure, and dew point
-#   - BH1750 illuminance and human-readable illuminance label
-#   - SGP30 eCO2 and TVOC sensing with BME280 compensation
-#   - SPS30 particulate matter sensing
+# Usage:
+#   Compile this project from its recipe folder inside the repository. If you
+#   copy only this YAML file into an ESPHome root folder, adjust the package
+#   paths to match the new location before compiling.
+# ------------------------------------------------------------------------------
+# This alternate project exposes:
+#   - room temperature, humidity, pressure, and dew point from BME280
+#   - room illuminance from BH1750
+#   - SGP30 eCO2 and TVOC readings with BME280 compensation
 #   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
 #     entities from the shared framework packages
 ################################################################################
@@ -70,9 +73,9 @@ recommended_esphome: 2026.7.4
 # Substitutions
 ################################################################################
 substitutions:
-  device_internal_name: haza_room_sense_air
-  device_wifi_name: haza-room-sense-air
-  device_friendly_name: HAZA Room Sense Air
+  device_internal_name: haza_room_sense_plus_alternate
+  device_wifi_name: haza-room-sense-plus-alt
+  device_friendly_name: HAZA Room Sense Plus Alternate
   device_sampling_time: 30s
 
 ################################################################################
@@ -109,20 +112,15 @@ packages:
       humidity: ${device_internal_name}_bme280_humidity
       temperature: ${device_internal_name}_bme280_temperature_c
 
-  sps30: !include
-    file: ../../../../sensors/i2c/sps30.yaml
-    vars:
-      i2c_address: 0x69
-
 ################################################################################
 # ESPHome Overrides / Project Metadata
 ################################################################################
 esphome:
   min_version: 2026.7.0
-  comment: HAZA Room Sense Air C6 staged SPS30 bring-up
+  comment: HAZA Room Sense Plus alternate using SGP30
 
   project:
-    name: haza.room_sense_air
+    name: haza.room_sense_plus_alternate
     version: 2026.0.0
 
 ################################################################################
@@ -135,7 +133,7 @@ spi: !remove
 ################################################################################
 # Add Custom Peripherals
 ################################################################################
-# Later staged additions will add PIR and LD2410C packages.
+# Add custom peripheral YAML here when a reusable package is not viable.
 
 ################################################################################
 # Add Custom Sensors

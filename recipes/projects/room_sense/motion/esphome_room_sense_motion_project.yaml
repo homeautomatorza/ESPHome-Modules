@@ -14,11 +14,11 @@ minimum_esphome: 2026.7.0
 recommended_esphome: 2026.7.4
 ---
 ################################################################################
-# HAZA Room Sense Air Project - C6 Air Sensor Bring-Up
+# HAZA Room Sense Motion Project - C6 PIR Bring-Up
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
-# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/air/README.md
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/motion/README.md
 # Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
@@ -31,10 +31,10 @@ recommended_esphome: 2026.7.4
 #     - Minimum ESPHome: 2026.7.0
 #     - Recommended ESPHome: 2026.7.4 or newer
 #     - Config validated: ESPHome 2026.7.3
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Stage 3 validated on private hardware, 2026-08-17
-#     - Validation status: Stage 3 SPS30 compile, OTA, log, and web checks
-#       passed
+#     - Compile validated: ESPHome 2026.7.3, 2026-08-17
+#     - Hardware validated: Room Sense Motion validation device, 2026-08-17
+#     - Validation status: Passed serial upload, log check, web check, and PIR
+#       movement on/off confirmation with ESPHome 2026.7.4
 # ------------------------------------------------------------------------------
 # Bill of Materials For This Stage:
 #     - Board:
@@ -43,25 +43,21 @@ recommended_esphome: 2026.7.4
 #         - BH1750 illuminance sensor on I2C address 0x23
 #         - BME280 temperature, humidity, pressure, and dew point sensor on
 #           I2C address 0x76
-#         - SGP30 eCO2 and TVOC sensor on I2C address 0x58
-#         - SPS30 particulate matter sensor on I2C address 0x69
-#     - Later staged additions:
-#         - PIR movement sensor
-#         - HLK-LD2410C presence sensor
+#         - HC-SR501 PIR movement sensor on GPIO1
+#     - Possible future addition:
+#         - HLK-LD2410C presence sensor for a separate Presence variant
 # ------------------------------------------------------------------------------
 # References:
 #     - https://esphome.io/
 #     - https://esphome.io/components/esp32.html
 #     - https://esphome.io/components/sensor/bh1750.html
 #     - https://esphome.io/components/sensor/bme280.html
-#     - https://esphome.io/components/sensor/sgp30.html
-#     - https://esphome.io/components/sensor/sps30.html
+#     - https://esphome.io/components/binary_sensor/gpio.html
 # ------------------------------------------------------------------------------
 # This staged project exposes:
 #   - BME280 temperature, humidity, atmospheric pressure, and dew point
 #   - BH1750 illuminance and human-readable illuminance label
-#   - SGP30 eCO2 and TVOC sensing with BME280 compensation
-#   - SPS30 particulate matter sensing
+#   - HC-SR501 PIR movement detection
 #   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
 #     entities from the shared framework packages
 ################################################################################
@@ -70,9 +66,9 @@ recommended_esphome: 2026.7.4
 # Substitutions
 ################################################################################
 substitutions:
-  device_internal_name: haza_room_sense_air
-  device_wifi_name: haza-room-sense-air
-  device_friendly_name: HAZA Room Sense Air
+  device_internal_name: haza_room_sense_motion
+  device_wifi_name: haza-room-sense-motion
+  device_friendly_name: HAZA Room Sense Motion
   device_sampling_time: 30s
 
 ################################################################################
@@ -102,27 +98,20 @@ packages:
     vars:
       i2c_address: 0x76
 
-  sgp30: !include
-    file: ../../../../sensors/i2c/sgp30.yaml
+  hc_sr501: !include
+    file: ../../../../sensors/binary/hc_sr501.yaml
     vars:
-      i2c_address: 0x58
-      humidity: ${device_internal_name}_bme280_humidity
-      temperature: ${device_internal_name}_bme280_temperature_c
-
-  sps30: !include
-    file: ../../../../sensors/i2c/sps30.yaml
-    vars:
-      i2c_address: 0x69
+      pin: GPIO1
 
 ################################################################################
 # ESPHome Overrides / Project Metadata
 ################################################################################
 esphome:
   min_version: 2026.7.0
-  comment: HAZA Room Sense Air C6 staged SPS30 bring-up
+  comment: HAZA Room Sense Motion C6 staged PIR bring-up
 
   project:
-    name: haza.room_sense_air
+    name: haza.room_sense_motion
     version: 2026.0.0
 
 ################################################################################
@@ -135,7 +124,7 @@ spi: !remove
 ################################################################################
 # Add Custom Peripherals
 ################################################################################
-# Later staged additions will add PIR and LD2410C packages.
+# LD2410C belongs in the later Presence variant unless this project changes.
 
 ################################################################################
 # Add Custom Sensors

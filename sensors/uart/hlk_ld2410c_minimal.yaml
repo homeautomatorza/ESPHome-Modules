@@ -25,7 +25,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/uart/hlk_ld2410c_minimal.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/ld2410.html
 # References: https://esphome.io/components/binary_sensor/index.html
@@ -42,11 +42,12 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Recommended ESPHome: 2026.7.4 or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Hardware validated: Room Sense Presence validation device, 2026-08-17
+#     - Validation status: Passed serial upload, log check, web check, and
+#       LD2410C presence-observed confirmation with ESPHome 2026.7.4
 ################################################################################
 ld2410:
   uart_id: ${uart_port}
@@ -79,7 +80,7 @@ sensor:
   - platform: ld2410
     moving_distance:
       id: ${device_internal_name}_moving_distance
-      name : LD2410 Moving Distance
+      name: LD2410 Moving Distance
       disabled_by_default: true
     still_distance:
       id: ${device_internal_name}_still_distance
