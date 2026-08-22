@@ -34,6 +34,15 @@
 #     - Hardware validated: Not yet
 #     - Validation status: Needs validation
 ################################################################################
+substitutions:
+  # WMO-style sustained wind convention: 10-minute mean.
+  # With a 5s average sample interval, 120 samples = 10 minutes.
+  # Publishing every 12 samples gives a refreshed value roughly once per minute.
+  wind_speed_update_interval: 5s
+  wind_average_update_interval: 5s
+  wind_average_window_size: "120"
+  wind_average_send_every: "12"
+
 sensor:
   # Wind Speed
   - platform: pulse_counter
@@ -45,7 +54,7 @@ sensor:
       mode: INPUT_PULLUP
     unit_of_measurement: km/h
     accuracy_decimals: 1
-    update_interval: 5s #${device_sampling_time}
+    update_interval: ${wind_speed_update_interval}
     filters:
       - multiply: 0.04
     device_class: wind_speed
@@ -56,22 +65,25 @@ sensor:
     id: ${device_internal_name}_wind_meter_knot
     icon: mdi:weather-windy
     unit_of_measurement: knots
-    update_interval: 5s #${device_sampling_time}
+    update_interval: ${wind_speed_update_interval}
     lambda: |-
       return id(${device_internal_name}_wind_speed_kph).state * 0.539957;
     device_class: wind_speed
 
-  # Average Speed (For Beaufort Scale)
+  # WMO-style 10-minute mean wind speed for Beaufort classification.
   - platform: template
     name: 'Wind Speed Average'
     icon: 'mdi:weather-windy'
     id: ${device_internal_name}_wind_meter_avg
     lambda: return id(${device_internal_name}_wind_speed_kph).state;
     unit_of_measurement: 'km/h'
-    update_interval: ${device_sampling_time}
+    update_interval: ${wind_average_update_interval}
     disabled_by_default: true
     filters:
-      - throttle_average: 60s
+      - sliding_window_moving_average:
+          window_size: ${wind_average_window_size}
+          send_every: ${wind_average_send_every}
+          send_first_at: ${wind_average_send_every}
     on_value:
       lambda: |-
         float speed = x;
