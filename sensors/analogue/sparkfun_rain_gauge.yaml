@@ -1,15 +1,18 @@
 ################################################################################
-# Sparkfun Rain Gauge
+# SparkFun Rain Gauge
 ################################################################################
 # Usage:
-#   Add the following code to package section in the device file changing the 
-#   PIN to the appropriate one.
+#   Add the following code to package section in the device file, changing the
+#   pin and calibration values to the appropriate ones.
 # -----------------------------------------------------------------------------
 # packages:
-#  sf_rain_gauge: !include 
+#  sf_rain_gauge: !include
 #    file: sensors/analogue/sparkfun_rain_gauge.yaml
 #.   vars:
 #      pin: GPIO25
+#      rain_gauge_tip_mm: "0.2794"
+#      rain_gauge_update_interval: 10s
+#      rain_gauge_internal_filter: 100ms
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
@@ -17,9 +20,16 @@
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/analogue/sparkfun_rain_gauge.yaml
 # Version: 2026.0.0b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
-# References: https://esphome.io/components/sensor/ccs811.html 
+# References: https://esphome.io/components/sensor/pulse_counter.html
+# References: https://learn.sparkfun.com/tutorials/weather-meter-hookup-guide/hardware-overview
 # ------------------------------------------------------------------------------
-# Notes: None
+# Notes:
+#     - Default calibration is 0.2794 mm per bucket tip, matching SparkFun's
+#       weather meter documentation.
+#     - The rain switch is a reed/contact sensor. The default 100 ms internal
+#       filter is there to reduce switch bounce.
+#     - If the measured rainfall does not match a manual rain gauge, calibrate
+#       rain_gauge_tip_mm for the actual collector.
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
@@ -27,33 +37,60 @@
 # Use at your own risk.
 # ------------------------------------------------------------------------------
 # Compatibility:
-#     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.8 beta or newer
 #     - Config validated: ESPHome 2026.7.3
 #     - Compile validated: ESPHome 2026.7.3
 #     - Hardware validated: Not yet
 #     - Validation status: Needs validation
 ################################################################################
+
+substitutions:
+  rain_gauge_tip_mm: "0.2794"
+  rain_gauge_update_interval: 10s
+  rain_gauge_internal_filter: 100ms
+
 sensor:
   - platform: pulse_counter
+    id: ${device_internal_name}_rainfall_rate_mm_min
     pin:
       number: ${pin}
-      #allow_other_uses: true
-      inverted: True
-      mode: INPUT_PULLUP    
-    name: 'Rainfall'
-    unit_of_measurement: 'mm'
+      inverted: true
+      mode:
+        input: true
+        pullup: true
+    name: Rainfall Rate
+    icon: mdi:weather-pouring
+    unit_of_measurement: mm/min
     count_mode:
       rising_edge: DISABLE
-      falling_edge: INCREMENT       
+      falling_edge: INCREMENT
     filters:
-      - multiply: 0.367
-      # - debounce: 100ms
-    #internal_filter: 100ms
-    update_interval: 10s #${device_sampling_time}
+      - multiply: ${rain_gauge_tip_mm}
+    update_interval: ${rain_gauge_update_interval}
+    internal_filter: ${rain_gauge_internal_filter}
+    use_pcnt: false
+    device_class: precipitation_intensity
+    state_class: measurement
+    accuracy_decimals: 3
     total:
-      name: 'Total Rainfall'
-      unit_of_measurement: 'mm'
+      id: ${device_internal_name}_rainfall_total
+      name: Total Rainfall
+      icon: mdi:weather-rainy
+      unit_of_measurement: mm
+      state_class: total_increasing
       accuracy_decimals: 3
       filters:
-        - multiply: 0.367
+        - multiply: ${rain_gauge_tip_mm}
+
+  - platform: template
+    id: ${device_internal_name}_rainfall_rate_mm_h
+    name: Rainfall Rate Hourly
+    icon: mdi:weather-pouring
+    unit_of_measurement: mm/h
+    lambda: |-
+      return id(${device_internal_name}_rainfall_rate_mm_min).state * 60.0;
+    update_interval: ${rain_gauge_update_interval}
+    device_class: precipitation_intensity
+    state_class: measurement
+    accuracy_decimals: 2
