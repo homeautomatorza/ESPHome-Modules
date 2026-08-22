@@ -163,7 +163,7 @@ Use the wiring table when checking the diagram.
 
 For the SGP30 alternate, use the same shared I2C idea, but follow the board
 package used by that YAML. The verified alternate uses the ESP32-C6 Super Mini,
-BME280, BH1750, and SGP30.
+BME280, BH1750, and SGP30 on C6 I2C SDA `GPIO14` and SCL `GPIO18`.
 
 Expected I2C addresses:
 

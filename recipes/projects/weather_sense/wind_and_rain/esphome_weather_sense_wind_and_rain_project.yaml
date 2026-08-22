@@ -1,0 +1,219 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: project
+status: beta_needs_hardware_validation
+labels:
+  - recipe
+  - project
+  - weather_sense
+  - wind_and_rain
+  - esp32
+  - repo_first
+  - staged_bringup
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.8.0
+---
+################################################################################
+# HAZA Weather Sense Wind and Rain Project
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/weather_sense/wind_and_rain/README.md
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.8 beta or newer
+#     - Config validated: ESPHome 2026.7.3; Desktop deployment on ESPHome 2026.8.0
+#     - Compile validated: ESPHome 2026.7.3; Desktop deployment on ESPHome 2026.8.0
+#     - Hardware validated: Partial runtime visibility only
+#     - Validation status: Beta. Serial upload, log check, and web check passed
+#       on Pascal's validation device. The light/UV package has been corrected
+#       to LTR390 after Pascal confirmed the board uses an LTR390 at I2C address
+#       0x53, not a BH1750. Physical rain bucket testing is deferred to the
+#       future V4 hardware branch.
+# ------------------------------------------------------------------------------
+# Bill of Materials For This Stage:
+#     - Board:
+#         - HAZA Weather Station Board v1 / ESP32 DevKit style board matching
+#           the historical flat config
+#     - Sensors:
+#         - BME280 temperature, humidity, pressure, and dew point sensor on
+#           I2C address 0x76
+#         - DS18B20 external temperature sensor on GPIO4
+#         - LTR390 UV and ambient light sensor on I2C address 0x53
+#         - Battery voltage divider on GPIO33
+#         - SparkFun-style anemometer wind speed sensor on GPIO14
+#         - SparkFun-style wind vane ADC on GPIO35
+#         - SparkFun-style tipping-bucket rain gauge on GPIO25
+#     - Helpers:
+#         - Beaufort wind scale text sensor
+#         - Wind cardinal direction text sensor
+#         - Rainfall rate and total rainfall helpers
+#         - Sun position helpers using user-supplied latitude and longitude
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/bme280.html
+#     - https://esphome.io/components/sensor/dallas_temp.html
+#     - https://esphome.io/components/sensor/ltr390.html
+#     - https://esphome.io/components/sensor/adc.html
+#     - https://esphome.io/components/sensor/pulse_counter.html
+#     - https://esphome.io/components/sensor/resistance.html
+#     - https://esphome.io/components/sun.html
+#     - https://www.opengreenenergy.com/solar-powered-wifi-weather-station-v3-0/
+# ------------------------------------------------------------------------------
+# This staged project exposes:
+#   - Weather Sense Basic baseline sensors
+#   - wind speed in km/h, mph, and knots
+#   - averaged wind speed for Beaufort classification
+#   - Beaufort wind scale text
+#   - wind heading in degrees
+#   - wind cardinal direction text
+#   - rainfall rate in mm/min and mm/h
+#   - total rainfall since boot/reset
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_weather_sense_wind_and_rain
+  device_wifi_name: haza-weather-wind-rain
+  device_friendly_name: HAZA Weather Sense Wind and Rain
+  device_sampling_time: 30s
+  device_timezone: Africa/Johannesburg
+  sntp_server_1: 0.za.pool.ntp.org
+  sntp_server_2: 1.za.pool.ntp.org
+  sntp_server_3: 2.za.pool.ntp.org
+  location_latitude: "0.0°"
+  location_longitude: "0.0°"
+  ds18b20_address: "0x453c1ff648208028"
+  battery_adc_pin: GPIO33
+  battery_empty_voltage: "2.492"
+  battery_full_voltage: "3.16"
+  wind_speed_pin: GPIO14
+  wind_vane_pin: GPIO35
+  rain_gauge_pin: GPIO25
+  rain_gauge_tip_mm: "0.2794"
+  rain_gauge_update_interval: 10s
+  rain_gauge_internal_filter: 100ms
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/sntp.yaml
+  sun: !include ../../../../common/core/sun.yaml
+
+  # Board package
+  board: !include ../../../../boards/esp32/haza_weather_station_v1.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Weather Sense Basic sensor packages
+  bme280: !include
+    file: ../../../../sensors/i2c/bme280.yaml
+    vars:
+      i2c_address: 0x76
+
+  ds18b20: !include
+    file: ../../../../sensors/one_wire/ds18b20.yaml
+    vars:
+      data_pin: GPIO4
+      sensor_address: ${ds18b20_address}
+
+  ltr390: !include
+    file: ../../../../sensors/i2c/ltr390.yaml
+    vars:
+      i2c_address: 0x53
+
+  # Wind sensor packages
+  wind_speed: !include
+    file: ../../../../sensors/analogue/sparkfun_anemometer.yaml
+    vars:
+      pin: ${wind_speed_pin}
+
+  wind_vane: !include
+    file: ../../../../sensors/analogue/sparkfun_wind_vane.yaml
+    vars:
+      pin: ${wind_vane_pin}
+
+  # Rain sensor package
+  rain_gauge: !include
+    file: ../../../../sensors/analogue/sparkfun_rain_gauge.yaml
+    vars:
+      pin: ${rain_gauge_pin}
+
+################################################################################
+# Project Sensors
+################################################################################
+sensor:
+  - platform: adc
+    id: ${device_internal_name}_battery_voltage
+    name: Battery Voltage
+    icon: mdi:battery-high
+    pin: ${battery_adc_pin}
+    unit_of_measurement: V
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 2
+    attenuation: 12db
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+  - platform: template
+    id: ${device_internal_name}_battery_percentage
+    name: Battery Percentage
+    icon: mdi:battery
+    unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
+    accuracy_decimals: 0
+    lambda: |-
+      float voltage = id(${device_internal_name}_battery_voltage).state;
+      if (isnan(voltage)) {
+        return NAN;
+      }
+
+      float empty = ${battery_empty_voltage};
+      float full = ${battery_full_voltage};
+      float percentage = ((voltage - empty) / (full - empty)) * 100.0;
+      if (percentage < 0.0) {
+        return 0.0;
+      }
+      if (percentage > 100.0) {
+        return 100.0;
+      }
+      return percentage;
+    update_interval: ${device_sampling_time}
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Weather Sense Wind and Rain staged rain bring-up
+
+  project:
+    name: haza.weather_sense_wind_and_rain
+    version: 2026.0.0b
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# UV, particulate matter, lightning, and VOC/eCO2 sensors are intentionally left
+# for later staged Weather Sense variants.

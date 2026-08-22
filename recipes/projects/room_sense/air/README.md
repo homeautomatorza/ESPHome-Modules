@@ -77,12 +77,20 @@ Current stage:
 | --- | --- | --- | --- |
 | BH1750 | VCC | 3V3 | Use 3.3V unless your module explicitly supports another voltage. |
 | BH1750 | GND | GND | Common ground with the ESP32-C6. |
-| BH1750 | SDA | Board I2C SDA | Shared I2C bus from the C6 board package. |
-| BH1750 | SCL | Board I2C SCL | Shared I2C bus from the C6 board package. |
+| BH1750 | SDA | GPIO14 | I2C SDA from `boards/esp32/c6_super_mini.yaml`. |
+| BH1750 | SCL | GPIO18 | I2C SCL from `boards/esp32/c6_super_mini.yaml`. |
 | BME280 | VCC | 3V3 | Use 3.3V unless your module explicitly supports another voltage. |
 | BME280 | GND | GND | Common ground with the ESP32-C6. |
-| BME280 | SDA | Board I2C SDA | Shared I2C bus from the C6 board package. |
-| BME280 | SCL | Board I2C SCL | Shared I2C bus from the C6 board package. |
+| BME280 | SDA | GPIO14 | Shared I2C bus. |
+| BME280 | SCL | GPIO18 | Shared I2C bus. |
+| SGP30 | VCC | 3V3 | Uses BME280 temperature and humidity compensation. |
+| SGP30 | GND | GND | Common ground with the ESP32-C6. |
+| SGP30 | SDA | GPIO14 | Shared I2C bus. |
+| SGP30 | SCL | GPIO18 | Shared I2C bus. |
+| SPS30 | VCC | Module-safe supply | Check your SPS30 board or cable. |
+| SPS30 | GND | GND | Common ground with the ESP32-C6. |
+| SPS30 | SDA | GPIO14 | Shared I2C bus. |
+| SPS30 | SCL | GPIO18 | Shared I2C bus. |
 
 Expected I2C addresses:
 

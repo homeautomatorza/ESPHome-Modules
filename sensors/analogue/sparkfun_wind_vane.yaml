@@ -43,6 +43,7 @@ sensor:
     attenuation: 12db
     internal: true
     update_interval: 10s #${device_sampling_time}
+    disabled_by_default: true
 
   - platform: resistance
     sensor: wind_direction

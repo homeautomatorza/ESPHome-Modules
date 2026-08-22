@@ -69,6 +69,7 @@ sensor:
     lambda: |-
       return id(${device_internal_name}_wind_speed_kph).state * 0.621371;
     device_class: wind_speed
+    disabled_by_default: true
 
   # Wind Speed in Knots (Template Helper)
   - platform: template
@@ -80,6 +81,7 @@ sensor:
     lambda: |-
       return id(${device_internal_name}_wind_speed_kph).state * 0.539957;
     device_class: wind_speed
+    disabled_by_default: true
 
   # WMO-style 10-minute mean wind speed for Beaufort classification.
   - platform: template
@@ -89,7 +91,6 @@ sensor:
     lambda: return id(${device_internal_name}_wind_speed_kph).state;
     unit_of_measurement: 'km/h'
     update_interval: ${wind_average_update_interval}
-    disabled_by_default: true
     filters:
       - sliding_window_moving_average:
           window_size: ${wind_average_window_size}
@@ -137,8 +138,8 @@ sensor:
     lambda: return id(${device_internal_name}_wind_speed_average_kph).state * 0.621371;
     unit_of_measurement: mph
     update_interval: ${wind_average_update_interval}
-    disabled_by_default: true
     device_class: wind_speed
+    disabled_by_default: true
 
   # WMO-style 10-minute mean wind speed in knots.
   - platform: template

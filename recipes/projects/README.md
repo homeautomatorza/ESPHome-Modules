@@ -22,6 +22,7 @@ together in a real device.
 | Check validation evidence | [Room Sense Basic validation](room_sense/basic/validation.md) | Shows what passed config, compile, physical upload, and live-value checks. |
 | Troubleshoot that build | [Room Sense Basic troubleshooting](room_sense/basic/troubleshooting.md) | Captures known setup, wiring, and runtime checks for the first project. |
 | Browse future families | [Available and Future Projects](#available-and-future-projects) | Shows planned project families without treating them as finished builds. |
+| Restart the weather station | [Weather Sense Basic](weather_sense/basic/README.md) | First modular pass of the older solar weather station hardware. |
 
 ## Status Words
 
@@ -128,7 +129,7 @@ and plants healthy.
 | Hydro Sense Plus | Planned | Adds more reservoir or plant-care signals. |
 | Hydro Sense Max | Planned | Reserved for the fuller hydroponics monitoring build. |
 
-### Weather Sense Series (Planned)
+### [Weather Sense Series](weather_sense/README.md)
 
 The Weather Sense series is planned for local weather and outdoor environment
 monitoring. It should stay practical: useful outdoor readings first, then more
@@ -136,9 +137,12 @@ advanced measurements when the hardware and validation are ready.
 
 | Project | Status | Intended Direction |
 | --- | --- | --- |
-| Weather Sense Basic | Planned | Starting point for local outdoor weather readings. |
-| Weather Sense Plus | Planned | Adds more weather or environmental signals. |
-| Weather Sense Max | Planned | Reserved for the fuller weather station build. |
+| [Weather Sense Basic](weather_sense/basic/README.md) | Beta | ESP32 DevKit style board, BME280, DS18B20, LTR390 UV/light, battery voltage, and sun helpers. |
+| [Weather Sense Wind](weather_sense/wind/README.md) | Beta | Basic plus anemometer and wind vane. |
+| [Weather Sense Wind and Rain](weather_sense/wind_and_rain/README.md) | Beta | Wind plus tipping-bucket rain gauge. |
+| [Weather Sense Air](weather_sense/air/README.md) | Beta, partial hardware pass | Weather Sense Basic plus CCS811 eCO2 and TVOC air-quality sensing; CCS811 detection needs follow-up. |
+| Weather Sense V4.0 | Planned | Future branch based on the Open Green Energy / PCBWay Solar Powered WiFi Weather Station V4.0 design. |
+| Pascal Weather Sense | Planned | Future branch based on Pascal's own weather station board design. |
 
 ### Media Series (Planned)
 
