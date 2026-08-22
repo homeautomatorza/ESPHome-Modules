@@ -23,13 +23,16 @@
 # Notes:
 #     - Use this package for standalone devices that need time without a Home
 #       Assistant connection, such as weather stations and outdoor data loggers.
-#     - Override device_timezone in the device YAML when the project is not in
-#       the default HAZA South Africa timezone.
+#     - Define device_timezone, sntp_server_1, sntp_server_2, and sntp_server_3
+#       in the device YAML or project recipe that includes this package.
 #     - Prefer a trusted nearby Stratum 2 NTP server when you have one available
 #       and permission to use it. Avoid Stratum 1 servers for normal device
 #       clients.
-#     - The default South African NTP Pool servers are a practical public
-#       fallback for HAZA examples and can be overridden per device.
+#     - The South African NTP Pool servers are a practical public fallback for
+#       HAZA examples:
+#         - 0.za.pool.ntp.org
+#         - 1.za.pool.ntp.org
+#         - 2.za.pool.ntp.org
 #     - If a device uses a fixed IP, make sure DNS is configured or override the
 #       SNTP servers with IP addresses.
 # ------------------------------------------------------------------------------
@@ -47,12 +50,6 @@
 #     - Hardware validated: Not yet
 #     - Validation status: Beta, pending validation
 ################################################################################
-
-substitutions:
-  device_timezone: Africa/Johannesburg
-  sntp_server_1: 0.za.pool.ntp.org
-  sntp_server_2: 1.za.pool.ntp.org
-  sntp_server_3: 2.za.pool.ntp.org
 
 time:
   # Get time directly from NTP so the device does not depend on Home Assistant.
