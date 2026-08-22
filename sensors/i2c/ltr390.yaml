@@ -71,28 +71,26 @@ text_sensor:
     name: LTR390 Illuminance Human Readable
     icon: mdi:sunglasses
     lambda: |-
-      std::string brightness = "";
-      int lux = id(${device_internal_name}_ltr390_illuminance).state;
+      float lux = id(${device_internal_name}_ltr390_illuminance).state;
+      if (isnan(lux)) {
+        return std::string("Waiting For Data");
+      }
       if (lux <= 200) {
-        brightness = "Dark";
+        return std::string("Dark");
       }
       else if (lux <= 300) {
-        brightness = "Dim";
+        return std::string("Dim");
       }
       else if (lux <= 500) {
-        brightness = "Ideal";
+        return std::string("Ideal");
       }
       else if (lux <= 750) {
-        brightness = "Bright";
+        return std::string("Bright");
       }
       else if (lux <= 1000) {
-        brightness = "Very Bright";
-      }
-      else if (lux >= 1000) {
-        brightness = "Too Bright";
+        return std::string("Very Bright");
       }
       else {
-        brightness = "Unknown";
+        return std::string("Too Bright");
       }
-      return brightness;
     update_interval: never

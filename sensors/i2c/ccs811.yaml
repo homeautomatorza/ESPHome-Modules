@@ -49,6 +49,7 @@ sensor:
       on_value:
         then:
           - component.update: ${device_internal_name}_eco2
+          - component.update: ${device_internal_name}_ccs811_eco2_classification
       accuracy_decimals: 1
       icon: mdi:molecule-co2
       state_class: measurement
@@ -59,6 +60,7 @@ sensor:
       on_value:
         then:
           - component.update: ${device_internal_name}_tvoc
+          - component.update: ${device_internal_name}_ccs811_tvoc_classification
       accuracy_decimals: 1
       icon: mdi:heat-wave
       state_class: measurement
@@ -96,61 +98,63 @@ sensor:
     disabled_by_default: true
 
 # Human readable sensors
-# text_sensor:
-#   - platform: template
-#     name: "CCS811 eCO2 Classification"
-#     id: ${device_internal_name}_eco2_clasification
-#     icon: "mdi:checkbox-marked-circle-outline"
-#     lambda: |-
-#       float eco2 = id(${device_internal_name}_ccs811_eco2).state;
-#       if (isnan(eco2)) {
-#         return std::string("Waiting For Data");
-#       }
-#       if (eco2 < 400) {
-#         return std::string("Not Available");
-#       }
-#
-#       if (eco2 <= 600) {
-#         return std::string("Excellent");
-#       }
-#       else if (eco2 <= 800) {
-#         return std::string("Good");
-#       }
-#       else if (eco2 <= 1000) {
-#         return std::string("Fair");
-#       }
-#       else if (eco2 <= 1500) {
-#         return std::string("Poor");
-#       }
-#       else {
-#         return std::string("Bad");
-#       }
+text_sensor:
+  - platform: template
+    name: "CCS811 eCO2 Classification"
+    id: ${device_internal_name}_ccs811_eco2_classification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      float eco2 = id(${device_internal_name}_ccs811_eco2).state;
+      if (isnan(eco2)) {
+        return std::string("Waiting For Data");
+      }
+      if (eco2 < 400) {
+        return std::string("Not Available");
+      }
 
-  # - platform: template
-  #   name: "CCS811 TVOC Level"
-  #   id: ${device_internal_name}_tvoc_clasification
-  #   icon: "mdi:checkbox-marked-circle-outline"
-  #   lambda: |-
-  #     float tvoc = id(${device_internal_name}_ccs811_tvoc).state;
-  #     if (isnan(tvoc)) {
-  #       return std::string("Waiting For Data");
-  #     }
-  #     if (tvoc < 0) {
-  #       return std::string("Not Available");
-  #     }
-  #
-  #     if (tvoc <= 300) {
-  #       return std::string("Low");
-  #     }
-  #     else if (tvoc <= 1000) {
-  #       return std::string("Moderate");
-  #     }
-  #     else if (tvoc <= 3000) {
-  #       return std::string("Elevated");
-  #     }
-  #     else if (tvoc <= 10000) {
-  #       return std::string("High");
-  #     }
-  #     else {
-  #       return std::string("Very High");
-  #     }
+      if (eco2 <= 600) {
+        return std::string("Excellent");
+      }
+      else if (eco2 <= 800) {
+        return std::string("Good");
+      }
+      else if (eco2 <= 1000) {
+        return std::string("Fair");
+      }
+      else if (eco2 <= 1500) {
+        return std::string("Poor");
+      }
+      else {
+        return std::string("Bad");
+      }
+    update_interval: never
+
+  - platform: template
+    name: "CCS811 TVOC Level"
+    id: ${device_internal_name}_ccs811_tvoc_classification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      float tvoc = id(${device_internal_name}_ccs811_tvoc).state;
+      if (isnan(tvoc)) {
+        return std::string("Waiting For Data");
+      }
+      if (tvoc < 0) {
+        return std::string("Not Available");
+      }
+
+      if (tvoc <= 300) {
+        return std::string("Low");
+      }
+      else if (tvoc <= 1000) {
+        return std::string("Moderate");
+      }
+      else if (tvoc <= 3000) {
+        return std::string("Elevated");
+      }
+      else if (tvoc <= 10000) {
+        return std::string("High");
+      }
+      else {
+        return std::string("Very High");
+      }
+    update_interval: never
