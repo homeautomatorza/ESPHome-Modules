@@ -97,7 +97,7 @@ sensor:
         } else if (speed < 75) {
           text_sensor->publish_state("Gale");
         } else if (speed < 89) {
-          text_sensor->publish_state("Severe Gale");
+          text_sensor->publish_state("Strong Gale");
         } else if (speed < 103) {
           text_sensor->publish_state("Storm");
         } else if (speed < 118) {

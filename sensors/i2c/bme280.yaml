@@ -74,7 +74,7 @@ sensor:
     name: BME280 Temperature (F)
     icon: mdi:temperature-fahrenheit
     unit_of_measurement: '°F'
-    lambda: return id(${device_internal_name}_bme280_temperature_c).state * 9/5+32;
+    lambda: return id(${device_internal_name}_bme280_temperature).state * 9/5+32;
     device_class: temperature
     update_interval: never
     disabled_by_default: true
