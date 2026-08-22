@@ -59,10 +59,21 @@ sensor:
       - multiply: 0.04
     device_class: wind_speed
 
-  # Wind Speed in Knots (Template Helper)      
+  # Wind Speed in MPH (Template Helper)
+  - platform: template
+    name: Wind Speed (MPH)
+    id: ${device_internal_name}_wind_speed_mph
+    icon: mdi:weather-windy
+    unit_of_measurement: mph
+    update_interval: ${wind_speed_update_interval}
+    lambda: |-
+      return id(${device_internal_name}_wind_speed_kph).state * 0.621371;
+    device_class: wind_speed
+
+  # Wind Speed in Knots (Template Helper)
   - platform: template
     name: Wind Speed (Knots)
-    id: ${device_internal_name}_wind_meter_knot
+    id: ${device_internal_name}_wind_speed_knots
     icon: mdi:weather-windy
     unit_of_measurement: knots
     update_interval: ${wind_speed_update_interval}
@@ -72,9 +83,9 @@ sensor:
 
   # WMO-style 10-minute mean wind speed for Beaufort classification.
   - platform: template
-    name: 'Wind Speed Average'
+    name: 'Wind Speed Average (KPH)'
     icon: 'mdi:weather-windy'
-    id: ${device_internal_name}_wind_meter_avg
+    id: ${device_internal_name}_wind_speed_average_kph
     lambda: return id(${device_internal_name}_wind_speed_kph).state;
     unit_of_measurement: 'km/h'
     update_interval: ${wind_average_update_interval}
@@ -117,6 +128,28 @@ sensor:
         } else {
           text_sensor->publish_state("Hurricane Force");
         }
+
+  # WMO-style 10-minute mean wind speed in MPH.
+  - platform: template
+    name: 'Wind Speed Average (MPH)'
+    icon: 'mdi:weather-windy'
+    id: ${device_internal_name}_wind_speed_average_mph
+    lambda: return id(${device_internal_name}_wind_speed_average_kph).state * 0.621371;
+    unit_of_measurement: mph
+    update_interval: ${wind_average_update_interval}
+    disabled_by_default: true
+    device_class: wind_speed
+
+  # WMO-style 10-minute mean wind speed in knots.
+  - platform: template
+    name: 'Wind Speed Average (Knots)'
+    icon: 'mdi:weather-windy'
+    id: ${device_internal_name}_wind_speed_average_knots
+    lambda: return id(${device_internal_name}_wind_speed_average_kph).state * 0.539957;
+    unit_of_measurement: knots
+    update_interval: ${wind_average_update_interval}
+    disabled_by_default: true
+    device_class: wind_speed
 
 text_sensor:
   # Beaufort Output
