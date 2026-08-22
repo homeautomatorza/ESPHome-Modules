@@ -39,6 +39,7 @@ sensor:
     id: wind_direction
     pin: ${pin}
     name: ADC wind
+    icon: mdi:sine-wave
     attenuation: 12db
     internal: true
     update_interval: 10s #${device_sampling_time}
@@ -161,6 +162,7 @@ sensor:
   - platform: template
     name: "Wind Heading"
     id: ${device_internal_name}_wind_heading
+    icon: mdi:compass
     unit_of_measurement: "°"
     device_class: wind_direction
 
@@ -168,3 +170,4 @@ text_sensor:
   - platform: template
     name: "Wind Cardinal Direction"
     id: ${device_internal_name}_wind_cardinal_direction
+    icon: mdi:compass-outline

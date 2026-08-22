@@ -52,6 +52,7 @@ sensor:
     pressure:
       id: ${device_internal_name}_bme280_pressure_internal
       name: BME280 Atmospheric Pressure RAW
+      icon: mdi:gauge
       on_value:
         then:
           - component.update: ${device_internal_name}_bme280_pressure
