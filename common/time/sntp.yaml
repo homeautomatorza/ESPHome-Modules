@@ -18,11 +18,18 @@
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/time/index.html
 # Reference: https://esphome.io/components/time/sntp.html
+# Reference: https://support.ntp.org/Servers/RulesOfEngagement
+# Reference: https://support.ntp.org/Servers/NTPPoolServers
 # Notes:
 #     - Use this package for standalone devices that need time without a Home
 #       Assistant connection, such as weather stations and outdoor data loggers.
 #     - Override device_timezone in the device YAML when the project is not in
 #       the default HAZA South Africa timezone.
+#     - Prefer a trusted nearby Stratum 2 NTP server when you have one available
+#       and permission to use it. Avoid Stratum 1 servers for normal device
+#       clients.
+#     - The default South African NTP Pool servers are a practical public
+#       fallback for HAZA examples and can be overridden per device.
 #     - If a device uses a fixed IP, make sure DNS is configured or override the
 #       SNTP servers with IP addresses.
 # ------------------------------------------------------------------------------
