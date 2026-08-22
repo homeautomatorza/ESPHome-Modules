@@ -25,6 +25,10 @@
 # References: https://esphome.io/components/sensor/ltr390.html
 # References: https://esphome.io/components/text_sensor/index.html
 # References: https://esphome.io/components/text_sensor/template.html
+# References: https://www.iso.org/standard/76342.html
+# References: https://ies.org/standards/lighting-library/illuminance-selector-faqs/
+# References: https://www.who.int/news-room/questions-and-answers/item/radiation-the-ultraviolet-%28uv%29-index
+# References: https://www.icnirp.org/en/applications/uv-index/uv-index.html
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
@@ -43,6 +47,9 @@ sensor:
     uv_index:
       id: ${device_internal_name}_ltr390_uv_index
       name: LTR390 UV Index
+      on_value:
+        then:
+          component.update: ${device_internal_name}_ltr390_uv_exposure_readable
       state_class: measurement
     uv:
       id: ${device_internal_name}_ltr390_uv
@@ -75,22 +82,57 @@ text_sensor:
       if (isnan(lux)) {
         return std::string("Waiting For Data");
       }
-      if (lux <= 200) {
-        return std::string("Dark");
+
+      std::string brightness = "";
+      if (lux <= 100) {
+        brightness = "Very Low";
+      }
+      else if (lux <= 200) {
+        brightness = "Low";
       }
       else if (lux <= 300) {
-        return std::string("Dim");
+        brightness = "Basic";
       }
       else if (lux <= 500) {
-        return std::string("Ideal");
+        brightness = "General";
       }
       else if (lux <= 750) {
-        return std::string("Bright");
+        brightness = "Task";
       }
       else if (lux <= 1000) {
-        return std::string("Very Bright");
+        brightness = "Detailed Task";
       }
       else {
-        return std::string("Too Bright");
+        brightness = "High";
+      }
+      return brightness;
+    update_interval: never
+
+  - platform: template
+    id: ${device_internal_name}_ltr390_uv_exposure_readable
+    name: LTR390 UV Exposure Level
+    icon: mdi:weather-sunny-alert
+    lambda: |-
+      float uv_index = id(${device_internal_name}_ltr390_uv_index).state;
+      if (isnan(uv_index)) {
+        return std::string("Waiting For Data");
+      }
+      if (uv_index < 0) {
+        return std::string("Not Available");
+      }
+      if (uv_index <= 2) {
+        return std::string("Low");
+      }
+      else if (uv_index <= 5) {
+        return std::string("Moderate");
+      }
+      else if (uv_index <= 7) {
+        return std::string("High");
+      }
+      else if (uv_index <= 10) {
+        return std::string("Very High");
+      }
+      else {
+        return std::string("Extreme");
       }
     update_interval: never
