@@ -25,10 +25,12 @@ a board file.
 | Board | Variant | File |
 | --- | --- | --- |
 | Espressif ESP32-C3 Super Mini v1 F4/P0 | ESP32-C3 | [esphome_c3_f4p0_super_mini_boilerplate.yaml](esphome_c3_f4p0_super_mini_boilerplate.yaml) |
+| DFRobot FireBeetle 2 ESP32-C5 v1.0 F4/P0 | ESP32-C5 | [esphome_c5_f4p0_firebeetle_2_boilerplate.yaml](esphome_c5_f4p0_firebeetle_2_boilerplate.yaml) |
 | DFRobot FireBeetle 2 ESP32-C6 v1.0 F4/P0 | ESP32-C6 | [esphome_c6_f4p0_firebeetle_2_boilerplate.yaml](esphome_c6_f4p0_firebeetle_2_boilerplate.yaml) |
 | Super Mini ESP32-C6 v1.0 F4/P0 | ESP32-C6 | [esphome_c6_f4p0_super_mini_boilerplate.yaml](esphome_c6_f4p0_super_mini_boilerplate.yaml) |
 | DFRobot FireBeetle 2 ESP32-E N4 F4/P0 | ESP32-E | [esphome_esp32_f4p0_firebeetle_2_e_boilerplate.yaml](esphome_esp32_f4p0_firebeetle_2_e_boilerplate.yaml) |
 | DFRobot FireBeetle 2 ESP32-E N16R2 F16/P2 | ESP32-E | [esphome_esp32_f16p2_firebeetle_2_e_boilerplate.yaml](esphome_esp32_f16p2_firebeetle_2_e_boilerplate.yaml) |
+| DFRobot FireBeetle 2 ESP32-P4 AI Vision F16/P32 with hosted ESP32-C6 | ESP32-P4 + ESP32-C6 | [esphome_p4_f16p32_firebeetle_2_ai_vision_c6_boilerplate.yaml](esphome_p4_f16p32_firebeetle_2_ai_vision_c6_boilerplate.yaml) |
 | Espressif ESP32-S3 Super Mini v2 F4/P2 | ESP32-S3 | [esphome_s3_f4p2_super_mini_v2_boilerplate.yaml](esphome_s3_f4p2_super_mini_v2_boilerplate.yaml) |
 | DFRobot FireBeetle 2 ESP32-S3 N16R8 F16/P8 | ESP32-S3 | [esphome_s3_f16p8_firebeetle_2_boilerplate.yaml](esphome_s3_f16p8_firebeetle_2_boilerplate.yaml) |
 

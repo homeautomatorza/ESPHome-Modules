@@ -1,0 +1,125 @@
+---
+author: Pascal Parent
+version: 2026.0.0
+classification: boilerplate
+status: hardware_validated_bare_board
+labels:
+  - recipe
+  - boilerplate
+  - esp32_c5
+  - firebeetle_2
+minimum_esphome: 2026.7.3
+recommended_esphome: 2026.8.0
+---
+################################################################################
+# FireBeetle 2 ESP32-C5 F4/P0 Boilerplate Device File
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/boilerplates/esphome_c5_f4p0_firebeetle_2_boilerplate.yaml
+# Version: 2026.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.3
+#     - Recommended ESPHome: 2026.8 beta or newer
+#     - Config validated: ESPHome 2026.7.3 and 2026.8.0
+#     - Compile validated: ESPHome 2026.7.3 and 2026.8.0
+#     - Hardware validated: Bare-board bring-up, 2026-08-24
+#     - Validation status: Passed compile, serial upload, log check, and web
+#       check on a physical FireBeetle 2 ESP32-C5 with no external peripherals
+#       attached.
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - DFRobot FireBeetle 2 ESP32-C5 F4/P0
+#         - Enabled hardware and services:
+#             - WiFi
+#             - Web server
+#             - I2C
+#             - UART
+#             - SPI
+# ------------------------------------------------------------------------------
+# References:
+#     - https://wiki.dfrobot.com/dfr1222/
+#     - https://www.dfrobot.com/product-2976.html
+#     - https://esphome.io/components/esp32.html
+# ------------------------------------------------------------------------------
+# Usage:
+#   Copy this boilerplate into the ESPHome root folder and rename it for the
+#   intended device. Keep it beside `boards/`, `common/`, `peripherals`, and
+#   `sensors`, then adjust the substitutions before compiling.
+# ------------------------------------------------------------------------------
+# This boilerplate exposes:
+#   - ESPHome base settings
+#   - Home Assistant time
+#   - WiFi and web server support
+#   - FireBeetle 2 ESP32-C5 F4/P0 board support
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Public boilerplates use dynamic IP addressing.
+#     - The board status LED shares GPIO15 with the DFRobot GDI LCD backlight.
+#       Remove the status LED if a project uses that backlight.
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: esphome_firebeetle_2_esp32_c5
+  device_wifi_name: esphome-firebeetle-2-esp32-c5
+  device_friendly_name: ESPHome FireBeetle 2 ESP32-C5 F4 P0
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../boards/esp32/c5_firebeetle_2.yaml
+
+  # Core packages
+  settings: !include ../../common/core/settings.yaml
+  time: !include ../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../common/network/webserver.yaml
+
+  # Peripheral packages
+  # Add reusable peripheral packages here.
+
+  # Sensor packages
+  # Add reusable sensor packages here.
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.3
+  comment: FireBeetle 2 ESP32-C5 F4/P0 boilerplate
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+# Remove or override package defaults here.
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add device-specific local YAML here.
