@@ -29,11 +29,22 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
-#     - Config validated: ESPHome 2026.7.3
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Recommended ESPHome: 2026.8.1 or newer
+#     - Config validated: ESPHome 2026.8.1
+#     - Compile validated: ESPHome 2026.8.1
+#     - Hardware validated: Hydro Sense Basic validation device, 2026-08-25
+#     - Validation status: Hardware validated with a level-shifted SEN0204 /
+#       XKC-Y25-T12V sensor on GPIO1. Observed polarity is true = liquid
+#       detected and false = no liquid detected.
+# ------------------------------------------------------------------------------
+# Electrical note:
+#     - SEN0204 / XKC-Y25-T12V output high follows the sensor input voltage.
+#       Use a level shifter or confirm a 3.3 V-safe output before connecting to
+#       an ESP32 GPIO.
+# ------------------------------------------------------------------------------
+# Runtime note:
+#     - The retained light debounce allows quick liquid detection and gives the
+#       no-liquid state a short settling delay.
 ################################################################################
 binary_sensor:
   - platform: gpio
@@ -41,3 +52,6 @@ binary_sensor:
     id: ${device_internal_name}_water_level
     icon: mdi:hydraulic-oil-level
     pin: ${pin}
+    filters:
+      - delayed_on: 50ms
+      - delayed_off: 1s

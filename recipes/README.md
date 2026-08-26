@@ -35,7 +35,11 @@ Projects are the main end-to-end examples. Samples are smaller and more
 experimental. Boilerplates are the clean starting point when you already know
 what you want to build.
 
-Current validation evidence for Room Sense Basic lives in the project folder.
+Current validation evidence lives beside each project. Room Sense Basic carries
+its own hardware notes, and SmartPad EM32 has joined the cookbook as an OTA,
+web, and log-smoke-tested smart plug migration while relay, button, LED,
+known-load metering, overload, and longer Bluetooth stability checks continue.
+
 BH1750 illuminance and Wi-Fi signal labels have both been OTA revalidated after
 their label updates.
 

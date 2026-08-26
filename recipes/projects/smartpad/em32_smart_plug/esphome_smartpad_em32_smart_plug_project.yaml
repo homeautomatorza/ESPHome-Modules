@@ -1,0 +1,121 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: project
+status: ota_web_log_validated_needs_function_tests
+labels:
+  - recipe
+  - project
+  - smartpad
+  - em32
+  - smart_plug
+  - esp32_c3
+  - bluetooth_proxy
+  - repo_first
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.7.3
+---
+################################################################################
+# HAZA SmartPad EM32 Smart Plug Project
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/smartpad/em32_smart_plug/README.md
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.8.1
+#     - Compile validated: ESPHome 2026.8.1
+#     - Physical OTA validated: Watt the Actual development plug, 2026-08-26
+#     - Log/API validated: Watt the Actual development plug, 2026-08-26
+#     - Web UI validated: Watt the Actual development plug, 2026-08-26
+#     - Full hardware validation: Relay, button, LEDs, metering calibration,
+#       overload cutoff, and longer BLE stability still pending
+#     - Validation status: OTA/web/log smoke validated; function tests pending
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - Device:
+#         - SmartPad EM32 ESP32-C3 energy monitoring smart plug
+#     - Services:
+#         - Wi-Fi
+#         - Encrypted Home Assistant API
+#         - OTA
+#         - Web server
+#         - Bluetooth proxy and BLE tracker
+# ------------------------------------------------------------------------------
+# References:
+#     - https://github.com/Smartpadza/Device_Configs
+#     - github://Smartpadza/Device_Configs/smartpad-em32-smart-plug.yaml
+#     - https://esphome.io/components/sensor/hlw8012.html
+#     - https://esphome.io/components/bluetooth_proxy.html
+# ------------------------------------------------------------------------------
+# Usage:
+#   Compile this project from its recipe folder inside the repository. If you
+#   copy only this YAML file into an ESPHome root folder, adjust the package
+#   paths to match the new location before compiling.
+# ------------------------------------------------------------------------------
+# This project exposes:
+#   - relay outlet switch
+#   - physical power button
+#   - voltage, current, power, energy, and daily energy sensors
+#   - calibration number entities
+#   - overload count diagnostic sensor
+#   - standard Wi-Fi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
+#   - Bluetooth proxy and BLE tracking from the shared framework package
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_smartpad_em32_smart_plug
+  device_wifi_name: watt-the-actual
+  device_friendly_name: Watt the Actual
+  device_sampling_time: 10s
+  device_timezone: Africa/Johannesburg
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../../../boards/esp32/c3_basic.yaml
+
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+  bluetooth: !include ../../../../common/network/bluetooth.yaml
+
+  # Project-local package
+  smartpad_em32: !include packages/em32_smart_plug.yaml
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: SmartPad EM32 framework migration scaffold
+
+  project:
+    name: haza.smartpad_em32_smart_plug
+    version: 2026.0.0b
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# SmartPad-specific logic lives in packages/em32_smart_plug.yaml until hardware
+# testing shows which parts should become reusable framework packages.

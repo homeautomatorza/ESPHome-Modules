@@ -117,7 +117,7 @@ features, limit switches, obstruction detection, and local regulations. Sonoff
 Basic conversions should be treated as mains-powered projects and documented
 with the exact model, load limits, wiring, enclosure, and validation evidence.
 
-### Hydro Sense Series (Planned)
+### [Hydro Sense Series](hydro_sense/README.md)
 
 The Hydro Sense series is planned for hydroponics and water-based growing
 systems. It will focus on the measurements that help keep a reservoir stable
@@ -125,7 +125,7 @@ and plants healthy.
 
 | Project | Status | Intended Direction |
 | --- | --- | --- |
-| Hydro Sense Basic | Planned | Starting point for water and environment monitoring. |
+| [Hydro Sense Basic](hydro_sense/basic/README.md) | Scaffold | Placeholder project folder, waiting for Pascal's hardware and behavior brief. |
 | Hydro Sense Plus | Planned | Adds more reservoir or plant-care signals. |
 | Hydro Sense Max | Planned | Reserved for the fuller hydroponics monitoring build. |
 

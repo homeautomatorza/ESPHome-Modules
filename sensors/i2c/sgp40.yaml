@@ -30,15 +30,15 @@
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.6.0 or newer
-#     - Config validated: ESPHome 2026.7.3
+#     - Recommended ESPHome: 2026.8.1 or newer
+#     - Config validated: ESPHome 2026.7.3 and 2026.8.1
 #     - Compile validated: ESPHome 2026.7.3
 #     - Hardware validated: Not yet
 #     - Validation status: Needs validation
 ################################################################################
 sensor:
   - platform: sgp4x
-    voc:
+    voc_index:
       id: ${device_internal_name}_voc_index
       name: "VOC Index"
       state_class: measurement

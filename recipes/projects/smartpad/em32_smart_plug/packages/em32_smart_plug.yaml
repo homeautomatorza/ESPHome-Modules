@@ -1,0 +1,332 @@
+################################################################################
+# SmartPad EM32 Energy Monitoring Smart Plug
+################################################################################
+# Author: SmartPad ZA, Pascal Parent
+# Web: https://github.com/Smartpadza/Device_Configs
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/smartpad/em32_smart_plug/packages/em32_smart_plug.yaml
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This package is based on the SmartPad EM32 upstream configuration and is being
+# adapted for the HAZA ESPHome Modular Framework.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Specifications:
+#     - ESP32-C3 module
+#     - 4 MB flash
+#     - BL0937/HLW8012 compatible energy monitoring
+#     - Relay controlled outlet
+#     - Physical power button
+#     - Status and relay LEDs
+# ------------------------------------------------------------------------------
+# References:
+#     - https://github.com/Smartpadza/Device_Configs
+#     - github://Smartpadza/Device_Configs/smartpad-em32-smart-plug.yaml
+#     - https://esphome.io/components/sensor/hlw8012.html
+#     - https://esphome.io/components/switch/gpio.html
+#     - https://esphome.io/components/binary_sensor/gpio.html
+# ------------------------------------------------------------------------------
+# This package exposes:
+#     - relay outlet switch
+#     - physical power button
+#     - voltage, current, power, energy, and total daily energy sensors
+#     - relay restore mode selector
+#     - calibration number entities
+#     - overload count diagnostic sensor
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Device identity, board configuration, Wi-Fi, API encryption, OTA, logger,
+#       web server, time, and Bluetooth are intentionally owned by the project
+#       YAML and shared framework packages.
+#     - GPIO assignments are copied from the upstream SmartPad EM32 config and
+#       must be checked on the physical development plug before broad use.
+################################################################################
+
+################################################################################
+# Substitution Variables
+################################################################################
+substitutions:
+  smartpad_project_name: SmartPad.Energy Metering Smart Plug ESP32
+  smartpad_project_version: v1.0.3
+  smartpad_device_description: SmartPad ESP32-C3 energy monitoring smart plug
+  smartpad_sensor_update_interval: 10s
+  smartpad_relay_restore_mode: RESTORE_DEFAULT_ON
+  smartpad_current_limit: "16"
+  smartpad_hide_energy_sensor: "false"
+  smartpad_power_plug_type: power-socket-fr
+  smartpad_voltage_divider: "1518.4"
+  smartpad_current_resistor: "0.000948"
+  smartpad_current_multiply: "0.868"
+
+################################################################################
+# ESPHome Metadata
+################################################################################
+esphome:
+  comment: ${smartpad_device_description}
+  project:
+    name: ${smartpad_project_name}
+    version: ${smartpad_project_version}
+  on_boot:
+    - priority: 600
+      then:
+        - select.set_index:
+            id: ${device_internal_name}_smartpad_power_mode
+            index: !lambda |-
+              return id(${device_internal_name}_smartpad_restore_mode);
+        - lambda: |-
+            int mode = id(${device_internal_name}_smartpad_restore_mode);
+            switch (mode) {
+              case 0:
+                id(${device_internal_name}_smartpad_relay).turn_off();
+                break;
+              case 1:
+                id(${device_internal_name}_smartpad_relay).turn_on();
+                break;
+              case 2:
+                break;
+              default:
+                id(${device_internal_name}_smartpad_relay).turn_off();
+                break;
+            }
+            id(${device_internal_name}_smartpad_power_sensor).set_voltage_divider(id(${device_internal_name}_smartpad_voltage_divider_number).state);
+            id(${device_internal_name}_smartpad_power_sensor).set_current_resistor(id(${device_internal_name}_smartpad_current_resistor_number).state);
+            id(${device_internal_name}_smartpad_power_sensor).setup();
+
+################################################################################
+# Preferences
+################################################################################
+preferences:
+  flash_write_interval: 5min
+
+################################################################################
+# Globals
+################################################################################
+globals:
+  - id: ${device_internal_name}_smartpad_restore_mode
+    type: int
+    restore_value: yes
+    initial_value: "2"
+
+  - id: ${device_internal_name}_smartpad_overload_count
+    type: int
+    restore_value: no
+    initial_value: "0"
+
+  - id: ${device_internal_name}_smartpad_current_multiply
+    type: float
+    restore_value: yes
+    initial_value: ${smartpad_current_multiply}
+
+################################################################################
+# Selects
+################################################################################
+select:
+  - platform: template
+    id: ${device_internal_name}_smartpad_power_mode
+    name: Power On State
+    optimistic: true
+    icon: mdi:electric-switch
+    initial_option: Restore Previous State
+    options:
+      - Always Off
+      - Always On
+      - Restore Previous State
+    on_value:
+      then:
+        - lambda: |-
+            id(${device_internal_name}_smartpad_restore_mode) = i;
+
+################################################################################
+# Lights
+################################################################################
+light:
+  - platform: status_led
+    id: ${device_internal_name}_smartpad_status_light
+    output: ${device_internal_name}_smartpad_status_led
+
+################################################################################
+# Outputs
+################################################################################
+output:
+  - platform: gpio
+    id: ${device_internal_name}_smartpad_status_led
+    pin:
+      number: GPIO6
+      inverted: true
+
+  - platform: gpio
+    id: ${device_internal_name}_smartpad_relay_led
+    pin:
+      number: GPIO1
+      inverted: true
+
+################################################################################
+# Switches
+################################################################################
+switch:
+  - platform: gpio
+    id: ${device_internal_name}_smartpad_relay
+    name: Switch
+    icon: mdi:${smartpad_power_plug_type}
+    device_class: outlet
+    pin: GPIO4
+    restore_mode: ${smartpad_relay_restore_mode}
+    on_turn_on:
+      - output.turn_on: ${device_internal_name}_smartpad_relay_led
+    on_turn_off:
+      - output.turn_off: ${device_internal_name}_smartpad_relay_led
+
+################################################################################
+# Numbers
+################################################################################
+number:
+  - platform: template
+    id: ${device_internal_name}_smartpad_voltage_divider_number
+    name: Voltage Divider
+    optimistic: true
+    min_value: 1
+    max_value: 4000
+    step: 1
+    unit_of_measurement: ohms
+    initial_value: ${smartpad_voltage_divider}
+    restore_value: true
+    entity_category: config
+    disabled_by_default: true
+    mode: box
+    on_value:
+      then:
+        - lambda: |-
+            id(${device_internal_name}_smartpad_power_sensor).set_voltage_divider(x);
+            id(${device_internal_name}_smartpad_power_sensor).setup();
+
+  - platform: template
+    id: ${device_internal_name}_smartpad_current_resistor_number
+    name: Current Resistor
+    optimistic: true
+    min_value: 0
+    max_value: 0.01
+    step: 0.0001
+    unit_of_measurement: ohms
+    initial_value: ${smartpad_current_resistor}
+    restore_value: true
+    entity_category: config
+    disabled_by_default: true
+    mode: box
+    on_value:
+      then:
+        - lambda: |-
+            id(${device_internal_name}_smartpad_power_sensor).set_current_resistor(x);
+            id(${device_internal_name}_smartpad_power_sensor).setup();
+
+  - platform: template
+    id: ${device_internal_name}_smartpad_current_multiply_number
+    name: Current Multiplier
+    optimistic: true
+    min_value: 0.1
+    max_value: 5.0
+    step: 0.1
+    initial_value: ${smartpad_current_multiply}
+    restore_value: true
+    entity_category: config
+    disabled_by_default: true
+    mode: box
+    on_value:
+      then:
+        - lambda: |-
+            id(${device_internal_name}_smartpad_current_multiply) = x;
+
+################################################################################
+# Sensors
+################################################################################
+sensor:
+  - platform: hlw8012
+    id: ${device_internal_name}_smartpad_power_sensor
+    model: BL0937
+    cf_pin: GPIO7
+    cf1_pin: GPIO3
+    sel_pin:
+      number: GPIO5
+      inverted: true
+    change_mode_every: 8
+    current_resistor: ${smartpad_current_resistor}
+    voltage_divider: ${smartpad_voltage_divider}
+    update_interval: 10s
+    voltage:
+      id: ${device_internal_name}_smartpad_voltage
+      name: Voltage
+      icon: mdi:sine-wave
+      filters:
+        - throttle_average: ${smartpad_sensor_update_interval}
+    current:
+      id: ${device_internal_name}_smartpad_current
+      name: Current
+      filters:
+        - multiply: !lambda return id(${device_internal_name}_smartpad_current_multiply);
+      on_value_range:
+        - above: ${smartpad_current_limit}
+          then:
+            - delay: 5s
+            - switch.turn_off: ${device_internal_name}_smartpad_relay
+            - lambda: |-
+                id(${device_internal_name}_smartpad_overload_count) += 1;
+    power:
+      id: ${device_internal_name}_smartpad_power
+      name: Power
+      icon: mdi:power
+      filters:
+        - throttle_average: ${smartpad_sensor_update_interval}
+        - lambda: |-
+            if (x < 3.0) {
+              return 0.0;
+            }
+            return x;
+    energy:
+      id: ${device_internal_name}_smartpad_energy
+      name: Energy
+      icon: mdi:lightning-bolt
+      unit_of_measurement: kWh
+      disabled_by_default: ${smartpad_hide_energy_sensor}
+      filters:
+        - throttle: ${smartpad_sensor_update_interval}
+        - multiply: 0.001
+
+  - platform: total_daily_energy
+    id: ${device_internal_name}_smartpad_daily_energy
+    name: Total Energy
+    power_id: ${device_internal_name}_smartpad_power
+    filters:
+      - multiply: 0.001
+    unit_of_measurement: kWh
+    icon: mdi:lightning-bolt-circle
+    accuracy_decimals: 3
+
+  - platform: template
+    id: ${device_internal_name}_smartpad_overload_count_sensor
+    name: Overload Count
+    icon: mdi:counter
+    entity_category: diagnostic
+    accuracy_decimals: 0
+    lambda: |-
+      return id(${device_internal_name}_smartpad_overload_count);
+
+################################################################################
+# Binary Sensors
+################################################################################
+binary_sensor:
+  - platform: gpio
+    id: ${device_internal_name}_smartpad_power_button
+    name: Power Button
+    disabled_by_default: true
+    pin:
+      number: GPIO20
+      mode: INPUT_PULLUP
+      inverted: true
+    filters:
+      - delayed_on: 50ms
+    on_multi_click:
+      - timing:
+          - ON for at most 1s
+          - OFF for at least 0.2s
+        then:
+          - switch.toggle: ${device_internal_name}_smartpad_relay
