@@ -1,0 +1,119 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: boilerplate
+status: needs_validation
+labels:
+  - recipe
+  - boilerplate
+  - esp32_c3
+  - super_mini
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.7.3
+---
+################################################################################
+# ESP32-C3 Super Mini Boilerplate Device File
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/boilerplates/esphome_c3_f4p0_super_mini_boilerplate.yaml
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Not recorded for this revision
+#     - Validation status: Needs validation
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - ESP32-C3 Super Mini
+#         - Enabled hardware and services:
+#             - WiFi
+#             - Web server
+# ------------------------------------------------------------------------------
+# References:
+#     - https://www.espboards.dev/esp32/esp32-c3-super-mini/
+#     - https://esphome.io/components/esp32.html
+# ------------------------------------------------------------------------------
+# Usage:
+#   Copy this boilerplate into the ESPHome root folder and rename it for the
+#   intended device. Keep it beside `boards/`, `common/`, `peripherals/`, and
+#   `sensors/`, then adjust the substitutions before compiling.
+# ------------------------------------------------------------------------------
+# This boilerplate exposes:
+#   - ESPHome base settings
+#   - Home Assistant time
+#   - WiFi and web server support
+#   - ESP32-C3 Super Mini board support
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Package paths are relative to a device file in the ESPHome root folder.
+#     - Public boilerplates use dynamic IP addressing.
+#     - The board status LED is removed by this boilerplate.
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: esphome_c3_super_mini
+  device_wifi_name: esphome-c3-super-mini
+  device_friendly_name: ESPHome ESP32-C3 Super Mini
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include boards/esp32/c3_super_mini.yaml
+
+  # Core packages
+  settings: !include common/core/settings.yaml
+  time: !include common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include common/network/wifi.yaml
+  wifi_dynamic: !include common/network/wifi_dynamicip.yaml
+  webserver: !include common/network/webserver.yaml
+
+  # Peripheral packages
+  # Add reusable peripheral packages here.
+
+  # Sensor packages
+  # Add reusable sensor packages here.
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: ESP32-C3 Super Mini boilerplate
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add device-specific local YAML here.

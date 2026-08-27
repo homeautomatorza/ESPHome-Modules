@@ -1,0 +1,184 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: project
+status: beta_hardware_validated_with_known_issue
+labels:
+  - recipe
+  - project
+  - weather_sense
+  - esp32
+  - repo_first
+  - staged_bringup
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.8.0
+---
+################################################################################
+# HAZA Weather Sense Basic Project
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/projects/weather_sense/basic/README.md
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.8 beta or newer
+#     - Config validated: ESPHome 2026.7.3 and ESPHome 2026.8 beta
+#     - Compile validated: ESPHome 2026.7.3 and ESPHome 2026.8 beta
+#     - Hardware validated: Partial pass, 2026-08-22
+#     - Validation status: Beta. Built from the historical flat weather station
+#       config and existing framework packages. Compile, serial upload, log
+#       check, and web check pass. The light/UV package has been corrected to
+#       LTR390 after Pascal confirmed the board uses an LTR390 at I2C address
+#       0x53, not a BH1750.
+# ------------------------------------------------------------------------------
+# Bill of Materials For This Stage:
+#     - Board:
+#         - ESP32 DevKit style board matching the historical flat config
+#     - Sensors:
+#         - BME280 temperature, humidity, pressure, and dew point sensor on
+#           I2C address 0x76
+#         - DS18B20 external temperature sensor on GPIO4
+#         - LTR390 UV and ambient light sensor on I2C address 0x53
+#         - Battery voltage divider on GPIO33
+#     - Helpers:
+#         - Sun position helpers using user-supplied latitude and longitude
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/bme280.html
+#     - https://esphome.io/components/sensor/dallas_temp.html
+#     - https://esphome.io/components/sensor/ltr390.html
+#     - https://esphome.io/components/sensor/adc.html
+#     - https://esphome.io/components/sun.html
+#     - https://www.opengreenenergy.com/solar-powered-wifi-weather-station-v3-0/
+# ------------------------------------------------------------------------------
+# This staged project exposes:
+#   - BME280 temperature, humidity, atmospheric pressure, and dew point
+#   - DS18B20 external temperature
+#   - LTR390 UV index, UV, light, ambient light, and human-readable illuminance label
+#   - battery voltage and estimated battery percentage
+#   - sun elevation, azimuth, next sunrise, and next sunset
+#   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_weather_sense_basic
+  device_wifi_name: haza-weather-sense-basic
+  device_friendly_name: HAZA Weather Sense Basic
+  device_sampling_time: 30s
+  device_timezone: Africa/Johannesburg
+  sntp_server_1: 0.za.pool.ntp.org
+  sntp_server_2: 1.za.pool.ntp.org
+  sntp_server_3: 2.za.pool.ntp.org
+  location_latitude: "0.0°"
+  location_longitude: "0.0°"
+  ds18b20_address: "0x453c1ff648208028"
+  battery_adc_pin: GPIO33
+  battery_empty_voltage: "2.492"
+  battery_full_voltage: "3.16"
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/sntp.yaml
+  sun: !include ../../../../common/core/sun.yaml
+
+  # Board package
+  board: !include ../../../../boards/esp32/haza_weather_station_v1.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Sensor packages
+  bme280: !include
+    file: ../../../../sensors/i2c/bme280.yaml
+    vars:
+      i2c_address: 0x76
+
+  ds18b20: !include
+    file: ../../../../sensors/one_wire/ds18b20.yaml
+    vars:
+      data_pin: GPIO4
+      sensor_address: ${ds18b20_address}
+
+  ltr390: !include
+    file: ../../../../sensors/i2c/ltr390.yaml
+    vars:
+      i2c_address: 0x53
+
+################################################################################
+# Project Sensors
+################################################################################
+sensor:
+  - platform: adc
+    id: ${device_internal_name}_battery_voltage
+    name: Battery Voltage
+    icon: mdi:battery-high
+    pin: ${battery_adc_pin}
+    unit_of_measurement: V
+    device_class: voltage
+    state_class: measurement
+    accuracy_decimals: 2
+    attenuation: 12db
+    update_interval: ${device_sampling_time}
+
+  - platform: template
+    id: ${device_internal_name}_battery_percentage
+    name: Battery Percentage
+    icon: mdi:battery
+    unit_of_measurement: "%"
+    device_class: battery
+    state_class: measurement
+    accuracy_decimals: 0
+    lambda: |-
+      float voltage = id(${device_internal_name}_battery_voltage).state;
+      if (isnan(voltage)) {
+        return NAN;
+      }
+
+      float empty = ${battery_empty_voltage};
+      float full = ${battery_full_voltage};
+      float percentage = ((voltage - empty) / (full - empty)) * 100.0;
+      if (percentage < 0.0) {
+        return 0.0;
+      }
+      if (percentage > 100.0) {
+        return 100.0;
+      }
+      return percentage;
+    update_interval: ${device_sampling_time}
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Weather Sense Basic static weather station bring-up
+
+  project:
+    name: haza.weather_sense_basic
+    version: 2026.0.0b
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Wind, rain, particulate matter, lightning, and VOC/eCO2 sensors are
+# intentionally left for later staged Weather Sense variants.

@@ -1,0 +1,162 @@
+################################################################################
+# SGP30 eCO2 and TVOC Air Quality Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the
+#   I2C Address to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  sgp30: !include
+#    file: sensors/i2c/sgp30.yaml
+#    vars:
+#      i2c_address: 0x58
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - sensor entities
+#   - text sensor entities
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/sensors/i2c/sgp30.yaml
+# Version: 2026.0.1b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/sensor/index.html
+# References: https://esphome.io/components/sensor/sgp30.html
+# References: https://esphome.io/components/sensor/template.html
+# References: https://esphome.io/components/text_sensor/index.html
+# References: https://esphome.io/components/text_sensor/template.html
+# ------------------------------------------------------------------------------
+# Notes:
+#       - Expects ${device_internal_name}_temperature and ${device_internal_name}_humidity
+#         to exist for calibration.
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Not yet
+#     - Validation status: Needs validation
+################################################################################
+sensor:
+  - platform: sgp30
+    eco2:
+      id: ${device_internal_name}_sgp30_eco2_raw
+      name: SGP30 eCO2 RAW
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_eco2
+          - component.update: ${device_internal_name}_sgp30_eco2_classification
+      accuracy_decimals: 1
+      icon: mdi:molecule-co2
+      state_class: measurement
+      device_class: carbon_dioxide
+      disabled_by_default: true
+    tvoc:
+      id: ${device_internal_name}_sgp30_tvoc_raw
+      name: SGP30 TVOC RAW
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_tvoc
+          - component.update: ${device_internal_name}_sgp30_tvoc_classification
+      accuracy_decimals: 1
+      icon: mdi:heat-wave
+      state_class: measurement
+      device_class: volatile_organic_compounds_parts
+      disabled_by_default: true
+    store_baseline: yes
+    address: ${i2c_address}
+    compensation:
+      temperature_source: ${temperature}
+      humidity_source: ${humidity}
+    update_interval: ${device_sampling_time}
+
+  # eCO2
+  - platform: template
+    id: ${device_internal_name}_eco2
+    name: SGP30 eCO2
+    icon: mdi:molecule-co2
+    lambda: return id(${device_internal_name}_sgp30_eco2_raw).state;
+    state_class: measurement
+    device_class: carbon_dioxide
+    update_interval: never
+    disabled_by_default: true
+
+  # TVOC
+  - platform: template
+    id: ${device_internal_name}_tvoc
+    name: SGP30 TVOC
+    icon: mdi:heat-wave
+    lambda: return id(${device_internal_name}_sgp30_tvoc_raw).state;
+    state_class: measurement
+    device_class: volatile_organic_compounds_parts
+    update_interval: never
+    disabled_by_default: true
+
+# Human readable sensors
+text_sensor:
+  - platform: template
+    name: "SGP30 eCO2 Classification"
+    id: ${device_internal_name}_sgp30_eco2_classification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      float eco2 = id(${device_internal_name}_sgp30_eco2_raw).state;
+      if (isnan(eco2)) {
+        return std::string("Waiting For Data");
+      }
+      if (eco2 < 400) {
+        return std::string("Not Available");
+      }
+
+      if (eco2 <= 600) {
+        return std::string("Excellent");
+      }
+      else if (eco2 <= 800) {
+        return std::string("Good");
+      }
+      else if (eco2 <= 1000) {
+        return std::string("Fair");
+      }
+      else if (eco2 <= 1500) {
+        return std::string("Poor");
+      }
+      else {
+        return std::string("Bad");
+      }
+    update_interval: never
+
+  - platform: template
+    name: "SGP30 TVOC Level"
+    id: ${device_internal_name}_sgp30_tvoc_classification
+    icon: "mdi:checkbox-marked-circle-outline"
+    lambda: |-
+      float tvoc = id(${device_internal_name}_sgp30_tvoc_raw).state;
+      if (isnan(tvoc)) {
+        return std::string("Waiting For Data");
+      }
+      if (tvoc < 0) {
+        return std::string("Not Available");
+      }
+
+      if (tvoc <= 300) {
+        return std::string("Low");
+      }
+      else if (tvoc <= 1000) {
+        return std::string("Moderate");
+      }
+      else if (tvoc <= 3000) {
+        return std::string("Elevated");
+      }
+      else if (tvoc <= 10000) {
+        return std::string("High");
+      }
+      else {
+        return std::string("Very High");
+      }
+    update_interval: never

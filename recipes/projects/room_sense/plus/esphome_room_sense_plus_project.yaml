@@ -1,0 +1,144 @@
+---
+author: Pascal Parent
+version: 2026.0.0
+classification: project
+status: hardware_validated
+labels:
+  - recipe
+  - project
+  - room_sense
+  - esp32_c3
+  - repo_first
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.7.3
+---
+################################################################################
+# HAZA Room Sense Plus Project
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/projects/room_sense/plus/README.md
+# Version: 2026.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.7.3 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Private validation device, 2026-08-16
+#     - Validation status: ENS160 recipe passed compile, OTA upload, and web
+#       visual confirmation
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - Board:
+#         - ESP32-C3 Super Mini
+#     - Sensors:
+#         - BH1750 illuminance sensor on I2C address 0x23
+#         - AHT20 temperature and humidity sensor on I2C address 0x38
+#         - ENS160 VOC, eCO2, and air quality sensor on I2C address 0x53
+#     - Services:
+#         - WiFi
+#         - Encrypted Home Assistant API
+#         - OTA
+#         - Web server
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/bh1750.html
+#     - https://esphome.io/components/sensor/aht10.html
+#     - https://esphome.io/components/sensor/ens160.html
+# ------------------------------------------------------------------------------
+# Usage:
+#   Compile this project from its recipe folder inside the repository. If you
+#   copy only this YAML file into an ESPHome root folder, adjust the package
+#   paths to match the new location before compiling.
+# ------------------------------------------------------------------------------
+# This project exposes:
+#   - room temperature and humidity
+#   - room illuminance
+#   - ENS160 eCO2, TVOC, and air quality readings
+#   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_room_sense_plus
+  device_wifi_name: haza-room-sense-plus
+  device_friendly_name: HAZA Room Sense Plus
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../../../boards/esp32/c3_super_mini.yaml
+
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Sensor packages
+  bh1750: !include
+    file: ../../../../sensors/i2c/bh1750.yaml
+    vars:
+      i2c_address: 0x23
+
+  aht20: !include
+    file: ../../../../sensors/i2c/aht2x_3x.yaml
+    vars:
+      i2c_address: 0x38
+
+  ens160: !include
+    file: ../../../../sensors/i2c/ens160.yaml
+    vars:
+      i2c_address: 0x53
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Room Sense Plus project
+
+  project:
+    name: haza.room_sense_plus
+    version: 2026.0.0
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+uart: !remove
+spi: !remove
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add custom local logic here when it belongs to this project rather than a
+# reusable package.

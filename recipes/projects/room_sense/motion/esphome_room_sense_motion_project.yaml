@@ -1,0 +1,138 @@
+---
+author: Pascal Parent
+version: 2026.0.0
+classification: project
+status: hardware_validated
+labels:
+  - recipe
+  - project
+  - room_sense
+  - esp32_c6
+  - repo_first
+  - staged_bringup
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.7.4
+---
+################################################################################
+# HAZA Room Sense Motion Project - C6 PIR Bring-Up
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/projects/room_sense/motion/README.md
+# Version: 2026.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.7.4 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3, 2026-08-17
+#     - Hardware validated: Room Sense Motion validation device, 2026-08-17
+#     - Validation status: Passed serial upload, log check, web check, and PIR
+#       movement on/off confirmation with ESPHome 2026.7.4
+# ------------------------------------------------------------------------------
+# Bill of Materials For This Stage:
+#     - Board:
+#         - ESP32-C6 Super Mini
+#     - Sensors:
+#         - BH1750 illuminance sensor on I2C address 0x23
+#         - BME280 temperature, humidity, pressure, and dew point sensor on
+#           I2C address 0x76
+#         - HC-SR501 PIR movement sensor on GPIO1
+#     - Possible future addition:
+#         - HLK-LD2410C presence sensor for a separate Presence variant
+# ------------------------------------------------------------------------------
+# References:
+#     - https://esphome.io/
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/bh1750.html
+#     - https://esphome.io/components/sensor/bme280.html
+#     - https://esphome.io/components/binary_sensor/gpio.html
+# ------------------------------------------------------------------------------
+# This staged project exposes:
+#   - BME280 temperature, humidity, atmospheric pressure, and dew point
+#   - BH1750 illuminance and human-readable illuminance label
+#   - HC-SR501 PIR movement detection
+#   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_room_sense_motion
+  device_wifi_name: haza-room-sense-motion
+  device_friendly_name: HAZA Room Sense Motion
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../../../boards/esp32/c6_super_mini.yaml
+
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Sensor packages
+  bh1750: !include
+    file: ../../../../sensors/i2c/bh1750.yaml
+    vars:
+      i2c_address: 0x23
+
+  bme280: !include
+    file: ../../../../sensors/i2c/bme280.yaml
+    vars:
+      i2c_address: 0x76
+
+  hc_sr501: !include
+    file: ../../../../sensors/binary/hc_sr501.yaml
+    vars:
+      pin: GPIO1
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Room Sense Motion C6 staged PIR bring-up
+
+  project:
+    name: haza.room_sense_motion
+    version: 2026.0.0
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+uart: !remove
+spi: !remove
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# LD2410C belongs in the later Presence variant unless this project changes.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add custom local logic here when it belongs to this project rather than a
+# reusable package.

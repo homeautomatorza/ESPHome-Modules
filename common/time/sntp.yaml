@@ -1,0 +1,62 @@
+################################################################################
+# SNTP Time Component
+################################################################################
+# Usage:
+#   Add the following code to the package section in the device file.
+# -----------------------------------------------------------------------------
+# packages:
+#   sntp_time: !include common/time/sntp.yaml
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - standalone network time source using SNTP/NTP
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/common/time/sntp.yaml
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/time/index.html
+# Reference: https://esphome.io/components/time/sntp.html
+# Reference: https://support.ntp.org/Servers/RulesOfEngagement
+# Reference: https://support.ntp.org/Servers/NTPPoolServers
+# Notes:
+#     - Use this package for standalone devices that need time without a Home
+#       Assistant connection, such as weather stations and outdoor data loggers.
+#     - Define device_timezone, sntp_server_1, sntp_server_2, and sntp_server_3
+#       in the device YAML or project recipe that includes this package.
+#     - Prefer a trusted nearby Stratum 2 NTP server when you have one available
+#       and permission to use it. Avoid Stratum 1 servers for normal device
+#       clients.
+#     - The South African NTP Pool servers are a practical public fallback for
+#       HAZA examples:
+#         - 0.za.pool.ntp.org
+#         - 1.za.pool.ntp.org
+#         - 2.za.pool.ntp.org
+#     - If a device uses a fixed IP, make sure DNS is configured or override the
+#       SNTP servers with IP addresses.
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.8.0 or newer
+#     - Config validated: ESPHome 2026.7.3, Weather Sense Basic and Wind
+#       project recipes, 2026-08-22
+#     - Compile validated: ESPHome 2026.7.3, Weather Sense Wind project recipe,
+#       2026-08-22
+#     - Hardware validated: Not yet
+#     - Validation status: Beta, pending validation
+################################################################################
+
+time:
+  # Get time directly from NTP so the device does not depend on Home Assistant.
+  - platform: sntp
+    id: ${device_internal_name}_internal_time
+    timezone: ${device_timezone}
+    servers:
+      - ${sntp_server_1}
+      - ${sntp_server_2}
+      - ${sntp_server_3}
