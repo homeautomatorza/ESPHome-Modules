@@ -31,6 +31,9 @@ A practical best-practice framework for ESPHome that helps makers build IoT devi
 > The 2026 framework rebuild is now moving onto `main`, and the documentation is
 > still being rebuilt around it. The YAML modules, cookbook projects, validation
 > notes, and wiki pages are being cleaned up in public as the framework settles.
+> I am aware that the wiki is currently broken, I will fix it as soon as possible.
+> Most of the current documentation is AI generated, I will review it in stages, I
+> ask for your patience, many thanks. 
 >
 > Expect some documentation gaps, draft pages, and rough edges while that work is
 > underway. Start with the validated project examples first, and check each
