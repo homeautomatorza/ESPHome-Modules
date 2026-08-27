@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="wiki/changelog.md"><img src="https://img.shields.io/badge/version-2026.0.0-success.svg" alt="Version 2026.0.0"></a>
+  <a href="https://github.com/homeautomatorza/ESPHome-Modules/wiki/changelog"><img src="https://img.shields.io/badge/version-2026.0.0-success.svg" alt="Version 2026.0.0"></a>
   <a href="https://esphome.io/"><img src="https://img.shields.io/badge/ESPHome-2026.7.0_+-19BCF2.svg" alt="ESPHome 2026.7.0 or newer"></a>
   <a href="https://www.home-assistant.io/"><img src="https://img.shields.io/badge/Home_Assistant-2026.0.0_+-00C9FF.svg" alt="Home Assistant 2026.0.0 or newer"></a>
   <br>
@@ -25,19 +25,35 @@ A practical best-practice framework for ESPHome that helps makers build IoT devi
 > power, move water, open a gate, affect safety, or ruin your afternoon, test it
 > properly first.
 
+> [!NOTE]
+> The `main` branch is updated when enough work has landed on `dev` to make a
+> stable public snapshot. If you want the latest bleeding-edge work, use the
+> [`dev` branch](https://github.com/homeautomatorza/ESPHome-Modules/tree/dev). I
+> update it regularly.
+
 > [!IMPORTANT]
 > ## Documentation Rebuild In Progress
 >
 > The 2026 framework rebuild is now moving onto `main`, and the documentation is
 > still being rebuilt around it. The YAML modules, cookbook projects, validation
 > notes, and wiki pages are being cleaned up in public as the framework settles.
+>
 > I am aware that the wiki is currently broken, I will fix it as soon as possible.
-> Most of the current documentation is AI generated, I will review it in stages, I
-> ask for your patience, many thanks. 
+> Much of the current documentation was AI-assisted and is being reviewed in
+> stages. Thanks for your patience.
 >
 > Expect some documentation gaps, draft pages, and rough edges while that work is
 > underway. Start with the validated project examples first, and check each
 > module's validation notes before using it in a real build.
+>
+> Status:
+> - [ ] Wiki general pages
+> - [ ] Wiki board pages
+> - [ ] Wiki common component pages
+> - [ ] Wiki peripheral pages
+> - [ ] Wiki sensor pages
+> - [ ] Wiki recipe pages
+> - [ ] Internal recipe pages
 
 ---
 
@@ -48,11 +64,11 @@ every folder.
 
 | Goal | Start Here | Why |
 | --- | --- | --- |
-| Check requirements | [System requirements](wiki/system-requirements.md) | Lists the minimum ESPHome, board, editor, flashing, secrets, and substitution needs. |
-| See a real build | [HAZA Room Sense Basic](recipes/projects/room_sense/basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
+| Check requirements | [System requirements](https://github.com/homeautomatorza/ESPHome-Modules/wiki/system-requirements) | Lists the minimum ESPHome, board, editor, flashing, secrets, and substitution needs. |
+| See a real build | [Room Sense Basic](recipes/projects/room_sense/basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
 | Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense/basic/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
-| Browse reusable parts | [Module catalogue](wiki/module-catalogue.md) | Shows the boards, common packages, peripherals, and sensors as documentation is rebuilt. |
-| Install the framework | [Installation guide](wiki/installation.md) | Covers ZIP download, local clone, and remote package use. |
+| Browse reusable parts | [Module catalogue](https://github.com/homeautomatorza/ESPHome-Modules/wiki/module-catalogue) | Shows the boards, common packages, peripherals, and sensors as documentation is rebuilt. |
+| Install the framework | [Installation guide](https://github.com/homeautomatorza/ESPHome-Modules/wiki/installation) | Covers ZIP download, local clone, and remote package use. |
 
 The Room Sense Basic project currently carries the strongest public end-to-end
 evidence. Other modules and cookbook projects are being cleaned up and
@@ -68,13 +84,13 @@ This framework grew out of that problem. ESPHome packages made it possible to wr
 
 What started as a personal modular setup grew alongside the Home Automator ZA YouTube channel and became a passion project for anyone who wanted a more structured way to build with ESPHome. The 2026 version is being reviewed, reorganized, documented at module level, and supported by a dedicated wiki.
 
-And yes, this is the same framework I use for my own projects. That is also how
+And yes, this is the same framework I use for my own projects, though I use the `dev` branch. That is also how
 I develop the cookbook projects and sample recipes: they come from real things I
 am building, cleaning up, and turning into something other people can follow.
 When a module is marked as hardware validated, it is because I have used it in a
 real build, not because it only passed an automated check.
 
-Read more in the [About wiki page](wiki/about.md).
+Read more in the [About wiki page](https://github.com/homeautomatorza/ESPHome-Modules/wiki/about).
 
 ---
 
@@ -87,7 +103,7 @@ Read more in the [About wiki page](wiki/about.md).
 ## What It Helps With
 
 - **Reusable packages:** Put board, network, display, sensor, and peripheral
-  logic in shared ESPHome packages instead of repeating the same YAML in every
+  logic in easily maintainable shared ESPHome packages instead of repeating the same YAML in every
   project.
 - **Cleaner device files:** Keep project YAML focused on the device you are
   building, while common behaviour stays in one place.
@@ -103,8 +119,8 @@ Read more in the [About wiki page](wiki/about.md).
 ## Documentation
 
 Documentation is being rebuilt alongside the 2026 framework cleanup. Start with
-the [wiki home page](wiki/Home.md), then use the [module catalogue](wiki/module-catalogue.md)
-and [validation guide](wiki/validation.md) when you need the deeper reference
+the [wiki home page](https://github.com/homeautomatorza/ESPHome-Modules/wiki/Home), then use the [module catalogue](https://github.com/homeautomatorza/ESPHome-Modules/wiki/module-catalogue)
+and [validation guide](https://github.com/homeautomatorza/ESPHome-Modules/wiki/validation) when you need the deeper reference
 material.
 
 Some wiki pages are still draft outlines until the related modules and projects
@@ -118,7 +134,7 @@ I am currently rebuilding my own projects against this version of the framework 
 
 Once that work is further along, I will publish a public roadmap that people can vote on. In the meantime, suggestions and ideas for future [cookbook projects](recipes/projects/README.md) are welcome.
 
-Read more in the [Roadmap wiki page](wiki/roadmap.md).
+Read more in the [Roadmap wiki page](https://github.com/homeautomatorza/ESPHome-Modules/wiki/roadmap).
 
 ---
 
@@ -145,13 +161,13 @@ when available.
 > [!IMPORTANT]
 > Please remove Wi-Fi details, API keys, tokens, private hostnames, and other secrets before sharing logs or YAML.
 
-Read more in the [Bugs wiki page](wiki/bugs.md).
+Read more in the [Bugs wiki page](https://github.com/homeautomatorza/ESPHome-Modules/wiki/bugs).
 
 ---
 
 ## Updates
 
-Version notes, module changes, breaking changes, and rebuild progress will be tracked in the [Wiki Changelog page](wiki/changelog.md).
+Version notes, module changes, breaking changes, and rebuild progress will be tracked in the [Wiki Changelog page](https://github.com/homeautomatorza/ESPHome-Modules/wiki/changelog).
 
 ---
 
@@ -169,7 +185,7 @@ This project uses CC0 1.0 Universal unless a file says otherwise. Keep licence m
 
 See [`LICENSE`](LICENSE) for the full licence text.
 
-Read more in the [Licence wiki page](wiki/licence.md).
+Read more in the [Licence wiki page](https://github.com/homeautomatorza/ESPHome-Modules/wiki/licence).
 
 ---
 
