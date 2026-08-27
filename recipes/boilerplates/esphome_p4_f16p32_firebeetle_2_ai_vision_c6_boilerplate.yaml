@@ -1,0 +1,149 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: boilerplate
+status: beta_hardware_validated_core_network_audio
+labels:
+  - recipe
+  - boilerplate
+  - esp32_p4
+  - esp32_c6_coprocessor
+  - esp32_hosted
+  - firebeetle_2
+  - psram
+  - pdm_microphone
+minimum_esphome: 2026.7.3
+recommended_esphome: 2026.8.0
+---
+################################################################################
+# FireBeetle 2 ESP32-P4 AI Vision Hosted C6 F16/P32 Boilerplate Device File
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/boilerplates/esphome_p4_f16p32_firebeetle_2_ai_vision_c6_boilerplate.yaml
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.3
+#     - Recommended ESPHome: 2026.8 beta or newer
+#     - Config validated: ESPHome 2026.7.3 local CLI, 2026-08-24
+#     - Compile validated: ESPHome 2026.7.3 local CLI, 2026-08-24
+#     - Hardware validated: ESPHome 2026.8.0 serial upload, serial log, and web
+#       checks for P4 core, PSRAM, hosted C6 Wi-Fi/network stack, and onboard
+#       PDM microphone, 2026-08-24
+#     - Validation status: Beta hardware-validated for core/network/audio
+#       bring-up. Bluetooth is excluded until hosted C6 BLE runtime support is
+#       stable on this board.
+# ------------------------------------------------------------------------------
+# Bill of Materials:
+#     - DFRobot FireBeetle 2 ESP32-P4 AI Vision Board
+#         - Enabled hardware and services:
+#             - ESP32-P4 core
+#             - ESP32-C6 hosted WiFi co-processor
+#             - 16 MB flash
+#             - 32 MB PSRAM
+#             - Web server
+#             - I2C
+#             - UART
+#             - SPI
+#             - Onboard PDM microphone
+# ------------------------------------------------------------------------------
+# References:
+#     - https://wiki.dfrobot.com/dfr1172/
+#     - https://www.dfrobot.com/product-2915.html
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/esp32_hosted.html
+# ------------------------------------------------------------------------------
+# Usage:
+#   Copy this boilerplate into the ESPHome root folder and rename it for the
+#   intended device. Keep it beside `boards/`, `common/`, `peripherals`, and
+#   `sensors`, then adjust the substitutions before compiling.
+# ------------------------------------------------------------------------------
+# This boilerplate exposes:
+#   - ESPHome base settings
+#   - Home Assistant time
+#   - WiFi and web server support over the hosted ESP32-C6 co-processor
+#   - FireBeetle 2 ESP32-P4 AI Vision board support
+#   - 32 MB PSRAM
+#   - onboard PDM microphone software switch and relative level sensors
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Public boilerplates use dynamic IP addressing.
+#     - Bluetooth is deliberately excluded from this boilerplate for now. The
+#       current ESP-Hosted BLE path rendered web entities but failed runtime
+#       validation on this board.
+#     - MIPI CSI and MIPI DSI are not exposed yet.
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: esphome_firebeetle_2_esp32_p4_c6
+  device_wifi_name: haza-p4-c6-boilerplate
+  device_friendly_name: ESPHome FireBeetle 2 ESP32-P4 AI Vision C6
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../boards/esp32/p4_firebeetle_2_ai_vision.yaml
+
+  # Core packages
+  settings: !include ../../common/core/settings.yaml
+  time: !include ../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../common/network/webserver.yaml
+
+  # Peripheral packages
+  # Add reusable peripheral packages here.
+
+  # Sensor packages
+  # Add reusable sensor packages here.
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.3
+  comment: FireBeetle 2 ESP32-P4 AI Vision hosted ESP32-C6 boilerplate
+
+################################################################################
+# Web Server Group Overrides
+################################################################################
+web_server:
+  sorting_groups:
+    - id: audio_group
+      name: Audio Diagnostic
+      sorting_weight: 80
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+# Remove or override package defaults here.
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add device-specific local YAML here.

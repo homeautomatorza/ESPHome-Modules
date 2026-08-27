@@ -1,0 +1,258 @@
+---
+author: Pascal Parent
+version: 2026.0.0b
+classification: project
+status: beta_rcwl_1670_stage_added
+labels:
+  - recipe
+  - project
+  - hydro_sense
+  - water_level
+  - pump_protection
+  - calibration
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.8.1
+---
+################################################################################
+# HAZA Hydro Sense Basic Project
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/projects/hydro_sense/basic/README.md
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.8.1 or newer
+#     - Config validated: ESPHome 2026.8.1
+#     - Compile validated: ESPHome 2026.8.1 on 2026-08-25
+#     - Hardware validated: DS18B20 and contactless liquid level stages on
+#       2026-08-25
+#     - Validation status: DS18B20 stage passed compile, serial upload, log
+#       check, and ESPHome web UI check. Contactless liquid sensor has been
+#       bench validated. RCWL-1670 has been added for the next staged
+#       validation pass. Home Assistant pump automation remains pending staged
+#       validation.
+# ------------------------------------------------------------------------------
+# Bill of Materials For This Stage:
+#     - Board:
+#         - ESP32-C6 Super Mini or compatible ESP32 board
+#     - Sensors:
+#         - DS18B20 waterproof reservoir temperature probe on GPIO0
+#         - DFRobot SEN0204 / XKC-Y25-T12V non-contact liquid level sensor on
+#           GPIO1 after safe level shifting or measured 3.3 V signal output.
+#         - RCWL-1670 waterproof ultrasonic ranging module using shared
+#           trigger/echo on GPIO2 at 3.3 V.
+# ------------------------------------------------------------------------------
+# References:
+#     - https://www.espboards.dev/esp32/esp32-c6-super-mini/
+#     - https://wiki.dfrobot.com/sen0204
+#     - https://esphome.io/
+#     - https://esphome.io/components/esp32.html
+#     - https://esphome.io/components/sensor/dallas_temp.html
+#     - https://esphome.io/components/binary_sensor/gpio.html
+#     - https://esphome.io/components/sensor/ultrasonic.html
+# ------------------------------------------------------------------------------
+# This staged project exposes:
+#   - DS18B20 reservoir temperature
+#   - contactless critical liquid level state
+#   - RCWL-1670 distance and usable fill percentage
+#   - standard WiFi, API, OTA, web server, uptime, status, and diagnostic
+#     entities from the shared framework packages
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_hydro_sense_basic
+  device_wifi_name: haza-hydro-sense-basic
+  device_friendly_name: HAZA Hydro Sense Basic
+  device_sampling_time: 30s
+  device_timezone: Africa/Johannesburg
+  ds18b20_data_pin: GPIO0
+  ds18b20_address: "0x0000000000000000"
+  liquid_level_sensor_pin: GPIO1
+  rcwl_1670_signal_pin: GPIO2
+  rcwl_1670_update_interval: 5s
+  rcwl_1670_pulse_time: 50us
+  # Default RCWL-1670 distance calibration points in millimetres.
+  # Runtime values are exposed below as template number entities so Home
+  # Assistant and the ESPHome web UI can adjust them per container.
+  hydro_sense_distance_full_mm: "40"
+  hydro_sense_distance_refill_mm: "150"
+  hydro_sense_distance_critical_mm: "170"
+  hydro_sense_distance_empty_mm: "260"
+
+
+################################################################################
+# Frontend Configurations
+################################################################################
+number:
+  - platform: template
+    id: hydro_sense_distance_full_mm
+    name: Distance Full
+    icon: mdi:arrow-collapse-up
+    entity_category: config
+    unit_of_measurement: mm
+    optimistic: true
+    restore_value: true
+    initial_value: ${hydro_sense_distance_full_mm}
+    min_value: 0
+    max_value: 1000
+    step: 1
+    mode: box
+
+  - platform: template
+    id: hydro_sense_distance_refill_mm
+    name: Distance Refill
+    icon: mdi:cup-water
+    entity_category: config
+    unit_of_measurement: mm
+    optimistic: true
+    restore_value: true
+    initial_value: ${hydro_sense_distance_refill_mm}
+    min_value: 0
+    max_value: 1000
+    step: 1
+    mode: box
+
+  - platform: template
+    id: hydro_sense_distance_critical_mm
+    name: Distance Critical
+    icon: mdi:water-alert
+    entity_category: config
+    unit_of_measurement: mm
+    optimistic: true
+    restore_value: true
+    initial_value: ${hydro_sense_distance_critical_mm}
+    min_value: 0
+    max_value: 1000
+    step: 1
+    mode: box
+
+  - platform: template
+    id: hydro_sense_distance_empty_mm
+    name: Distance Empty
+    icon: mdi:arrow-expand-down
+    entity_category: config
+    unit_of_measurement: mm
+    optimistic: true
+    restore_value: true
+    initial_value: ${hydro_sense_distance_empty_mm}
+    min_value: 0
+    max_value: 1000
+    step: 1
+    mode: box
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Board package
+  board: !include ../../../../boards/esp32/c6_super_mini.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+  
+  # Sensor packages
+  ds18b20: !include
+    file: ../../../../sensors/one_wire/ds18b20.yaml
+    vars:
+      data_pin: ${ds18b20_data_pin}
+      sensor_address: ${ds18b20_address}
+
+  liquid_level: !include
+    file: ../../../../sensors/binary/xkc_y25_t12v.yaml
+    vars:
+      pin: ${liquid_level_sensor_pin}
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Hydro Sense Basic reservoir monitoring bring-up
+
+  project:
+    name: haza.hydro_sense_basic
+    version: 2026.0.0b
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+light: !remove
+uart: !remove
+spi: !remove
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+sensor:
+  - platform: ultrasonic
+    name: Water Distance
+    id: ${device_internal_name}_water_distance_mm
+    icon: mdi:arrow-expand-vertical
+    trigger_pin:
+      number: ${rcwl_1670_signal_pin}
+      allow_other_uses: true
+    echo_pin:
+      number: ${rcwl_1670_signal_pin}
+      allow_other_uses: true
+    pulse_time: ${rcwl_1670_pulse_time}
+    timeout: 20m
+    update_interval: ${rcwl_1670_update_interval}
+    unit_of_measurement: mm
+    accuracy_decimals: 0
+    device_class: distance
+    state_class: measurement
+    filters:
+      - lambda: return x * 1000.0f;
+
+  - platform: template
+    name: Water Fill
+    id: ${device_internal_name}_water_fill_percent
+    icon: mdi:cup-water
+    unit_of_measurement: "%"
+    accuracy_decimals: 0
+    state_class: measurement
+    update_interval: ${rcwl_1670_update_interval}
+    lambda: |-
+      const float distance = id(${device_internal_name}_water_distance_mm).state;
+      const float full = id(hydro_sense_distance_full_mm).state;
+      const float critical = id(hydro_sense_distance_critical_mm).state;
+
+      if (isnan(distance) || isnan(full) || isnan(critical) || critical <= full) {
+        return NAN;
+      }
+
+      float fill = (critical - distance) / (critical - full) * 100.0f;
+      if (fill < 0.0f) {
+        fill = 0.0f;
+      } else if (fill > 100.0f) {
+        fill = 100.0f;
+      }
+      return fill;
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add device-specific local YAML here.

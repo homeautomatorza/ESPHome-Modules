@@ -1,0 +1,68 @@
+################################################################################
+# pH Sensor
+################################################################################
+# Usage:
+#   Add the following code to package section in the device file changing the
+#   GPIO pin to the appropriate one.
+# -----------------------------------------------------------------------------
+# packages:
+#  ph: !include
+#    file: sensors/analogue/ph.yaml
+#    vars:
+#      pin: GPIO14
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - sensor entities
+# ------------------------------------------------------------------------------
+# Calibration:
+#   - Required before readings are trustworthy.
+#   - Add project-specific pH probe calibration before using this sensor for
+#     decisions, alerts, or automation.
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/sensors/analogue/ph.yaml
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# References: https://esphome.io/components/sensor/index.html
+# References: https://esphome.io/components/sensor/adc.html
+# References: https://esphome.io/components/sensor/copy.html
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries a "It works on my setup" disclaimer!
+# Meaning that it works on my setup but it may not work on yours.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.6.0
+#     - Recommended ESPHome: 2026.6.0 or newer
+#     - Config validated: ESPHome 2026.7.3
+#     - Compile validated: ESPHome 2026.7.3
+#     - Hardware validated: Not yet
+#     - Validation status: Needs validation
+#     - Calibration required: Yes
+################################################################################
+sensor:
+  - platform: adc
+    id: ${device_internal_name}_ph_sensor_voltage
+    name: pH Sensor Voltage
+    icon: mdi:flash
+    pin: ${pin}
+    filters:
+      - median:
+          window_size: 7
+          send_every: 4
+          send_first_at: 3
+    unit_of_measurement: V
+    update_interval: ${device_sampling_time}
+    disabled_by_default: true
+
+  - platform: copy
+    id: ${device_internal_name}_ph_sensor
+    source_id: ${device_internal_name}_ph_sensor_voltage
+    name: pH Sensor
+    icon: mdi:ph
+    unit_of_measurement: pH
+    device_class: ph
+
+  # Add human readable value Critically low, Low, Good, High, Critically High
