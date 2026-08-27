@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/github/license/homeautomatorza/ESPHome-Modules" alt="GitHub license">
   <img src="https://img.shields.io/github/stars/homeautomatorza/ESPHome-Modules?style=flat" alt="GitHub stars">
   <img src="https://img.shields.io/github/contributors/homeautomatorza/ESPHome-Modules" alt="GitHub contributors">
-  <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/dev" alt="Last commit on dev">
+  <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/main" alt="Last commit on main">
   <img src="https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules" alt="Open GitHub issues">
 </p>
 
@@ -25,12 +25,19 @@ A practical best-practice framework for ESPHome that helps makers build IoT devi
 > power, move water, open a gate, affect safety, or ruin your afternoon, test it
 > properly first.
 
----
-
-## Development Note
-
-- This project is under **very active** development in the dev branch, if you want the latest that's where you will find it.
-- Expect bugs, rough edges, and breaking changes in the dev branch.
+> [!IMPORTANT]
+> ## Documentation Rebuild In Progress
+>
+> The 2026 framework rebuild is now moving onto `main`, and the documentation is
+> still being rebuilt around it. The YAML modules, cookbook projects, validation
+> notes, and wiki pages are being cleaned up in public as the framework settles.
+> I am aware that the wiki is currently broken, I will fix it as soon as possible.
+> Most of the current documentation is AI generated, I will review it in stages, I
+> ask for your patience, many thanks. 
+>
+> Expect some documentation gaps, draft pages, and rough edges while that work is
+> underway. Start with the validated project examples first, and check each
+> module's validation notes before using it in a real build.
 
 ---
 
