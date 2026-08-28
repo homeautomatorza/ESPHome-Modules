@@ -14,17 +14,7 @@
 Projects are cookbook-style ESPHome builds that show how framework packages fit
 together in a real device.
 
-## Look Here First
-
-| Goal | Start Here | Why |
-| --- | --- | --- |
-| Build the first hardware-validated project | [HAZA Room Sense Basic](room_sense/basic/README.md) | Small room sensor using shared board, network, and sensor packages. |
-| Check validation evidence | [Room Sense Basic validation](room_sense/basic/validation.md) | Shows what passed config, compile, physical upload, and live-value checks. |
-| Troubleshoot that build | [Room Sense Basic troubleshooting](room_sense/basic/troubleshooting.md) | Captures known setup, wiring, and runtime checks for the first project. |
-| Browse future families | [Available and Future Projects](#available-and-future-projects) | Shows planned project families without treating them as finished builds. |
-| Restart the weather station | [Weather Sense Basic](weather_sense/basic/README.md) | First modular pass of the older solar weather station hardware. |
-
-## Status Words
+## Understanding the Project Statuses
 
 | Status | Meaning |
 | --- | --- |
@@ -33,12 +23,13 @@ together in a real device.
 | Coming soon | Intended project or variant, but not ready as a public build guide yet. |
 | Planned | A direction for the framework, not a build claim. |
 
-## Available and Future Projects
+## Available Projects
 
-### [Room Sense Series](room_sense/README.md)
+<details>
 
-The Room Sense series is for understanding how a room feels and changes over
-time. The first project starts small with temperature, humidity, and light.
+<summary> :point_right: **Room Sense Series** (6 projects) :point_left:</summary>
+<br/>
+The [Room Sense series](room_sense/README.md) is for understanding how a room feels and changes over time. The first project starts small with temperature, humidity, and light.
 Later variants add air quality, particulate sensing, movement, and presence
 when those signals are useful.
 
@@ -57,7 +48,43 @@ Room Sense is the sensing ladder. Room Remote is kept separate because it is a
 control project, not a room-monitoring sensor. It can still use Room Sense data
 later, but its main job is sending IR commands to existing room devices.
 
-### Tank Sense Series (Planned)
+</details>
+
+<details>
+
+<summary>**Weather Sense Series** (4 Projects)</summary>
+
+The [Weather Sense series](weather_sense/README.md) is planned for local weather and outdoor environment monitoring. It should stay practical: useful outdoor readings first, then more advanced measurements when the hardware and validation are ready.
+
+| Project | Status | Intended Direction |
+| --- | --- | --- |
+| [Weather Sense Basic](weather_sense/basic/README.md) | Beta | ESP32 DevKit style board, BME280, DS18B20, LTR390 UV/light, battery voltage, and sun helpers. |
+| [Weather Sense Wind](weather_sense/wind/README.md) | Beta | Basic plus anemometer and wind vane. |
+| [Weather Sense Wind and Rain](weather_sense/wind_and_rain/README.md) | Beta | Wind plus tipping-bucket rain gauge. |
+| [Weather Sense Air](weather_sense/air/README.md) | Beta, partial hardware pass | Weather Sense Basic plus CCS811 eCO2 and TVOC air-quality sensing; CCS811 detection needs follow-up. |
+| Weather Sense V4.0 | Planned | Future branch based on the Open Green Energy / PCBWay Solar Powered WiFi Weather Station V4.0 design. |
+</details>
+
+<details>
+
+<summary>**Hydro Sense Series** (1 Project)</summary>
+
+The [Hydro Sense series](hydro_sense/README.md) is planned for hydroponics and water-based growing
+systems. It will focus on the measurements that help keep a reservoir stable
+and plants healthy.
+
+| Project | Status | Intended Direction |
+| --- | --- | --- |
+| [Hydro Sense Basic](hydro_sense/basic/README.md) | Scaffold | Placeholder project folder, waiting for Pascal's hardware and behavior brief. |
+| Hydro Sense Plus | Planned | Adds more reservoir or plant-care signals. |
+| Hydro Sense Max | Planned | Reserved for the fuller hydroponics monitoring build. |
+</details>
+
+## Future Projects
+
+<details>
+
+<summary>**Tank Sense Series**</summary>
 
 The Tank Sense series is for larger stored-water tanks. It answers practical
 household or utility questions: how much water is available, whether the tank
@@ -70,8 +97,11 @@ has reached a critical state, and what the stored water temperature is.
 
 Tank Sense is kept separate from Hydro Sense because it is about stored-water
 availability and protection, not hydroponics or plant-growing conditions.
+</details>
 
-### Utilities Series (Planned)
+<details>
+
+<summary>**Utilities Series**</summary>
 
 The Utilities series is for standalone household utility monitoring where the
 main job is measuring usage rather than building a larger control system.
@@ -80,8 +110,11 @@ main job is measuring usage rather than building a larger control system.
 | --- | --- | --- |
 | Water Flow Basic | Planned | Utility water flow meter for tracking real-time flow and usage. |
 | Power Meter Basic | Planned | Power meter for tracking real-time electricity usage. |
+</details>
 
-### Energy Series (Planned)
+<details>
+
+<summary>**Energy Series**</summary>
 
 The Energy series is for inverter, plug-load, and power-system monitoring
 projects. It includes both larger integrations, such as Sunsynk Modbus, and
@@ -100,8 +133,11 @@ monitoring and carefully scoped control.
 Smartpad conversions should be treated as mains-powered projects. Document the
 exact smart plug model, internal wiring, safety limits, and validation evidence
 before publishing a build guide.
+</details>
 
-### Relay Control Series (Planned)
+<details>
+
+<summary>**Relay Control Series**</summary>
 
 The Relay Control series is for ESPHome conversions that switch existing
 circuits or trigger existing controllers. The wiring and safety assumptions
@@ -116,35 +152,11 @@ Gate and garage door projects must respect the original controller safety
 features, limit switches, obstruction detection, and local regulations. Sonoff
 Basic conversions should be treated as mains-powered projects and documented
 with the exact model, load limits, wiring, enclosure, and validation evidence.
+</details>
 
-### [Hydro Sense Series](hydro_sense/README.md)
+<details>
 
-The Hydro Sense series is planned for hydroponics and water-based growing
-systems. It will focus on the measurements that help keep a reservoir stable
-and plants healthy.
-
-| Project | Status | Intended Direction |
-| --- | --- | --- |
-| [Hydro Sense Basic](hydro_sense/basic/README.md) | Scaffold | Placeholder project folder, waiting for Pascal's hardware and behavior brief. |
-| Hydro Sense Plus | Planned | Adds more reservoir or plant-care signals. |
-| Hydro Sense Max | Planned | Reserved for the fuller hydroponics monitoring build. |
-
-### [Weather Sense Series](weather_sense/README.md)
-
-The Weather Sense series is planned for local weather and outdoor environment
-monitoring. It should stay practical: useful outdoor readings first, then more
-advanced measurements when the hardware and validation are ready.
-
-| Project | Status | Intended Direction |
-| --- | --- | --- |
-| [Weather Sense Basic](weather_sense/basic/README.md) | Beta | ESP32 DevKit style board, BME280, DS18B20, LTR390 UV/light, battery voltage, and sun helpers. |
-| [Weather Sense Wind](weather_sense/wind/README.md) | Beta | Basic plus anemometer and wind vane. |
-| [Weather Sense Wind and Rain](weather_sense/wind_and_rain/README.md) | Beta | Wind plus tipping-bucket rain gauge. |
-| [Weather Sense Air](weather_sense/air/README.md) | Beta, partial hardware pass | Weather Sense Basic plus CCS811 eCO2 and TVOC air-quality sensing; CCS811 detection needs follow-up. |
-| Weather Sense V4.0 | Planned | Future branch based on the Open Green Energy / PCBWay Solar Powered WiFi Weather Station V4.0 design. |
-| Pascal Weather Sense | Planned | Future branch based on Pascal's own weather station board design. |
-
-### Media Series (Planned)
+<summary>**Media Series**</summary>
 
 The Media series is planned for voice, audio, and Home Assistant interaction.
 These projects are intentionally separate from Room Sense so sensing projects do
@@ -156,3 +168,4 @@ not become crowded with speakers, microphones, or media logic.
 | Voice Plus | Planned | Voice interaction with stereo music output. |
 | Music Basic | Planned | Mono audio output. |
 | Music Plus | Planned | Stereo audio output. |
+</details>
