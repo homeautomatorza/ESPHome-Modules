@@ -1,4 +1,6 @@
-# HAZA Room Sense Basic
+<p align="center">
+  <img src="../../../../.github/images/readme/room-sense-basic-hero.svg" width="100%" alt="HAZA Room Sense Basic: ESP32-C3 room sensor with temperature, humidity, and light sensing">
+</p>
 
 > [!WARNING]
 > **Disclaimer:** These files are shared as-is, with the usual "it works in my
@@ -9,30 +11,49 @@
 > switch mains power, move water, open a gate, affect safety, or ruin your
 > afternoon, test it properly first.
 
-`HAZA Room Sense Basic` is the first room-monitoring cookbook project for the
-HAZA ESPHome Modular Framework.
+> [!TIP]
+> This project is the starting point for the `Room Sense Series` of devices. You
+> can build this one now and expand it as your needs and budget grow. If you
+> intend to add sensors later, I strongly advise starting with this [Room Sense
+> Plus configuration](../plus/esphome_room_sense_plus_project_alternate.yaml)
+> and using an ESP32-C6.
 
-It measures the simple environmental things that quietly shape how a room feels:
+The `Room Sense Basic` is the simplest useful room sensor we could come up with.
+It measures the environmental conditions that quietly shape how a room feels:
 temperature, humidity, and light.
 
-This version is based on a real private Room Sense Basic deployment. The public
-recipe stays small so it can work as a clean starting point for other room
-sensors.
+<details>
 
-## YouTube Video
+<summary><b>Current Status</b></summary><br>
 
-To do, if this project is filmed.
-
-## Current Status
-
-- YAML recipe: `esphome_room_sense_basic_project.yaml`
+- YAML recipe:
+  [`esphome_room_sense_basic_project.yaml`](esphome_room_sense_basic_project.yaml)
 - Config validation: Passed on ESPHome `2026.7.3`
 - Compile validation: Passed on ESPHome `2026.7.3`
 - Physical validation: Passed on `Room Sense Basic validation device`,
   2026-08-02
-- Documentation approval: Draft, pending Pascal review
+- Documentation approval: Pending
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Beginner to intermediate | Basic wiring, ESPHome compile/upload, and Home Assistant integration. |
+| Estimated cost | Low | Uses a small ESP32-C3 board and two common I2C sensors. |
+| Build time | 1-2 hours | Faster if the headers and pins are already soldered and ESPHome is ready. |
+| Tools needed | Basic | USB data cable, jumper wires, a breadboard, and a computer. |
+| Off-the-shelf viability | Either | Many off-the-shelf products do this. Build if you want to learn how to make your own IoT devices with local control and repairability, or want a base for future variants. |
+| Maintenance burden | Low | Check readings occasionally; no regular calibration is expected for Room Sense Basic. |
+
+> [!TIP]
+> You may need to solder headers onto the ESP32 and sensor boards. A good
+> soldering iron, solder, flux, and a desoldering pump are worth having. See
+> [Recommended Starter Hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware)
+> in the Wiki for more information.
 
 ## Why Build This?
 
@@ -42,8 +63,8 @@ The room gets a little warmer, a little more humid, or a little darker, and by
 the time you notice it you are already uncomfortable or the plants are already
 having a less-than-great day.
 
-This project gives Home Assistant a simple view of the room so later
-automations have real values to work from.
+This project gives Home Assistant a simple view of the room so that we can make
+useful automations that have real value.
 
 ## What Problems It Solves
 
@@ -69,142 +90,136 @@ Once the values are in Home Assistant, they can become inputs for things like:
 The Basic version keeps the first step small enough that it is easy to build,
 test, and trust.
 
-## What This Project Does
+## Hardware And Bill Of Materials
 
-The device exposes:
+| Item | Recommended Part | Image | Alternates |
+| --- | --- | --- | --- |
+| Controller | ESP32-C3 Super Mini | ![ESP32-C3 Super Mini](../../../../.github/images/boards/esp32_c3_super_mini.png) | Any other suitable ESP32 |
+| Temperature and humidity | AHT20 module | ![AHT20 temperature and humidity sensor](../../../../.github/images/sensors/i2c/aht20.png) | BME280, SHT30, AHT10 |
+| Illuminance | BH1750 module | ![BH1750 illuminance sensor](../../../../.github/images/sensors/i2c/bh1750.png) | VEML7700, TSL2561 |
+| From the electronics workshop | Jumper wires, breadboard, and USB data cable | [Recommended starter hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware) | |
 
-- AHT20 temperature
-- AHT20 humidity
-- AHT20 calculated dew point
-- BH1750 illuminance
-- standard ESPHome diagnostic entities from the shared framework packages
+> [!WARNING]
+> The alternatives in this table are not drop-in replacements. Changing the
+> board or either sensor may require a different framework package, GPIO mapping,
+> I2C address, wiring layout, voltage check, or enclosure. Keep the pinout and
+> module documentation nearby, then validate, compile, and test the changed
+> hardware before relying on it.
 
 ## Who This Is For
 
-Build this if you want a small room sensor that is easy to understand and easy
-to extend.
+Build this if you want a small room sensor that is easy to understand and extend,
+or if this is your first foray into the world of ESPHome and electronics.
 
 It is especially useful if you are:
 
-- learning ESPHome with reusable packages
-- building a first HAZA room sensor
-- starting a room comfort or plant-care automation
-- validating the ESP32-C3 Super Mini as a low-power room node
+- learning ESPHome with reusable packages.
+- building your first room sensor based on my framework.
+- starting a room comfort or plant-care automation.
+- validating the ESP32-C3 Super Mini.
 
 Skip it, or use it only as a reference, if you need a polished commercial
 device, battery operation, presence detection, eCO2/TVOC, or PM2.5 in this
 version.
 
-## Project Fit
-
-| Factor | Rating | Notes |
-| --- | --- | --- |
-| Difficulty | Beginner to intermediate | Basic wiring, ESPHome compile/upload, and Home Assistant integration. |
-| Estimated cost | Low | Uses a small ESP32-C3 board and two common I2C sensors. |
-| Build time | 1-2 hours | Faster if the headers are already soldered and ESPHome is ready. |
-| Tools needed | Basic plus soldering | USB cable, Dupont wires, breadboard or soldering tools, and a computer. |
-| Off-the-shelf viability | Either | Buy if you want a finished product. Build if you want local control, repairability, and a base for variants. |
-| Maintenance burden | Low | Check readings occasionally; no regular calibration is expected for Basic. |
-
-## Project Shape
-
-Initial public shape: **Repo-First**.
-
-The project YAML pulls board, common, network, and sensor packages from the HAZA
-framework. That keeps the device file small and makes the project easier to
-repeat.
-
-The first tested deployment was a private Room Sense Basic validation device.
-That private deployment used the same package stack, with device-specific names
-and fixed-IP networking.
-
-## Hardware And Bill Of Materials
-
-### Visual Reference
-
-Add clean component photos here as they become available.
-
-```text
-[Image placeholder: ESP32-C3 Super Mini on a clean background]
-[Image placeholder: AHT20 temperature and humidity sensor]
-[Image placeholder: BH1750 illuminance sensor]
-[Image placeholder: assembled Room Sense Basic validation device]
-```
-
-| Item | Recommended Part | Image | Viable Alternatives | Notes |
-| --- | --- | --- | --- | --- |
-| Controller | ESP32-C3 Super Mini | To do: `assets/esp32-c3-super-mini.png` | Other ESP32-C3 boards | Pin mapping and board package may change. |
-| Temperature and humidity | AHT20 module | To do: `assets/aht20-sensor.png` | SHT40, BME280 | Alternatives need matching YAML packages and may expose different entities. |
-| Illuminance | BH1750 module | To do: `assets/bh1750-sensor.png` | Other ESPHome-supported lux sensors | Wiring and package will change. |
-| Wiring | Dupont leads or soldered wire | Optional build photo | JST/Grove/Qwiic if your modules support it | Keep power, ground, SDA, and SCL clear and consistent. |
-| Mounting | Project box or printed enclosure | To do | Breadboard for testing | Keep sensor openings exposed to room air and light. |
-
 ## Wiring
 
-Pascal will provide the Fritzing diagram for the final build.
-
 ```text
-[Image placeholder: assets/wiring-breadboard.png]
+[Image placeholder: assets/fritzing.png]
 ```
 
 Use the wiring table when checking the diagram.
 
-| Component | Pin | Connects To | Notes |
+| Component | Pin | Connects to ESP32 | Notes |
 | --- | --- | --- | --- |
-| AHT20 | VCC | 3V3 | Use 3.3V unless your module explicitly supports another voltage. |
+| AHT20 | VCC | 3V3 | Use 3.3 V unless your module explicitly supports another voltage. |
 | AHT20 | GND | GND | Common ground with the ESP32-C3. |
 | AHT20 | SDA | GPIO9 | I2C SDA from `boards/esp32/c3_super_mini.yaml`. |
 | AHT20 | SCL | GPIO10 | I2C SCL from `boards/esp32/c3_super_mini.yaml`. |
-| BH1750 | VCC | 3V3 | Use 3.3V unless your module explicitly supports another voltage. |
+| BH1750 | VCC | 3V3 | Use 3.3 V unless your module explicitly supports another voltage. |
 | BH1750 | GND | GND | Common ground with the ESP32-C3. |
 | BH1750 | SDA | GPIO9 | Shared I2C bus. |
 | BH1750 | SCL | GPIO10 | Shared I2C bus. |
 
-Power and safety notes:
-
-- Disconnect power before changing wiring.
-- GPIO9 is a strapping pin on the ESP32-C3 Super Mini, so keep the wiring simple
+> [!WARNING]
+> Power and safety notes:
+> - Always check the output voltage from your sensors. ESP32 GPIO uses 3.3 V
+>   logic; use a [level shifter](https://github.com/homeautomatorza/ESPHome-Modules/wiki/using-a-level-shifter)
+>   if a sensor outputs a higher voltage.
+> - Disconnect power before changing wiring.
+> - GPIO9 is a strapping pin on the ESP32-C3 Super Mini, so keep the wiring simple
   and check boot behavior after wiring.
-- If I2C scanning does not find both sensors, check power, ground, SDA/SCL
+> - If I2C scanning does not find both sensors, check power, ground, SDA/SCL
   order, and sensor addresses first.
-- Keep the AHT20 exposed to room air and the BH1750 exposed to representative
+> - Keep the AHT20 exposed to room air and the BH1750 exposed to representative
   room light.
 
-## Framework Packages Used
+> [!TIP]
+> I2C devices can share the same SDA and SCL lines. Use one wire colour for SDA
+> (for example, purple) and another for SCL (for example, yellow). It avoids
+> confusion and possible damage from crossed wires. I also use red for positive
+> and black for negative power.
+
+## Setup
+
+1. Copy or import the
+   [recipe YAML](esphome_room_sense_basic_project.yaml).
+2. Set the device substitutions for your room.
+    ```yaml
+    substitutions:
+      device_internal_name: john_bedroom_sense_basic
+      device_wifi_name: john-bedroom-sense-basic
+      device_friendly_name: John's Bedroom Sense Basic
+      device_sampling_time: 30s
+    ```
+3. Confirm that `sample_secrets.yaml` has the required secret names in your own
+   `secrets.yaml`.
+4. Validate the configuration in ESPHome.
+5. Compile the firmware.
+6. Erase the old flash and perform the first USB serial upload by following
+   [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+7. Check the ESPHome logs and web server.
+8. Add or review the device in Home Assistant.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
 
 - Board: `boards/esp32/c3_super_mini.yaml`
 - Core: `common/core/settings.yaml`
 - Time: `common/time/home_assistant.yaml`
-- Network helpers: `common/network/wifi.yaml`
-- Public recipe network: `common/network/wifi_dynamicip.yaml`
-- Tested private deployment network: `common/network/wifi_fixedip.yaml`
+- Wi-Fi helpers: `common/network/wifi.yaml`
+- Wi-Fi dynamic IP: `common/network/wifi_dynamicip.yaml`
 - Web server: `common/network/webserver.yaml`
-- Sensor: `sensors/i2c/bh1750.yaml`
-- Sensor: `sensors/i2c/aht2x_3x.yaml`
+- BH1750 sensor: `sensors/i2c/bh1750.yaml`
+- AHT20 sensor: `sensors/i2c/aht2x_3x.yaml`
 
-## Setup
+</details>
 
-1. Copy or import the recipe YAML.
-2. Set the device substitutions for your room.
-3. Choose dynamic IP for a general public build, or fixed IP for your local
-   deployment if that is how your network is managed.
-4. Confirm `sample_secrets.yaml` has the required secret names in your own
-   `secrets.yaml`.
-5. Compile the firmware in ESPHome.
-6. Upload the firmware.
-7. Check the ESPHome web server.
-8. Add or review the device in Home Assistant.
+## Visual Checks
 
-If you are replacing an existing ESPHome device, match any existing OTA password
-for the first migration upload, or use web OTA/serial flashing.
+### ESPHome Web Server
+
+> [!TIP]
+> From ESPHome 2026.6 or newer, you can access the device web server from ESPHome
+> Device Builder. See
+> [Finding Your Way Around ESPHome](https://github.com/homeautomatorza/ESPHome-Modules/wiki/esphome-ui-primer).
+
+![ESPHome web server view](assets/device-web-server.png)
+
+Use this screen to confirm the device is alive locally and the ESPHome-side
+values look sensible before spending time debugging Home Assistant.
 
 ## Home Assistant Entities
 
-Expected user-facing entities:
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
+
+Enabled by default:
 
 - AHT20 Temperature (C)
 - AHT20 Humidity
-- AHT20 Dew Point
 - BH1750 Illuminance
 - BH1750 Illuminance Human Readable
 - Uptime
@@ -214,21 +229,20 @@ Expected user-facing entities:
 - Status and diagnostic entities, depending on what Home Assistant shows by
   default
 
+Disabled by default:
+
+- AHT20 Temperature (F)
+- AHT20 Dew Point
+- ESP32 internal temperature entities
+- Board Model and other optional diagnostic entities
+
+You can enable disabled entities from the device page in Home Assistant when
+you need them.
+
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
-## Screenshots And Visual Checks
-
-Documentation pass reminder: update these screenshots after the latest BH1750
-and Wi-Fi label changes, so the ESPHome web server and Home Assistant views
-match the validated `2026.0.1` build.
-
-### ESPHome Web Server
-
-![ESPHome web server view](assets/device-web-server.png)
-
-Use this screen to confirm the device is alive locally and the ESPHome-side
-values look sensible before spending time debugging Home Assistant.
+</details>
 
 ### Home Assistant Device Page
 
@@ -241,9 +255,6 @@ entities are visible in Home Assistant.
 
 ```text
 [Image placeholder: close-up of assembled board and sensors]
-[Image placeholder: device installed in the room]
-[Image placeholder: Fritzing wiring diagram]
-[Image placeholder: clean BOM component photos]
 ```
 
 ## Calibration And Tuning
@@ -260,20 +271,15 @@ That said, sensor placement matters:
 
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Known Limitations
+## Changelog
 
-- This Basic version does not include eCO2, TVOC, PM2.5, movement, or presence.
-- It has only been physically validated on one private Room Sense Basic
-  deployment so far.
-- The public recipe uses dynamic IP, while the tested private deployment used
-  fixed IP.
-- Component images and final wiring diagrams are still being added.
+See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
@@ -281,21 +287,3 @@ See [troubleshooting.md](troubleshooting.md).
 - HAZA Room Sense Air: Plus plus PM2.5 or particulate sensing.
 - HAZA Room Sense Presence: movement and presence focused variant.
 - HAZA Room Sense Max: reserved for the full combined room sensor.
-
-TTP223 capacitive touch is intentionally not part of the Room Sense cookbook
-line. It belongs in `recipes/samples/` unless it becomes a separate controller
-project later.
-
-## Change Notes
-
-- 2026.0.1: Reviewed Wi-Fi signal-strength labels against common RSSI guidance
-  and revalidated the update with a successful OTA reinstall.
-- 2026.0.1: Updated BH1750 human-readable illuminance labels and revalidated
-  the change with a successful OTA reinstall.
-- 2026.0.0: Drafted tutorial-style project documentation structure.
-- 2026.0.0: Promoted the hardware-validated Room Sense Basic package stack out
-  of beta status.
-- 2026.0.0: Physical upload and live-value validation passed on a private Room
-  Sense Basic validation device.
-- 2026.0.0: Config and compile validation passed on ESPHome `2026.7.3`.
-- 2026.0.0: Removed TTP223 and ENS160 from the Basic recipe scope.
