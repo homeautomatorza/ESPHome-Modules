@@ -13,7 +13,9 @@ Sense line. The goal is simple: keep an eye on bucket water level and water
 temperature, then expose the right signals to Home Assistant so automations can
 react.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_hydro_sense_basic_project.yaml`
 - Current stage: RCWL-1670 added for staged validation
@@ -31,16 +33,24 @@ react.
   for RCWL-1670 distance and fill values
 - Documentation approval: Not applicable yet
 
-## Basic BOM
+</details>
 
-| Role | Part | Purpose | Notes |
-| --- | --- | --- | --- |
-| MCU | ESP32-C6 Super Mini | Runs the Hydro Sense Basic node | Small, modern ESP32 board with enough GPIO for this first version. |
-| Critical low-water detection | DFRobot SEN0204 / XKC-Y25-T12V contactless liquid sensor | Exposes the critical low-water signal to Home Assistant | Home Assistant will use this signal to turn off the existing pump control. The sensor needs 5-24 V power and its high output follows the input supply voltage, so the GPIO signal must be measured or level-shifted before connecting it to the ESP32-C6. |
-| Water level estimate | RCWL-1670 waterproof ultrasonic ranging module | Estimates bucket percentage fill | Good fit for a non-contact level reading. Home Assistant can use this for low-level alerts. Needs calibration against the actual bucket height and usable water range. |
-| Water temperature | DS18B20 digital temperature sensor | Reports bucket water temperature to Home Assistant | Home Assistant can react to this temperature later. Needs a pull-up resistor and a waterproof probe style suitable for the bucket. |
+## Project Profile
 
-## Why This Fits Basic
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate | Combines 1-Wire, a level-shifted digital input, ultrasonic sensing, and container calibration. |
+| Estimated cost | Medium | The waterproof probes and safe interface hardware add to the basic controller cost. |
+| Build time | Half a day | Allow extra bench time for voltage checks, mounting, and staged validation. |
+| Tools needed | Soldering and a multimeter | A USB data cable, breadboard, jumper wires, and level-shifting parts are also useful. |
+| Off-the-shelf viability | Better to build | The value is the custom container calibration and Home Assistant reaction boundary. |
+| Maintenance burden | Medium | Sensor mounting, water exposure, calibration points, and probe cleanliness need checking. |
+
+> [!TIP]
+> See [Recommended Starter Hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware)
+> and [Recommended Starter Tools](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-tools).
+
+## Why Build This?
 
 This is a good Basic set because each part has a clear job:
 
@@ -51,6 +61,20 @@ This is a good Basic set because each part has a clear job:
 - The DS18B20 gives Home Assistant a water temperature reading it can use for
   alerts, dashboards, or later automations.
 - The ESP32-C6 Super Mini keeps the controller small and current.
+
+## What Problems It Solves
+
+- Reports reservoir temperature to Home Assistant.
+- Provides a separate critical low-water signal for pump-protection logic.
+- Aims to provide a calibrated usable-fill estimate without putting electronics in the water.
+- Keeps sensing on the ESPHome node while Home Assistant owns the pump reaction.
+
+## What Possibilities It Creates
+
+- Low-water alerts before the reservoir reaches the critical point.
+- Home Assistant pump shutdown based on a separately validated safety signal.
+- Container-specific level dashboards and temperature history.
+- A staged path toward later Hydro Sense monitoring and control projects.
 
 ## Home Assistant Reaction Boundary
 
@@ -200,48 +224,129 @@ or if the calibration values are invalid, the percentage reports unknown.
   water temperature.
 - Validation target for the RCWL-1670 hardware stage.
 
+## Hardware And Bill Of Materials
+
+| Role | Part | Purpose | Notes |
+| --- | --- | --- | --- |
+| MCU | ESP32-C6 Super Mini | Runs the Hydro Sense Basic node | Small, modern ESP32 board with enough GPIO for this first version. |
+| Critical low-water detection | DFRobot SEN0204 / XKC-Y25-T12V contactless liquid sensor | Exposes the critical low-water signal to Home Assistant | Home Assistant will use this signal to turn off the existing pump control. The sensor needs 5-24 V power and its high output follows the input supply voltage, so the GPIO signal must be measured or level-shifted before connecting it to the ESP32-C6. |
+| Water level estimate | RCWL-1670 waterproof ultrasonic ranging module | Estimates bucket percentage fill | Good fit for a non-contact level reading. Home Assistant can use this for low-level alerts. Needs calibration against the actual bucket height and usable water range. |
+| Water temperature | DS18B20 digital temperature sensor | Reports bucket water temperature to Home Assistant | Home Assistant can react to this temperature later. Needs a pull-up resistor and a waterproof probe style suitable for the bucket. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. Check supply and
+> signal voltage, level shifting, GPIO mapping, waterproofing, mounting,
+> package changes, and calibration. The RCWL-1670 distance stage in this build
+> is not yet producing a live reading.
+
+## Who This Is For
+
+Build this if you need a repairable reservoir monitor and are comfortable
+testing one sensor at a time around water. Use it as a reference rather than a
+finished protection system until your own low-water signal and Home Assistant
+pump action have been tested end to end.
+
+## Wiring
+
+```text
+[Image placeholder: assets/fritzing.png]
+```
+
+| Component | Pin | Connects To ESP32 | Notes |
+| --- | --- | --- | --- |
+| DS18B20 | DATA | GPIO0 | Use the required 1-Wire pull-up resistor. |
+| Contactless level sensor | OUT | GPIO1 through a safe interface | Its high output follows its supply voltage; measure it or level-shift it to 3.3 V. |
+| RCWL-1670 | Shared signal | GPIO2 | Current staged test uses shared trigger/echo at 3.3 V. |
+| All sensors | GND | GND | Use a common ground where the interface design requires it. |
+
+> [!WARNING]
+> Disconnect power before changing wiring. Keep mains-powered pump wiring out
+> of this low-voltage sensor build. ESP32 GPIO uses 3.3 V logic; follow
+> [Using A Level Shifter](https://github.com/homeautomatorza/ESPHome-Modules/wiki/using-a-level-shifter)
+> where the attached sensor requires one.
+
+## Setup
+
+1. Copy or import the [recipe YAML](esphome_hydro_sense_basic_project.yaml).
+2. Set the device substitutions, DS18B20 address, pins, and initial container distances.
+3. Confirm the required secret names exist in your own `secrets.yaml`.
+4. Wire and validate one sensor stage at a time.
+5. Validate the configuration, then compile the firmware.
+6. For a new or repurposed board, follow [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+7. Check logs and the web server; do not treat an unknown RCWL value as a valid level.
+8. Add or review the device in Home Assistant, then test any pump reaction separately.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
+
+- Board: `boards/esp32/c6_super_mini.yaml`
+- Core: `common/core/settings.yaml`
+- Time: `common/time/home_assistant.yaml`
+- Network helpers: `common/network/wifi.yaml`
+- Public recipe network: `common/network/wifi_dynamicip.yaml`
+- Web server: `common/network/webserver.yaml`
+- Sensor: `sensors/one_wire/ds18b20.yaml`
+- Binary sensor: `sensors/binary/xkc_y25_t12v.yaml`
+- Project-local sensor logic: RCWL-1670 distance and usable-fill calculation
+
+</details>
+
+## Visual Checks
+
+Still to add:
+
+```text
+[Image placeholder: ESPHome web server with the validated DS18B20 and contactless level entities]
+[Image placeholder: Home Assistant device page]
+[Image placeholder: final sensor mounting and Fritzing diagram]
+```
+
+## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
+
+- DS18B20 reservoir temperature
+- Contactless liquid detected state
+- Water Distance, currently unvalidated because the RCWL-1670 times out
+- Water Fill, currently unvalidated because it depends on Water Distance
+- Distance Full, Refill, Critical, and Empty configuration numbers
+- Standard uptime, network, status, and diagnostic entities
+
+The exact entity IDs depend on the device substitutions used for the local
+deployment.
+
+</details>
+
+## Calibration And Tuning
+
+Set the full, refill, critical, and empty distances against the actual
+container. The detailed pump-safe calculation and current defaults are recorded
+in [Water Level Calibration](#water-level-calibration). Do not calibrate around
+the RCWL-1670 until it produces stable live distance readings.
+
+## Validation Evidence
+
+
+
+## Troubleshooting
+
+
+
+## Changelog
+
+See [changelog.md](documents/changelog.md).
+
 ## Files In This Project
 
 - `esphome_hydro_sense_basic_project.yaml`: current staged project YAML.
-- `validation.md`: staged validation evidence.
-- `troubleshooting.md`: troubleshooting notes.
+- `documents/validation.md`: staged validation evidence.
+- `documents/troubleshooting.md`: troubleshooting notes.
+- `documents/changelog.md`: project change history.
 
-## Change Notes
+## Related Projects And Next Variants
 
-- 2026-08-25: Pascal added core, network, ESP32-C6 Super Mini, and DS18B20
-  packages for the first staged sensor bring-up. ESPHome 2026.8.1 config
-  validation passes.
-- 2026-08-25: DS18B20 stage passed compile, serial push, serial log check, and
-  ESPHome web UI check. The unique DS18B20 address was confirmed privately and
-  is not published in the recipe.
-- 2026-08-25: Added DFRobot SEN0204 / XKC-Y25-T12V contactless liquid level
-  sensor on GPIO1 for the next staged validation pass. Voltage-level safety
-  must be checked before connecting the signal to the ESP32-C6.
-- 2026-08-25: Confirmed contactless liquid level polarity as `true` = liquid
-  detected and `false` = no liquid detected. Added debounce filtering after two
-  sensors showed bouncing during bench testing. The cause was later traced to a
-  contact problem, so the filter was kept light at `delayed_on: 50ms` and
-  `delayed_off: 1s`.
-- 2026-08-25: Added RCWL-1670 ultrasonic ranging stage using shared
-  trigger/echo on GPIO2 at 3.3 V. Preliminary ESPHome 2026.8.1 config
-  validation passes for the public recipe and private ESPHome config.
-- 2026-08-25: RCWL-1670 compile and serial upload passed, but live ultrasonic
-  readings failed with repeated `Measurement start timed out` warnings. Web UI
-  showed `Water Distance` and `Water Fill` as `NA`.
-- 2026-08-25: Retesting the RCWL-1670 with `pulse_time: 50us` still did not
-  resolve the shared-pin timeout.
-- 2026-08-25: Added Pascal's proposed Hydro Sense Basic BOM: ESP32-C6 Super
-  Mini, contactless liquid sensor, RCWL-1670 waterproof ultrasonic module, and
-  DS18B20 water temperature probe.
-- 2026-08-25: Clarified that pump shutdown happens through Home Assistant
-  automation. Hydro Sense Basic reports sensor state; it does not directly
-  switch the pump.
-- 2026-08-25: Clarified that water temperature is also a reporting signal for
-  Home Assistant to react to, not local ESPHome control logic.
-- 2026-08-25: Added customizable RCWL-1670 distance variables for full, refill,
-  critical, and empty levels. Fill percentage will be calculated over the
-  pump-safe full-to-critical range.
-- 2026-08-25: Exposed the RCWL-1670 calibration points as frontend-adjustable
-  ESPHome number entities for Home Assistant and the ESPHome web UI.
-- 2026-08-25: Created neutral Hydro Sense Basic scaffold. No hardware,
-  behavior, or validation assumptions are made.
+- Later Hydro Sense variants can add control only after the sensing and Home Assistant reaction boundary are proven.
+- The unresolved RCWL-1670 interface remains the next hardware investigation for this Basic build.

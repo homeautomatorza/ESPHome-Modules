@@ -1,4 +1,6 @@
-# HAZA Room Sense Air
+<p align="center">
+  <img src="../../../../.github/images/readme/room-sense-air-hero.svg" width="100%" alt="HAZA Room Sense Air: ESP32-C6 room sensor with comfort, light, indoor air-quality, and particulate sensing">
+</p>
 
 > [!WARNING]
 > **Disclaimer:** This project is being built one sensor at a time on real
@@ -11,7 +13,9 @@ The final direction is Room Sense Plus-style room sensing, with particulate
 matter added through an SPS30. We are bringing it up slowly: first the C6 board,
 BH1750, and BME280; then SGP30; then SPS30; then movement and presence.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_room_sense_air_project.yaml`
 - Board: ESP32-C6 Super Mini
@@ -28,7 +32,24 @@ BH1750, and BME280; then SGP30; then SPS30; then movement and presence.
 - SPS30 stage: Compile, OTA, log, and web checks passed on `2026-08-17`
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate to advanced | Several I2C sensors share one bus, and the SPS30 needs careful power, cable, and airflow planning. |
+| Estimated cost | High | The particulate sensor accounts for much of the cost. |
+| Build time | Half a day | Allow extra time for staged testing and sensor placement. |
+| Tools needed | Soldering and basic test gear | A USB data cable, jumper wires, a breadboard, and a multimeter are useful during bring-up. |
+| Off-the-shelf viability | Either | Buy for a finished enclosure; build for local control, repairability, and a custom sensor mix. |
+| Maintenance burden | Medium | Keep the SPS30 airflow path clear and review air-quality readings over time. |
+
+> [!TIP]
+> See [Recommended Starter Hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware)
+> and [Recommended Starter Tools](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-tools).
 
 ## Why Build This?
 
@@ -41,15 +62,17 @@ effects, and ventilation experiments. The BME280 stage is first because it gives
 us a clean C6 baseline with temperature, humidity, pressure, and dew point before
 we add the larger sensor stack.
 
-## Staged Build Plan
+## What Problems It Solves
 
-| Stage | Adds | Status |
-| --- | --- | --- |
-| 1 | ESP32-C6 Super Mini, BH1750, BME280 | Hardware confirmed with shared framework defaults |
-| 2 | SGP30 eCO2 and TVOC | Config and compile passed; reported working on private hardware |
-| 3 | SPS30 particulate matter | Hardware confirmed with compile, OTA, log, and web checks |
-| 4 | PIR movement | Planned |
-| 5 | HLK-LD2410C presence | Planned |
+- Puts comfort, light, gas estimates, and particulate readings on one local device.
+- Makes dust, smoke, cooking, and ventilation changes visible in Home Assistant.
+- Provides a staged path for diagnosing one sensor before adding the next.
+
+## What Possibilities It Creates
+
+- Ventilation alerts based on more than temperature alone.
+- Comparisons between room activity, particulate levels, and changing air quality.
+- A foundation for later movement and presence-aware air-quality automations.
 
 ## Hardware And Bill Of Materials
 
@@ -60,8 +83,20 @@ we add the larger sensor stack.
 | Illuminance | BH1750 module | To do: `assets/bh1750-sensor.png` | Other ESPHome-supported lux sensors | Wiring and package will change. |
 | eCO2 and TVOC | SGP30 module | To do | ENS160, CCS811 | Added in Stage 2. Alternatives need different packages and interpretation. |
 | Particulate matter | SPS30 module | To do | PMSx003 family | Added in Stage 3. Wiring, airflow, and placement matter. |
-| Movement | PIR sensor | To do | Other GPIO PIR modules | Later stage. |
-| Presence | HLK-LD2410C | To do | Other LD2410 variants | Later stage. UART pins must match the build. |
+
+
+> [!WARNING]
+> The alternatives in this table are not drop-in replacements. A different
+> board or sensor may change the framework package, GPIO mapping, I2C address,
+> wiring, voltage, enclosure, or calibration. Validate, compile, and test each
+> changed stage before relying on it.
+
+## Who This Is For
+
+Build this if you want a local, repairable room monitor that includes particulate
+matter and you are comfortable testing a larger sensor stack one stage at a
+time. Start with Room Sense Basic or Plus if you are new to ESPHome, need a
+smaller enclosure, or do not yet need particulate sensing.
 
 ## Wiring
 
@@ -99,7 +134,19 @@ Expected I2C addresses:
 - SGP30: `0x58`
 - SPS30: `0x69`
 
-## Framework Packages Used
+## Setup
+
+1. Copy or import the [recipe YAML](esphome_room_sense_air_project.yaml).
+2. Review the device substitutions and enable only the stage you have wired.
+3. Confirm the required secret names exist in your own `secrets.yaml`.
+4. Validate the configuration, then compile the firmware.
+5. For a new or repurposed board, follow [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+6. Add one sensor stage at a time and check the logs and web server after each change.
+7. Add or review the device in Home Assistant.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
 
 - Board: `boards/esp32/c6_super_mini.yaml`
 - Core: `common/core/settings.yaml`
@@ -112,7 +159,24 @@ Expected I2C addresses:
 - Sensor: `sensors/i2c/sgp30.yaml`
 - Sensor: `sensors/i2c/sps30.yaml`
 
+</details>
+
+## Visual Checks
+
+To add during documentation cleanup:
+
+```text
+[Image placeholder: ESPHome web server view for Room Sense Air stage 3 - captured, pending asset file]
+[Image placeholder: Home Assistant device page for Room Sense Air stage 3]
+[Image placeholder: close-up of the C6, BH1750, BME280, SGP30, and SPS30 wiring]
+[Image placeholder: Fritzing wiring diagram]
+```
+
 ## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
 
 Expected user-facing entities for the current stage:
 
@@ -143,35 +207,30 @@ project needs that extra detail.
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
-## Screenshots And Visual Checks
+</details>
 
-To add during documentation cleanup:
+## Calibration And Tuning
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Air stage 3 - captured, pending asset file]
-[Image placeholder: Home Assistant device page for Room Sense Air stage 3]
-[Image placeholder: close-up of the C6, BH1750, BME280, SGP30, and SPS30 wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+Place the environmental sensors away from board heat and direct drafts. Keep
+the SPS30 inlet and outlet unobstructed, and give the SGP30 enough operating
+time before treating its readings as a useful baseline. The planned PIR and
+presence stages will need their own placement and sensitivity checks when they
+are added.
 
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Change Notes
+## Changelog
 
-- 2026-08-17: Stage 1 hardware validation passed after replacing a suspect
-  ESP32-C6 board. ESPHome web server showed live BH1750 and BME280 values.
-  Local bring-up overrides were then removed; OTA and authenticated web access
-  still worked.
-- 2026-08-17: Added SPS30 as Stage 3. Compile, OTA, log, and web checks passed
-  on private hardware. ESPHome web server showed live particulate readings.
-- 2026-08-17: Added SGP30 as Stage 2 with BME280 temperature and humidity
-  compensation. Config and compile passed; Pascal reported the stage working as
-  expected on private hardware.
-- 2026.0.0: Created the staged Room Sense Air project with ESP32-C6, BH1750,
-  and BME280.
+See [changelog.md](documents/changelog.md).
+
+## Related Projects And Next Variants
+
+- Room Sense Basic for temperature, humidity, and light only.
+- Room Sense Plus for gas estimates without particulate sensing.
+- Room Sense Max for the full air, movement, and presence stack.

@@ -1,4 +1,4 @@
-# HAZA Weather Sense Wind and Rain
+<img src="../../../../.github/images/readme/weather-sense-wind-and-rain-hero.svg" alt="HAZA Weather Sense Wind and Rain: local wind speed, direction, and rainfall project">
 
 > [!WARNING]
 > **Disclaimer:** This is the wind-and-rain modular pass of Pascal's older
@@ -14,7 +14,9 @@ Wind is already part of the station at this point. The new thing to prove here
 is rain: does the bucket tip, does the ESP32 count it, and do the rainfall
 numbers look sane?
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_weather_sense_wind_and_rain_project.yaml`
 - Board: `boards/esp32/haza_weather_station_v1.yaml`
@@ -26,7 +28,20 @@ numbers look sane?
 - Known correction: this station hardware uses LTR390 at `0x53`, not BH1750
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate | Adds a reed-switch rain gauge and calibration value. |
+| Estimated cost | Medium | Cheaper if the Open Green Energy style weather meter set is already built. |
+| Build time | 1-2 hours | More if the outdoor cable, RJ connector, or bucket mechanism needs repair. |
+| Tools needed | Multimeter and manual tip test | A small amount of water or manual bucket tipping is enough for bring-up. |
+| Off-the-shelf viability | Either | Buy if you need calibrated rainfall quickly; build if repairability and local control matter. |
+| Maintenance burden | Medium | Rain gauges need cleaning, levelling, and occasional calibration checks. |
 
 ## Why Build This?
 
@@ -52,17 +67,6 @@ Once rainfall is reliable, the station can support local rain history, garden
 watering decisions, storm notes, and later irrigation automation. It can also
 help compare "official" weather with what happened in Pascal's own garden.
 
-## Project Fit
-
-| Factor | Rating | Notes |
-| --- | --- | --- |
-| Difficulty | Intermediate | Adds a reed-switch rain gauge and calibration value. |
-| Estimated cost | Medium | Cheaper if the Open Green Energy style weather meter set is already built. |
-| Build time | 1-2 hours | More if the outdoor cable, RJ connector, or bucket mechanism needs repair. |
-| Tools needed | Multimeter and manual tip test | A small amount of water or manual bucket tipping is enough for bring-up. |
-| Off-the-shelf viability | Either | Buy if you need calibrated rainfall quickly; build if repairability and local control matter. |
-| Maintenance burden | Medium | Rain gauges need cleaning, levelling, and occasional calibration checks. |
-
 ## Hardware And Bill Of Materials
 
 | Item | Recommended Part | Image | Viable Alternatives | Notes |
@@ -75,6 +79,18 @@ help compare "official" weather with what happened in Pascal's own garden.
 | Wind speed | SparkFun-style anemometer | To do: `assets/anemometer.png` | Other pulse-output anemometers | Inherited from Weather Sense Wind. |
 | Wind direction | SparkFun-style wind vane | To do: `assets/wind-vane.png` | Other resistor-ladder wind vanes | Inherited from Weather Sense Wind. |
 | Rainfall | SparkFun-style tipping-bucket rain gauge | To do: `assets/rain-gauge.png` | Other reed-switch tipping-bucket gauges | Update `rain_gauge_tip_mm` if the bucket size differs. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. Check pulse rates,
+> resistance bands, GPIO logic, voltage, package changes, and calibration.
+> The rain bucket in this build is still awaiting its dedicated hardware test.
+
+## Who This Is For
+
+Build this if the Basic and Wind stages are already understood and you want
+local rainfall data you can calibrate and repair. Use the earlier variants if
+rain is not needed, or buy a calibrated station if finished outdoor hardware
+and dependable rainfall totals are the priority.
 
 ## Wiring
 
@@ -103,22 +119,6 @@ Expected I2C addresses:
 - LTR390: `0x53`
 - BME280: `0x76`
 
-## Framework Packages Used
-
-- Board: `boards/esp32/haza_weather_station_v1.yaml`
-- Core: `common/core/settings.yaml`
-- Time: `common/time/sntp.yaml`
-- Sun: `common/core/sun.yaml`
-- Network helpers: `common/network/wifi.yaml`
-- Public recipe network: `common/network/wifi_dynamicip.yaml`
-- Web server: `common/network/webserver.yaml`
-- Sensor: `sensors/i2c/bme280.yaml`
-- Sensor: `sensors/one_wire/ds18b20.yaml`
-- Sensor: `sensors/i2c/ltr390.yaml`
-- Sensor: `sensors/analogue/sparkfun_anemometer.yaml`
-- Sensor: `sensors/analogue/sparkfun_wind_vane.yaml`
-- Sensor: `sensors/analogue/sparkfun_rain_gauge.yaml`
-
 ## Setup
 
 Before compiling, set these substitutions for the real deployment:
@@ -137,28 +137,32 @@ The default SparkFun-style rain gauge calibration is `0.2794` mm per bucket tip.
 Treat that as a starting point. A manual rain gauge is the sensible way to tune
 it later.
 
-## Home Assistant Entities
+Validate and compile the recipe before uploading it. For a new or repurposed
+board, follow [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+Check logs and the web server, manually tip the bucket during the dedicated
+hardware test, and only then review the device in Home Assistant.
 
-Expected user-facing entities for this stage:
+<details>
 
-- all Weather Sense Wind entities
-- Rainfall Rate
-- Rainfall Rate Hourly
-- Total Rainfall
+<summary><b>Framework Packages Used</b></summary><br>
 
-The exact entity IDs depend on the device substitutions used for the local
-deployment.
+- Board: `boards/esp32/haza_weather_station_v1.yaml`
+- Core: `common/core/settings.yaml`
+- Time: `common/time/sntp.yaml`
+- Sun: `common/core/sun.yaml`
+- Network helpers: `common/network/wifi.yaml`
+- Public recipe network: `common/network/wifi_dynamicip.yaml`
+- Web server: `common/network/webserver.yaml`
+- Sensor: `sensors/i2c/bme280.yaml`
+- Sensor: `sensors/one_wire/ds18b20.yaml`
+- Sensor: `sensors/i2c/ltr390.yaml`
+- Sensor: `sensors/analogue/sparkfun_anemometer.yaml`
+- Sensor: `sensors/analogue/sparkfun_wind_vane.yaml`
+- Sensor: `sensors/analogue/sparkfun_rain_gauge.yaml`
 
-## Calibration And Tuning
+</details>
 
-Rainfall depends on the bucket size and switch behaviour. The package defaults
-to `0.2794` mm per tip and uses a `100ms` internal filter to reduce switch
-bounce.
-
-For the first hardware pass, a manual tip test is enough. For real calibration,
-compare the reported total against a manual rain gauge after a few rain events.
-
-## Screenshots And Visual Checks
+## Visual Checks
 
 To add during documentation cleanup:
 
@@ -170,23 +174,44 @@ To add during documentation cleanup:
 [Image placeholder: Fritzing wiring diagram]
 ```
 
+## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
+
+Expected user-facing entities for this stage:
+
+- all Weather Sense Wind entities
+- Rainfall Rate
+- Rainfall Rate Hourly
+- Total Rainfall
+
+The exact entity IDs depend on the device substitutions used for the local
+deployment.
+
+</details>
+
+## Calibration And Tuning
+
+Rainfall depends on the bucket size and switch behaviour. The package defaults
+to `0.2794` mm per tip and uses a `100ms` internal filter to reduce switch
+bounce.
+
+For the first hardware pass, a manual tip test is enough. For real calibration,
+compare the reported total against a manual rain gauge after a few rain events.
+
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Related Variants
+## Changelog
 
-- Weather Sense Basic: static station baseline.
-- Weather Sense Wind: adds the anemometer and wind vane.
-- Weather Sense Wind and Rain: adds the tipping-bucket rain gauge.
-- Weather Sense Air: current production target with CCS811 eCO2 and TVOC.
-- Weather Sense V4.0: future branch based on the Open Green Energy / PCBWay
-  V4.0 design.
-- Pascal Weather Sense: future branch based on Pascal's own board design.
+See [changelog.md](documents/changelog.md).
 
 ## Credits And Source Hardware
 
@@ -199,10 +224,12 @@ The original project uses C++ firmware. This HAZA version is Pascal's ESPHome
 conversion, split into reusable board, sensor, common, and project packages so
 the station can be rebuilt and validated one stage at a time.
 
-## Change Notes
+## Related Projects And Next Variants
 
-- 2026-08-22: Created Weather Sense Wind and Rain from Weather Sense Wind and
-  the historical flat weather station rain gauge wiring.
-- 2026-08-22: Pascal confirmed ESPHome 2026.8.0 compile, serial upload, log
-  check, and web check. Rainfall entities are visible in the web UI, but the
-  tipping-bucket hardware test is deferred to the V4 build.
+- Weather Sense Basic: static station baseline.
+- Weather Sense Wind: adds the anemometer and wind vane.
+- Weather Sense Wind and Rain: adds the tipping-bucket rain gauge.
+- Weather Sense Air: current production target with CCS811 eCO2 and TVOC.
+- Weather Sense V4.0: future branch based on the Open Green Energy / PCBWay
+  V4.0 design.
+- Pascal Weather Sense: future branch based on Pascal's own board design.

@@ -1,4 +1,4 @@
-# HAZA Weather Sense Air
+<img src="../../../../.github/images/readme/weather-sense-air-hero.svg" alt="HAZA Weather Sense Air: local weather, UV, eCO2, and TVOC project">
 
 > [!WARNING]
 > **Disclaimer:** This is Pascal's production-target pass of the older weather
@@ -14,7 +14,9 @@ Wind and rain metering are intentionally not part of this Air variant. Those
 belong to the future V4 weather-meter build, where the moving hardware can be
 tested properly.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_weather_sense_air_project.yaml`
 - Desktop upload file: maintained in Pascal's local ESPHome Desktop workspace
@@ -31,7 +33,20 @@ tested properly.
   failed during setup
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate | Combines I2C, 1-Wire, ADC, time, sun, and air-quality sensing. |
+| Estimated cost | Medium | Much cheaper if the Open Green Energy style station hardware is already built. |
+| Build time | 1-2 hours | More if the outdoor wiring, enclosure, or sensor board needs repair. |
+| Tools needed | Multimeter and USB serial | CCS811 bring-up mostly needs wiring, I2C scan, and runtime checks. |
+| Off-the-shelf viability | Either | Buy if you need polished weather data quickly; build if local control and repairability matter. |
+| Maintenance burden | Medium | Outdoor sensors need checking, cleaning, and occasional calibration. |
 
 ## Why Build This?
 
@@ -60,17 +75,6 @@ ventilation decisions.
 It also gives the framework a cleaner staged pattern: Basic first, Air for
 environment plus air quality, and V4 later for the moving weather-meter parts.
 
-## Project Fit
-
-| Factor | Rating | Notes |
-| --- | --- | --- |
-| Difficulty | Intermediate | Combines I2C, 1-Wire, ADC, time, sun, and air-quality sensing. |
-| Estimated cost | Medium | Much cheaper if the Open Green Energy style station hardware is already built. |
-| Build time | 1-2 hours | More if the outdoor wiring, enclosure, or sensor board needs repair. |
-| Tools needed | Multimeter and USB serial | CCS811 bring-up mostly needs wiring, I2C scan, and runtime checks. |
-| Off-the-shelf viability | Either | Buy if you need polished weather data quickly; build if local control and repairability matter. |
-| Maintenance burden | Medium | Outdoor sensors need checking, cleaning, and occasional calibration. |
-
 ## Hardware And Bill Of Materials
 
 | Item | Recommended Part | Image | Viable Alternatives | Notes |
@@ -81,6 +85,18 @@ environment plus air quality, and V4 later for the moving weather-meter parts.
 | UV and ambient light | LTR390 module | To do: `assets/ltr390-sensor.png` | Other UV/light modules as future variants | This board uses LTR390 at `0x53`. |
 | Air quality | CCS811 module | To do: `assets/ccs811-sensor.png` | ENS160 or SGP30 as separate variants | This Air build uses CCS811 at `0x5A`. |
 | Battery monitoring | Voltage divider into ESP32 ADC | To do: `assets/battery-voltage-divider.png` | Dedicated fuel gauge module | The percentage estimate must be calibrated to the actual divider and battery. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. Check I2C addresses,
+> voltage, warm-up behaviour, package changes, placement, and interpretation.
+> The CCS811 in this build has not yet been detected on the hardware bus.
+
+## Who This Is For
+
+Build this if you want to repair or extend the current station with local UV,
+environmental, and rough gas-trend data. Treat the CCS811 stage as active
+troubleshooting, not a finished capability. Buy a calibrated outdoor monitor
+if reliable air-quality measurements are the main requirement.
 
 ## Wiring
 
@@ -109,20 +125,6 @@ Expected I2C addresses:
 - BME280: `0x76`
 - CCS811: `0x5A`
 
-## Framework Packages Used
-
-- Board: `boards/esp32/haza_weather_station_v1.yaml`
-- Core: `common/core/settings.yaml`
-- Time: `common/time/sntp.yaml`
-- Sun: `common/core/sun.yaml`
-- Network helpers: `common/network/wifi.yaml`
-- Public recipe network: `common/network/wifi_dynamicip.yaml`
-- Web server: `common/network/webserver.yaml`
-- Sensor: `sensors/i2c/bme280.yaml`
-- Sensor: `sensors/one_wire/ds18b20.yaml`
-- Sensor: `sensors/i2c/ltr390.yaml`
-- Sensor: `sensors/i2c/ccs811.yaml`
-
 ## Setup
 
 Before compiling, set these substitutions for the real deployment:
@@ -138,7 +140,46 @@ The default CCS811 address is `0x5A`. If the I2C scan does not show that
 address, check power, wiring, and whether the module is using a different
 address before treating the YAML as failed.
 
+Validate and compile the recipe before uploading it. For a new or repurposed
+board, follow [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+Use the I2C scan, logs, and web server to confirm each sensor before adding or
+reviewing the device in Home Assistant.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
+
+- Board: `boards/esp32/haza_weather_station_v1.yaml`
+- Core: `common/core/settings.yaml`
+- Time: `common/time/sntp.yaml`
+- Sun: `common/core/sun.yaml`
+- Network helpers: `common/network/wifi.yaml`
+- Public recipe network: `common/network/wifi_dynamicip.yaml`
+- Web server: `common/network/webserver.yaml`
+- Sensor: `sensors/i2c/bme280.yaml`
+- Sensor: `sensors/one_wire/ds18b20.yaml`
+- Sensor: `sensors/i2c/ltr390.yaml`
+- Sensor: `sensors/i2c/ccs811.yaml`
+
+</details>
+
+## Visual Checks
+
+To add during documentation cleanup:
+
+```text
+[Image placeholder: assets/weather-sense-air-web-server.png]
+[Image placeholder: Home Assistant device page for Weather Sense Air]
+[Image placeholder: I2C scan or log evidence showing LTR390/BME280/CCS811]
+[Image placeholder: close-up of the LTR390 and CCS811 wiring]
+[Image placeholder: Fritzing wiring diagram]
+```
+
 ## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
 
 Expected user-facing entities for this stage:
 
@@ -168,6 +209,8 @@ Expected user-facing entities for this stage:
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
+</details>
+
 ## Calibration And Tuning
 
 CCS811 readings should be treated as trend and classification signals, not lab
@@ -178,35 +221,17 @@ the human-readable labels.
 Battery percentage depends on the real divider and battery range. Treat the
 default values as Pascal's current build values, not universal values.
 
-## Screenshots And Visual Checks
-
-To add during documentation cleanup:
-
-```text
-[Image placeholder: assets/weather-sense-air-web-server.png]
-[Image placeholder: Home Assistant device page for Weather Sense Air]
-[Image placeholder: I2C scan or log evidence showing LTR390/BME280/CCS811]
-[Image placeholder: close-up of the LTR390 and CCS811 wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
-
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Related Variants
+## Changelog
 
-- Weather Sense Basic: static station baseline.
-- Weather Sense Air: current production target with LTR390 and CCS811.
-- Weather Sense Wind and Rain: staged experiment for the historical wind/rain
-  wiring, not the near-term production target.
-- Weather Sense V4.0: future branch for wind and rain based on the Open Green
-  Energy / PCBWay V4.0 design.
-- Pascal Weather Sense: future branch based on Pascal's own board design.
+See [changelog.md](documents/changelog.md).
 
 ## Credits And Source Hardware
 
@@ -219,10 +244,12 @@ The original project uses C++ firmware. This HAZA version is Pascal's ESPHome
 conversion, split into reusable board, sensor, common, and project packages so
 the station can be rebuilt and validated one stage at a time.
 
-## Change Notes
+## Related Projects And Next Variants
 
-- 2026-08-22: Created Weather Sense Air from Weather Sense Basic, corrected the
-  fitted light/UV sensor to LTR390, and added CCS811 eCO2/TVOC sensing for the
-  next hardware pass.
-- 2026-08-22: Public recipe and Desktop upload config/compile passed on ESPHome
-  2026.7.3.
+- Weather Sense Basic: static station baseline.
+- Weather Sense Air: current production target with LTR390 and CCS811.
+- Weather Sense Wind and Rain: staged experiment for the historical wind/rain
+  wiring, not the near-term production target.
+- Weather Sense V4.0: future branch for wind and rain based on the Open Green
+  Energy / PCBWay V4.0 design.
+- Pascal Weather Sense: future branch based on Pascal's own board design.

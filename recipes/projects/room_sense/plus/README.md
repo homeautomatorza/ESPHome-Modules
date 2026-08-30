@@ -1,4 +1,6 @@
-# HAZA Room Sense Plus
+<p align="center">
+  <img src="../../../../.github/images/readme/room-sense-plus-hero.svg" width="100%" alt="HAZA Room Sense Plus: ESP32-C3 room sensor with temperature, humidity, light, and indoor air-quality sensing">
+</p>
 
 > [!WARNING]
 > **Disclaimer:** These files are shared as-is, with the usual "it works in my
@@ -17,11 +19,9 @@ This is useful when a room feels stale, people complain about headaches, plants
 are sensitive to airflow, or you want Home Assistant to have more than just
 temperature and humidity before making ventilation decisions.
 
-## YouTube Video
+<details>
 
-To do, if this project is filmed.
-
-## Current Status
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_room_sense_plus_project.yaml`
 - Alternate YAML recipe: `esphome_room_sense_plus_project_alternate.yaml`
@@ -33,7 +33,20 @@ To do, if this project is filmed.
   compile, OTA, web access, and live-value checks on a private validation device
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate | Same I2C wiring as Basic, with one extra sensor and more values to interpret. |
+| Estimated cost | Low to medium | Depends on the ENS160 module price and what parts you already have. |
+| Build time | 1-2 hours | Allow extra time to confirm I2C addresses and sensor placement. |
+| Tools needed | Basic plus soldering | USB cable, Dupont wires, breadboard or soldering tools, and a computer. |
+| Off-the-shelf viability | Either | Buy if you want a finished air-quality device. Build if you want ESPHome packages and custom room logic. |
+| Maintenance burden | Medium | Placement matters, and air-quality interpretation needs common sense. |
 
 ## Why Build This?
 
@@ -87,32 +100,6 @@ The device exposes:
 - ENS160 human-readable classification labels from the shared package
 - standard ESPHome diagnostic entities from the shared framework packages
 
-## Who This Is For
-
-Build this if Room Sense Basic is working and you want a first indoor-air
-quality signal.
-
-It is especially useful if you are:
-
-- testing room ventilation ideas
-- comparing rooms that feel different
-- planning a fan, extractor, or air purifier automation
-- building toward Room Sense Air or Room Sense Presence later
-
-Skip it for now if you need certified air-quality measurements, CO2 compliance
-logging, or particulate measurements. That is not what this project claims.
-
-## Project Fit
-
-| Factor | Rating | Notes |
-| --- | --- | --- |
-| Difficulty | Intermediate | Same I2C wiring as Basic, with one extra sensor and more values to interpret. |
-| Estimated cost | Low to medium | Depends on the ENS160 module price and what parts you already have. |
-| Build time | 1-2 hours | Allow extra time to confirm I2C addresses and sensor placement. |
-| Tools needed | Basic plus soldering | USB cable, Dupont wires, breadboard or soldering tools, and a computer. |
-| Off-the-shelf viability | Either | Buy if you want a finished air-quality device. Build if you want ESPHome packages and custom room logic. |
-| Maintenance burden | Medium | Placement matters, and air-quality interpretation needs common sense. |
-
 ## Hardware And Bill Of Materials
 
 ### Visual Reference
@@ -135,6 +122,26 @@ Add clean component photos here as they become available.
 | VOC and eCO2 | ENS160 module | To do: `assets/ens160-sensor.png` | SGP30, CCS811 | Alternatives need different packages and different interpretation. |
 | Wiring | Dupont leads or soldered wire | Optional build photo | JST/Grove/Qwiic if your modules support it | Keep power, ground, SDA, and SCL clear and consistent. |
 | Mounting | Project box or printed enclosure | To do | Breadboard for testing | Keep sensor openings exposed to room air and representative light. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. Check the matching
+> framework package, GPIO mapping, I2C address, voltage, wiring, enclosure, and
+> interpretation before relying on a changed board or sensor.
+
+## Who This Is For
+
+Build this if Room Sense Basic is working and you want a first indoor-air
+quality signal.
+
+It is especially useful if you are:
+
+- testing room ventilation ideas
+- comparing rooms that feel different
+- planning a fan, extractor, or air purifier automation
+- building toward Room Sense Air or Room Sense Presence later
+
+Skip it for now if you need certified air-quality measurements, CO2 compliance
+logging, or particulate measurements. That is not what this project claims.
 
 ## Wiring
 
@@ -172,7 +179,21 @@ Expected I2C addresses:
 - ENS160: `0x53`
 - SGP30 alternate: `0x58`
 
-## Framework Packages Used
+## Setup
+
+1. Compile the recipe YAML from this folder.
+2. Confirm all three I2C sensors appear at the expected addresses.
+3. Upload the firmware.
+4. Check the ESPHome web server.
+5. Add or review the device in Home Assistant.
+6. Compare the readings with the room state and note what looks sensible.
+
+If you are replacing an existing ESPHome device, match any existing OTA password
+for the first migration upload, or use web OTA/serial flashing.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
 
 - Board: `boards/esp32/c3_super_mini.yaml`
 - Core: `common/core/settings.yaml`
@@ -190,19 +211,25 @@ The SGP30 alternate uses:
 - Sensor: `sensors/i2c/bme280.yaml`
 - Sensor: `sensors/i2c/sgp30.yaml`
 
-## Setup
+</details>
 
-1. Compile the recipe YAML from this folder.
-2. Confirm all three I2C sensors appear at the expected addresses.
-3. Upload the firmware.
-4. Check the ESPHome web server.
-5. Add or review the device in Home Assistant.
-6. Compare the readings with the room state and note what looks sensible.
+## Visual Checks
 
-If you are replacing an existing ESPHome device, match any existing OTA password
-for the first migration upload, or use web OTA/serial flashing.
+To add during physical validation:
+
+```text
+[Image placeholder: ESPHome web server view for Room Sense Plus]
+[Image placeholder: Home Assistant device page for Room Sense Plus]
+[Image placeholder: close-up of assembled board and sensors]
+[Image placeholder: device installed in the room]
+[Image placeholder: Fritzing wiring diagram]
+```
 
 ## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
 
 Expected user-facing entities:
 
@@ -233,17 +260,7 @@ entities:
 - SGP30 TVOC
 - SGP30 TVOC Level
 
-## Screenshots And Visual Checks
-
-To add during physical validation:
-
-```text
-[Image placeholder: ESPHome web server view for Room Sense Plus]
-[Image placeholder: Home Assistant device page for Room Sense Plus]
-[Image placeholder: close-up of assembled board and sensors]
-[Image placeholder: device installed in the room]
-[Image placeholder: Fritzing wiring diagram]
-```
+</details>
 
 ## Calibration And Tuning
 
@@ -257,14 +274,6 @@ Placement still matters:
   airflow unless that is the condition you are deliberately testing.
 - Let the device run for a while before judging the ENS160 readings.
 
-## Validation Evidence
-
-See [validation.md](validation.md).
-
-## Troubleshooting
-
-See [troubleshooting.md](troubleshooting.md).
-
 ## Known Limitations
 
 - The ENS160 Plus recipe still needs its final documentation screenshots.
@@ -276,6 +285,18 @@ See [troubleshooting.md](troubleshooting.md).
 - PM2.5, movement, and presence are not part of Plus.
 - Component images and final wiring diagrams are still being added.
 
+## Validation Evidence
+
+See [validation.md](documents/validation.md).
+
+## Troubleshooting
+
+See [troubleshooting.md](documents/troubleshooting.md).
+
+## Changelog
+
+See [changelog.md](documents/changelog.md).
+
 ## Related Projects And Next Variants
 
 - HAZA Room Sense Basic: temperature, humidity, dew point, and illuminance.
@@ -283,10 +304,3 @@ See [troubleshooting.md](troubleshooting.md).
 - HAZA Room Sense Air: Plus plus PM2.5 or particulate sensing.
 - HAZA Room Sense Presence: movement and presence focused variant.
 - HAZA Room Sense Max: reserved for the full combined room sensor.
-
-## Change Notes
-
-- 2026-08-17: Added `esphome_room_sense_plus_project_alternate.yaml` as a
-  verified SGP30 alternate using ESP32-C6, BME280, BH1750, and SGP30.
-- 2026.0.0: Created the Room Sense Plus project from Room Sense Basic and
-  added the ENS160 VOC/eCO2 package.

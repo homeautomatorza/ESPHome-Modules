@@ -65,6 +65,7 @@ every folder.
 | Goal | Start Here | Why |
 | --- | --- | --- |
 | Check requirements | [System requirements](https://github.com/homeautomatorza/ESPHome-Modules/wiki/system-requirements) | Lists the minimum ESPHome, board, editor, flashing, secrets, and substitution needs. |
+| Prepare the bench | [Starter hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware) and [starter tools](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-tools) | Covers a sensible first parts box, basic test tools, soldering gear, and what can wait. |
 | See a real build | [Room Sense Basic](recipes/projects/room_sense/basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
 | Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense/basic/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
 | Browse reusable parts | [Module catalogue](https://github.com/homeautomatorza/ESPHome-Modules/wiki/module-catalogue) | Shows the boards, common packages, peripherals, and sensors as documentation is rebuilt. |

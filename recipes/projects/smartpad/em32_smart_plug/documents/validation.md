@@ -12,7 +12,7 @@ Config and compile checks matter, but they are not physical hardware tests.
 | Source inspection | Passed | Public upstream YAML, local SmartPad wrapper/package material, and live Desktop App config inspected, 2026-08-26. |
 | Config validation | Passed | ESPHome `2026.8.1` accepted the recipe YAML, 2026-08-26. |
 | Compile validation | Passed | ESPHome `2026.8.1` produced firmware from a temporary validation copy, 2026-08-26. |
-| Desktop App local wrapper | Passed | `/Users/parentpj/esphome/watt-the-actual.yaml` accepted and compiled against the temporary local project copy, 2026-08-26. |
+| Desktop App local wrapper | Passed | `<esphome>/watt-the-actual.yaml` accepted and compiled against the temporary local project copy, 2026-08-26. |
 | Physical OTA upload | Passed | Pascal OTA-pushed the migrated framework firmware to the `Watt the Actual` development plug, 2026-08-26. |
 | API/log check | Passed | ESPHome logs connected, completed the encrypted API handshake, and reported project `haza.smartpad_em32_smart_plug` version `2026.0.0a`, 2026-08-26. |
 | Web UI check | Passed | ESPHome web UI loaded at the device hostname and showed live control, diagnostic, Wi-Fi, and BLE entities, 2026-08-26. |
@@ -32,17 +32,17 @@ github://Smartpadza/Device_Configs/smartpad-em32-smart-plug.yaml
 Local evidence inspected:
 
 ```text
-/Users/parentpj/esphome/watt-the-actual.yaml
-/Users/parentpj/esphome/watt-the-actual-original.yaml
-/Users/parentpj/esphome/esphome_v1.x/smartpad-em32-smart-plug-*.yaml
-/Users/parentpj/Documents/AI Projects/Codex/ESPHome/local_workbench/packages/smartpad/em32_smart_plug.yaml
+<esphome>/watt-the-actual.yaml
+<esphome>/watt-the-actual-original.yaml
+<esphome>/esphome_v1.x/smartpad-em32-smart-plug-*.yaml
+local_workbench/packages/smartpad/em32_smart_plug.yaml
 ```
 
 The live Desktop App device config compiled and uploaded in its current form
 before this migration pass. It has been archived unchanged as:
 
 ```text
-/Users/parentpj/esphome/watt-the-actual-original.yaml
+<esphome>/watt-the-actual-original.yaml
 ```
 
 The live config is intentionally small. It uses the upstream SmartPad package,
@@ -63,7 +63,7 @@ On 2026-08-26, the live Desktop App wrapper was migrated to a temporary local
 framework package copy in:
 
 ```text
-/Users/parentpj/esphome/haza_smartpad_em32_smart_plug
+<esphome>/haza_smartpad_em32_smart_plug
 ```
 
 The live wrapper now keeps the same hostname and friendly name, but pulls the
@@ -164,7 +164,7 @@ Validation environment note:
 
 - This Codex worktree does not include `.venv/bin/esphome`.
 - The authoritative checkout's ESPHome venv is available at
-  `/Users/parentpj/Documents/AI Projects/Codex/ESPHome/.venv/bin/esphome`.
+  `<framework>/.venv/bin/esphome`.
 - Earlier compile validation exposed duplicate `* 2.*` files in the installed
   `esphome` package. Those duplicates were removed from the venv on
   2026-08-26.
@@ -174,14 +174,14 @@ Validation environment note:
 Desktop App validation after live wrapper migration:
 
 ```text
-/Users/parentpj/Documents/AI Projects/Codex/ESPHome/.venv/bin/esphome config watt-the-actual.yaml
-/Users/parentpj/Documents/AI Projects/Codex/ESPHome/.venv/bin/esphome compile watt-the-actual.yaml
+<framework>/.venv/bin/esphome config watt-the-actual.yaml
+<framework>/.venv/bin/esphome compile watt-the-actual.yaml
 ```
 
 Run from:
 
 ```text
-/Users/parentpj/esphome
+<esphome>
 ```
 
 Results:

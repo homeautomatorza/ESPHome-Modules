@@ -1,4 +1,6 @@
-# HAZA Room Sense Max
+<p align="center">
+  <img src="../../../../.github/images/readme/room-sense-max-hero.svg" width="100%" alt="HAZA Room Sense Max: ESP32-C6 room sensor with the full comfort, air-quality, motion, and presence sensor stack">
+</p>
 
 > [!WARNING]
 > **Disclaimer:** This is the combined Room Sense build. It has passed config,
@@ -14,7 +16,9 @@ occupancy state.
 This is the version for a room where the extra sensors are worth the wiring,
 space, power, and setup time.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_room_sense_max_project.yaml`
 - Board: ESP32-C6 Super Mini for this validation device
@@ -26,7 +30,24 @@ space, power, and setup time.
 - Live validation: Passed with log check and web check on 2026-08-17
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Advanced | The build combines multiple I2C sensors, PIR, UART radar, power planning, placement, and tuning. |
+| Estimated cost | High | It includes the complete Room Sense sensor stack. |
+| Build time | A weekend | Build and validate it in stages rather than wiring everything at once. |
+| Tools needed | Soldering and test gear | A USB data cable, breadboard, jumper wires, and a multimeter are strongly recommended. |
+| Off-the-shelf viability | Better to build | The value is the unusual local sensor combination and transparent ESPHome integration. |
+| Maintenance burden | Medium to high | Airflow, sensor drift, radar tuning, and the larger wiring stack need occasional attention. |
+
+> [!TIP]
+> See [Recommended Starter Hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware)
+> and [Recommended Starter Tools](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-tools).
 
 ## Why Build This?
 
@@ -39,6 +60,18 @@ ventilation, lighting, air-quality decisions, and occupancy-aware automations.
 
 It is more hardware than every room needs. That is the point of the Room Sense
 ladder: start small, then only build Max where the extra information is useful.
+
+## What Problems It Solves
+
+- Combines room comfort, light, gas estimates, particulates, movement, and presence.
+- Reduces the number of separate room devices and integrations to maintain.
+- Keeps the raw signals available when the combined occupancy state needs diagnosis.
+
+## What Possibilities It Creates
+
+- Occupancy-aware ventilation, lighting, and climate decisions.
+- Comparisons between activity, comfort, particulate levels, and gas estimates.
+- One advanced platform for testing how a room behaves over time.
 
 ## Staged Build Plan
 
@@ -62,6 +95,18 @@ ladder: start small, then only build Max where the extra information is useful.
 | Particulate matter | SPS30 module | To do: `assets/sps30-sensor.png` | PMSx003 family | Wiring, airflow, and placement matter. |
 | Movement | HC-SR501 PIR sensor | To do: `assets/hc-sr501-pir.png` | Other GPIO PIR modules | Delay and sensitivity are usually adjusted on the module itself. |
 | Presence | HLK-LD2410C mmWave sensor | To do: `assets/hlk-ld2410c.png` | Other LD2410 variants | UART pins and GPIO presence pin must match the project YAML. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. A changed part can
+> affect power, GPIO or UART mapping, I2C addresses, packages, airflow,
+> placement, enclosure fit, and calibration. Revalidate the build one stage at
+> a time.
+
+## Who This Is For
+
+Build Max if you already understand the smaller Room Sense variants and need
+the full signal set in one room. Start with Basic, Plus, Air, Motion, or Presence
+if you want a simpler build or only need part of this capability.
 
 ## Wiring
 
@@ -107,7 +152,20 @@ Expected I2C addresses:
 - SPS30: `0x69`
 - BME280: `0x76`
 
-## Framework Packages Used
+## Setup
+
+1. Copy or import the [recipe YAML](esphome_room_sense_max_project.yaml).
+2. Review every substitution, GPIO, UART pin, sensor address, and power requirement.
+3. Confirm the required secret names exist in your own `secrets.yaml`.
+4. Validate and compile the smallest wired stage first.
+5. For a new or repurposed board, follow [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+6. Add one sensor stage at a time, checking logs and the web server after each change.
+7. Test moving, still, occupied, empty, and air-quality states before building automations.
+8. Add or review the device in Home Assistant.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
 
 - Board: `boards/esp32/c6_super_mini.yaml`
 - Core: `common/core/settings.yaml`
@@ -122,7 +180,24 @@ Expected I2C addresses:
 - Binary sensor: `sensors/binary/hc_sr501.yaml`
 - UART sensor: `sensors/uart/hlk_ld2410c_minimal.yaml`
 
+</details>
+
+## Visual Checks
+
+To add during documentation cleanup:
+
+```text
+[Image placeholder: ESPHome web server view for Room Sense Max]
+[Image placeholder: Home Assistant device page for Room Sense Max]
+[Image placeholder: close-up of the C6, BH1750, BME280, SGP30, SPS30, PIR, and LD2410C wiring]
+[Image placeholder: Fritzing wiring diagram]
+```
+
 ## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
 
 Expected user-facing entities for the current stage:
 
@@ -155,33 +230,29 @@ Expected user-facing entities for the current stage:
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
-## Screenshots And Visual Checks
+</details>
 
-To add during documentation cleanup:
+## Calibration And Tuning
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Max]
-[Image placeholder: Home Assistant device page for Room Sense Max]
-[Image placeholder: close-up of the C6, BH1750, BME280, SGP30, SPS30, PIR, and LD2410C wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+Treat tuning as several smaller jobs. Check environmental sensor placement,
+keep the SPS30 airflow path clear, allow the SGP30 to establish a useful
+baseline, adjust the PIR in its final position, and tune the LD2410C only after
+testing moving, still, and empty-room states.
 
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Change Notes
+## Changelog
 
-- 2026-08-17: Created Room Sense Max from the hardware-validated Presence
-  project shape and re-added SGP30 and SPS30 from the hardware-validated Air
-  project.
-- 2026-08-17: Public recipe and local Desktop App config and compile passed
-  with ESPHome 2026.7.3.
-- 2026-08-17: Combined Max hardware validation passed with serial push, OTA
-  upload, log check, and ESPHome web server confirmation using ESPHome 2026.7.4.
-  Screenshot evidence was captured by Pascal and still needs to be placed into
-  `assets/`.
+See [changelog.md](documents/changelog.md).
+
+## Related Projects And Next Variants
+
+- Room Sense Basic for the smallest useful build.
+- Room Sense Plus and Air for air-focused variants.
+- Room Sense Motion and Presence for occupancy-focused variants.

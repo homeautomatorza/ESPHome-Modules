@@ -1,4 +1,6 @@
-# HAZA Room Sense Presence
+<p align="center">
+  <img src="../../../../.github/images/readme/room-sense-presence-hero.svg" width="100%" alt="HAZA Room Sense Presence: ESP32-C6 room sensor with temperature, humidity, light, movement, and mmWave presence sensing">
+</p>
 
 > [!WARNING]
 > **Disclaimer:** This project has been validated on one private test device.
@@ -13,7 +15,9 @@ for temperature, humidity, pressure, and dew point, plus BH1750 for illuminance.
 It keeps the HC-SR501 PIR from Room Sense Motion, then adds the HLK-LD2410C so
 we can see the difference between movement and still presence.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_room_sense_presence_project.yaml`
 - Board: ESP32-C6 Super Mini for this validation device
@@ -25,7 +29,24 @@ we can see the difference between movement and still presence.
   check passed
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate to advanced | The build combines I2C, PIR, UART, and mmWave placement and tuning. |
+| Estimated cost | Medium | The LD2410C adds cost but provides still-presence information. |
+| Build time | Half a day | Allow time for wiring, radar placement, and sensitivity testing. |
+| Tools needed | Soldering and basic test gear | A USB data cable, breadboard, jumper wires, and a multimeter are useful. |
+| Off-the-shelf viability | Either | Buy for simpler setup; build for transparent local signals and custom occupancy logic. |
+| Maintenance burden | Medium | Radar sensitivity may need adjustment when furniture or room use changes. |
+
+> [!TIP]
+> See [Recommended Starter Hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware)
+> and [Recommended Starter Tools](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-tools).
 
 ## Why Build This?
 
@@ -39,6 +60,18 @@ can keep a room active even when movement has stopped.
 This project keeps both signals visible. The PIR remains useful, the LD2410C
 adds still-presence data, and the project adds a combined `Room Occupancy`
 entity for automations that only need the practical yes/no answer.
+
+## What Problems It Solves
+
+- Detects likely occupancy when a person is present but not moving enough for PIR.
+- Keeps raw movement, radar presence, and combined occupancy signals visible.
+- Gives Home Assistant a practical room-occupancy entity without hiding the inputs.
+
+## What Possibilities It Creates
+
+- Lighting and climate automations that remain active while someone sits still.
+- Side-by-side tuning of PIR movement and mmWave presence.
+- A reusable occupancy baseline for the Room Sense Max build.
 
 ## Staged Build Plan
 
@@ -57,6 +90,17 @@ entity for automations that only need the practical yes/no answer.
 | Illuminance | BH1750 module | To do: `assets/bh1750-sensor.png` | Other ESPHome-supported lux sensors | Wiring and package will change. |
 | Movement | HC-SR501 PIR sensor | To do: `assets/hc-sr501-pir.png` | Other GPIO PIR modules | Delay and sensitivity are usually adjusted on the module itself. |
 | Presence | HLK-LD2410C mmWave sensor | To do: `assets/hlk-ld2410c.png` | Other LD2410 variants | UART pins and GPIO presence pin must match the project YAML. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. Check voltage,
+> UART and GPIO mapping, framework packages, radar controls, placement, and
+> tuning before relying on a changed build.
+
+## Who This Is For
+
+Build this if PIR-only movement misses people sitting at a desk or on a couch,
+and you are comfortable tuning a radar sensor. Use Motion if movement is enough,
+or start with Basic if this is your first ESPHome sensor build.
 
 ## Wiring
 
@@ -92,7 +136,19 @@ Expected I2C addresses:
 - BH1750: `0x23`
 - BME280: `0x76`
 
-## Framework Packages Used
+## Setup
+
+1. Copy or import the [recipe YAML](esphome_room_sense_presence_project.yaml).
+2. Review the device substitutions, UART pins, and LD2410C GPIO presence pin.
+3. Confirm the required secret names exist in your own `secrets.yaml`.
+4. Validate the configuration, then compile the firmware.
+5. For a new or repurposed board, follow [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+6. Check logs and the web server, then test moving, still, occupied, and empty states.
+7. Add or review the device in Home Assistant.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
 
 - Board: `boards/esp32/c6_super_mini.yaml`
 - Core: `common/core/settings.yaml`
@@ -105,7 +161,24 @@ Expected I2C addresses:
 - Binary sensor: `sensors/binary/hc_sr501.yaml`
 - UART sensor: `sensors/uart/hlk_ld2410c_minimal.yaml`
 
+</details>
+
+## Visual Checks
+
+To add during documentation cleanup:
+
+```text
+[Image placeholder: ESPHome web server view for Room Sense Presence LD2410C stage]
+[Image placeholder: Home Assistant device page for Room Sense Presence]
+[Image placeholder: close-up of the C6, BH1750, BME280, PIR, and LD2410C wiring]
+[Image placeholder: Fritzing wiring diagram]
+```
+
 ## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
 
 Expected user-facing entities for the current stage:
 
@@ -129,20 +202,18 @@ Expected user-facing entities for the current stage:
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
-## Screenshots And Visual Checks
+</details>
 
-To add during documentation cleanup:
+## Calibration And Tuning
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Presence LD2410C stage]
-[Image placeholder: Home Assistant device page for Room Sense Presence]
-[Image placeholder: close-up of the C6, BH1750, BME280, PIR, and LD2410C wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+Mount the LD2410C in its final position before tuning it. Test moving, still,
+and empty-room states, then adjust its gates and sensitivity only as needed.
+Tune the PIR separately so the combined `Room Occupancy` entity remains easy to
+diagnose when one sensor behaves unexpectedly.
 
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 Automated and physical validation passed on `2026-08-17`. The radar stayed in a
 room with a person present, so the no-presence state was not captured in the
@@ -150,12 +221,14 @@ same evidence set.
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Change Notes
+## Changelog
 
-- 2026-08-17: Created Room Sense Presence from the hardware-validated Motion
-  project shape and added HLK-LD2410C on UART TX `GPIO3`, UART RX `GPIO4`, and
-  presence `GPIO0`.
-- 2026-08-17: Validated serial upload, logs, web view, LD2410C GPIO presence,
-  and combined `Room Occupancy` on the private Presence validation device.
+See [changelog.md](documents/changelog.md).
+
+## Related Projects And Next Variants
+
+- Room Sense Motion for PIR-only movement sensing.
+- Room Sense Basic for the environmental baseline.
+- Room Sense Max for presence plus the full air-quality stack.

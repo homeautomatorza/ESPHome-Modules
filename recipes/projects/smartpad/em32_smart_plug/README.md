@@ -9,7 +9,7 @@
 > switch mains power, move water, open a gate, affect safety, or ruin your
 > afternoon, test it properly first.
 
-`HAZA SmartPad EM32 Smart Plug` is the first framework migration scaffold for
+`HAZA SmartPad EM32 Smart Plug` is the first framework migration project for
 the SmartPad EM32 ESP32-C3 energy-monitoring plug.
 
 The goal is to stop depending on
@@ -17,7 +17,9 @@ The goal is to stop depending on
 device-specific logic inside this recipe while the standard HAZA packages handle
 the board, core services, network, web server, and Bluetooth proxy stack.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_smartpad_em32_smart_plug_project.yaml`
 - Project-local package: `packages/em32_smart_plug.yaml`
@@ -32,7 +34,20 @@ the board, core services, network, web server, and Bluetooth proxy stack.
 - API encryption: the development plug works with the shared
   `!secret api_encryption_key`
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Advanced | This is a mains-powered commercial device with device-specific firmware and calibration. |
+| Estimated cost | Medium | The complete smart plug includes switching, metering, and an ESP32-C3. |
+| Build time | 1-2 hours for firmware migration | Functional and calibration testing takes longer. |
+| Tools needed | Safe test load and electrical measurement gear | Do not open or probe the mains side unless you are qualified and equipped to do so safely. |
+| Off-the-shelf viability | Better to buy | This project adapts an existing product; it is not a from-scratch mains build. |
+| Maintenance burden | Medium | Firmware, metering calibration, relay behaviour, and BLE stability need checking. |
 
 ## Why Build This?
 
@@ -43,6 +58,20 @@ without adding more hardware.
 
 The first development unit uses the friendly name `Watt the Actual` and the
 ESPHome-safe hostname `watt-the-actual`.
+
+## What Problems It Solves
+
+- Brings the SmartPad EM32 firmware into the local modular framework.
+- Keeps relay, button, LEDs, and energy monitoring in one device-specific package.
+- Adds local diagnostics, web access, and Bluetooth proxy coverage without another ESP32.
+- Removes the runtime dependency on the upstream remote package.
+
+## What Possibilities It Creates
+
+- Repeatable migration of additional EM32 plugs after the function tests pass.
+- Local energy history and load-aware Home Assistant automations.
+- Wider BLE coverage from hardware that is already powered around the home.
+- A future reusable SmartPad board layer if testing proves that abstraction useful.
 
 ## What This Project Does
 
@@ -77,6 +106,39 @@ The device exposes:
 - ESPHome reported that the plug bootloader is too old for OTA rollback. OTA
   still worked, but rollback support is not available on this warranty-safe
   migration path.
+
+## Hardware And Bill Of Materials
+
+| Item | Recommended Part | Image | Alternates |
+| --- | --- | --- | --- |
+| Smart plug | SmartPad EM32 ESP32-C3 energy-monitoring smart plug | Pending project photo | Use only hardware with a separately verified pin map and metering configuration. |
+| Firmware connection | Existing supported OTA path | Not applicable | A manufacturer-supported serial method, used only by someone qualified to access it. |
+| Test load | Known, controlled load within the plug rating | Not applicable | Start with a low-risk load suitable for checking switching and plausible metering. |
+| Measurement reference | Suitable electrical meter or known-load reference | Not applicable | Required before claiming metering accuracy. |
+
+> [!WARNING]
+> This is mains-powered hardware. Do not treat another plug as a drop-in
+> replacement, guess its GPIO map, bypass its enclosure, or connect a serial
+> adapter to an energised device. Check the exact model, rating, firmware path,
+> local regulations, and safe isolation method first.
+
+## Who This Is For
+
+Use this project if you already own the exact SmartPad EM32 model, understand
+the risks of changing commercial mains firmware, and can test it with a
+controlled load. Buy or retain supported stock firmware if you need a certified,
+maintenance-free appliance rather than an experimental local integration.
+
+## Wiring
+
+There is no external low-voltage wiring step for normal use. The GPIO map below
+documents the firmware contract inherited from the upstream SmartPad config; it
+is not an instruction to open or rewire the plug.
+
+> [!WARNING]
+> Never work on the plug while it is connected to mains power. Do not open the
+> enclosure or probe internal pads unless you are qualified, have a safe
+> isolation procedure, and understand the legal and electrical risks.
 
 ## Hardware Pin Map To Confirm
 
@@ -113,3 +175,70 @@ The device exposes:
 5. Flash only the dedicated development unit first.
 6. Check relay, button, LEDs, metering, API adoption, and Bluetooth proxy before
    migrating other plugs.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
+
+- Board: `boards/esp32/c3_basic.yaml`
+- Core: `common/core/settings.yaml`
+- Time: `common/time/home_assistant.yaml`
+- Network helpers: `common/network/wifi.yaml`
+- Public recipe network: `common/network/wifi_dynamicip.yaml`
+- Web server: `common/network/webserver.yaml`
+- Bluetooth proxy and tracker: `common/network/bluetooth.yaml`
+- Project-local device package: `packages/em32_smart_plug.yaml`
+
+</details>
+
+## Visual Checks
+
+Still to capture for the project documentation:
+
+```text
+[Image placeholder: ESPHome web server with relay, metering, and BLE entities]
+[Image placeholder: Home Assistant device page]
+[Image placeholder: external product photo showing the exact SmartPad EM32 model]
+```
+
+## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
+
+- Outlet switch and physical power-button state
+- Voltage, current, power, energy, and daily energy
+- Power On State selector
+- Voltage Divider, Current Resistor, and Current Multiplier configuration entities
+- Overload Count diagnostic
+- Standard status, uptime, network, web, and Bluetooth entities
+
+The exact entity IDs depend on the device substitutions used for the local
+deployment.
+
+</details>
+
+## Calibration And Tuning
+
+Do not assume the inherited metering constants are accurate for every unit.
+Compare voltage, current, and power against suitable reference equipment and a
+known controlled load. Overload cutoff and calibration remain pending function
+tests on this migration.
+
+## Validation Evidence
+
+See [validation.md](documents/validation.md).
+
+## Troubleshooting
+
+See [troubleshooting.md](documents/troubleshooting.md).
+
+## Changelog
+
+See [changelog.md](documents/changelog.md).
+
+## Related Projects And Next Variants
+
+- Additional SmartPad EM32 units should wait until relay, button, LED, metering, overload, and BLE tests pass on the development plug.
+- A reusable SmartPad board package remains a later decision, not a current requirement.

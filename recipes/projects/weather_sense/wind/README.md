@@ -1,4 +1,4 @@
-# HAZA Weather Sense Wind
+<img src="../../../../.github/images/readme/weather-sense-wind-hero.svg" alt="HAZA Weather Sense Wind: local wind speed and direction project">
 
 > [!WARNING]
 > **Disclaimer:** This is the wind-stage modular pass of Pascal's older weather
@@ -13,7 +13,9 @@ wind vane for direction.
 
 Rain can wait its turn. Moving parts get their own moment.
 
-## Current Status
+<details>
+
+<summary><b>Current Status</b></summary><br>
 
 - YAML recipe: `esphome_weather_sense_wind_project.yaml`
 - Board: `boards/esp32/haza_weather_station_v1.yaml`
@@ -26,7 +28,20 @@ Rain can wait its turn. Moving parts get their own moment.
   corrected to LTR390 after the board was confirmed to use address `0x53`
 - Documentation approval: Draft, pending Pascal review
 
-Full validation notes live in [validation.md](validation.md).
+Full validation notes live in [validation.md](documents/validation.md).
+
+</details>
+
+## Project Profile
+
+| Factor | Rating | Notes |
+| --- | --- | --- |
+| Difficulty | Intermediate | Adds moving outdoor sensors and an ADC direction ladder. |
+| Estimated cost | Medium | Cheaper if the Open Green Energy style sensor set is already built. |
+| Build time | 1-2 hours | More if the wind cups or vane wiring need repair. |
+| Tools needed | Soldering and multimeter | A fan or gentle manual spin helps with bench testing. |
+| Off-the-shelf viability | Either | Buy if you need calibrated wind data quickly; build if repairability and local control matter. |
+| Maintenance burden | Medium | Wind cups, bearings, cables, and outdoor connectors need periodic checks. |
 
 ## Why Build This?
 
@@ -55,17 +70,6 @@ history. It can also support practical automations later, such as pausing
 irrigation when the wind is too strong, flagging stormy conditions, or comparing
 local wind to public weather forecasts.
 
-## Project Fit
-
-| Factor | Rating | Notes |
-| --- | --- | --- |
-| Difficulty | Intermediate | Adds moving outdoor sensors and an ADC direction ladder. |
-| Estimated cost | Medium | Cheaper if the Open Green Energy style sensor set is already built. |
-| Build time | 1-2 hours | More if the wind cups or vane wiring need repair. |
-| Tools needed | Soldering and multimeter | A fan or gentle manual spin helps with bench testing. |
-| Off-the-shelf viability | Either | Buy if you need calibrated wind data quickly; build if repairability and local control matter. |
-| Maintenance burden | Medium | Wind cups, bearings, cables, and outdoor connectors need periodic checks. |
-
 ## Hardware And Bill Of Materials
 
 | Item | Recommended Part | Image | Viable Alternatives | Notes |
@@ -77,6 +81,18 @@ local wind to public weather forecasts.
 | Battery monitoring | Voltage divider into ESP32 ADC | To do: `assets/battery-voltage-divider.png` | Dedicated fuel gauge module | The percentage estimate must be calibrated to the actual divider and battery. |
 | Wind speed | SparkFun-style anemometer | To do: `assets/anemometer.png` | Other pulse-output anemometers | Conversion factor may need recalibration. |
 | Wind direction | SparkFun-style wind vane | To do: `assets/wind-vane.png` | Other resistor-ladder wind vanes | Resistance bands may need tuning for the exact hardware. |
+
+> [!WARNING]
+> Alternatives are not automatically drop-in replacements. Wind sensors can
+> use different pulse rates, resistance bands, voltages, and mounting methods.
+> Recheck the package, pins, calibration, and live values after any change.
+
+## Who This Is For
+
+Build this if you want repairable, local wind readings and are prepared to test
+moving outdoor hardware. Start with Weather Sense Basic if the station baseline
+is not stable yet, or buy a calibrated unit if dependable wind data matters
+more than customisation.
 
 ## Wiring
 
@@ -109,7 +125,29 @@ Expected I2C addresses:
 - LTR390: `0x53`
 - BME280: `0x76`
 
-## Framework Packages Used
+## Setup
+
+Before compiling, set these substitutions for the real deployment:
+
+- `location_latitude`
+- `location_longitude`
+- `ds18b20_address`
+- `battery_empty_voltage`
+- `battery_full_voltage`
+- `wind_speed_pin`
+- `wind_vane_pin`
+
+The public recipe uses safe placeholder coordinates. Do not treat them as
+Pascal's location or as your own location.
+
+Then validate and compile the recipe. For a new or repurposed board, follow
+[First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload),
+then check the logs and web server. Test several vane positions and wind-cup
+speeds before adding or reviewing the device in Home Assistant.
+
+<details>
+
+<summary><b>Framework Packages Used</b></summary><br>
 
 - Board: `boards/esp32/haza_weather_station_v1.yaml`
 - Core: `common/core/settings.yaml`
@@ -123,6 +161,8 @@ Expected I2C addresses:
 - Sensor: `sensors/i2c/ltr390.yaml`
 - Sensor: `sensors/analogue/sparkfun_anemometer.yaml`
 - Sensor: `sensors/analogue/sparkfun_wind_vane.yaml`
+
+</details>
 
 ## Validation So Far
 
@@ -152,22 +192,24 @@ ESPHome 2026.8 beta on 2026-08-22:
 ESPHome warns that GPIO2 is a strapping pin. That matches the historical board
 definition and the Basic stage.
 
-## Setup
+## Visual Checks
 
-Before compiling, set these substitutions for the real deployment:
+To add during documentation cleanup:
 
-- `location_latitude`
-- `location_longitude`
-- `ds18b20_address`
-- `battery_empty_voltage`
-- `battery_full_voltage`
-- `wind_speed_pin`
-- `wind_vane_pin`
-
-The public recipe uses safe placeholder coordinates. Do not treat them as
-Pascal's location or as your own location.
+```text
+[Image placeholder: assets/weather-sense-wind-web-server.png]
+[Image placeholder: Home Assistant device page for Weather Sense Wind]
+[Image placeholder: wind speed changing during fan/manual spin test]
+[Image placeholder: wind direction changing by vane position]
+[Image placeholder: close-up of the board, anemometer, and wind vane wiring]
+[Image placeholder: Fritzing wiring diagram]
+```
 
 ## Home Assistant Entities
+
+<details>
+
+<summary><b>Expected user-facing entities</b></summary><br>
 
 Expected user-facing entities for this stage:
 
@@ -185,6 +227,8 @@ Expected user-facing entities for this stage:
 The exact entity IDs depend on the device substitutions used for the local
 deployment.
 
+</details>
+
 ## Calibration And Tuning
 
 Wind speed uses the existing SparkFun anemometer package conversion. Treat the
@@ -196,35 +240,17 @@ we should log the raw resistance values by vane position and tune the bands.
 Battery percentage remains an estimate until the voltage divider and battery
 range are checked on the real station.
 
-## Screenshots And Visual Checks
-
-To add during documentation cleanup:
-
-```text
-[Image placeholder: assets/weather-sense-wind-web-server.png]
-[Image placeholder: Home Assistant device page for Weather Sense Wind]
-[Image placeholder: wind speed changing during fan/manual spin test]
-[Image placeholder: wind direction changing by vane position]
-[Image placeholder: close-up of the board, anemometer, and wind vane wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
-
 ## Validation Evidence
 
-See [validation.md](validation.md).
+See [validation.md](documents/validation.md).
 
 ## Troubleshooting
 
-See [troubleshooting.md](troubleshooting.md).
+See [troubleshooting.md](documents/troubleshooting.md).
 
-## Related Variants
+## Changelog
 
-- Weather Sense Basic: static station baseline.
-- Weather Sense Wind and Rain: adds the tipping-bucket rain gauge.
-- Weather Sense Air: current production target with CCS811 eCO2 and TVOC.
-- Weather Sense V4.0: future branch based on the Open Green Energy / PCBWay
-  V4.0 design.
-- Pascal Weather Sense: future branch based on Pascal's own board design.
+See [changelog.md](documents/changelog.md).
 
 ## Credits And Source Hardware
 
@@ -237,9 +263,11 @@ The original project uses C++ firmware. This HAZA version is Pascal's ESPHome
 conversion, split into reusable board, sensor, common, and project packages so
 the station can be rebuilt and validated one stage at a time.
 
-## Change Notes
+## Related Projects And Next Variants
 
-- 2026-08-22: Created Weather Sense Wind from Weather Sense Basic and the
-  historical flat weather station wind wiring.
-- 2026-08-22: Added Pascal's hardware validation evidence and fixed missing
-  icons found during the web-server review.
+- Weather Sense Basic: static station baseline.
+- Weather Sense Wind and Rain: adds the tipping-bucket rain gauge.
+- Weather Sense Air: current production target with CCS811 eCO2 and TVOC.
+- Weather Sense V4.0: future branch based on the Open Green Energy / PCBWay
+  V4.0 design.
+- Pascal Weather Sense: future branch based on Pascal's own board design.

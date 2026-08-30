@@ -148,11 +148,11 @@ Use the wiring table when checking the diagram.
 >   if a sensor outputs a higher voltage.
 > - Disconnect power before changing wiring.
 > - GPIO9 is a strapping pin on the ESP32-C3 Super Mini, so keep the wiring simple
-  and check boot behavior after wiring.
+>   and check boot behavior after wiring.
 > - If I2C scanning does not find both sensors, check power, ground, SDA/SCL
-  order, and sensor addresses first.
+>   order, and sensor addresses first.
 > - Keep the AHT20 exposed to room air and the BH1750 exposed to representative
-  room light.
+>   room light.
 
 > [!TIP]
 > I2C devices can share the same SDA and SCL lines. Use one wire colour for SDA

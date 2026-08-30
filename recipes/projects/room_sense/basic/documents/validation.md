@@ -80,8 +80,8 @@ Reported result:
 
 Supporting screenshots:
 
-- [ESPHome web server view](assets/device-web-server.png)
-- [Home Assistant device view](assets/home-assistant-device.png)
+- [ESPHome web server view](../assets/device-web-server.png)
+- [Home Assistant device view](../assets/home-assistant-device.png)
 
 ## Remaining Documentation Evidence
 
