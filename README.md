@@ -14,6 +14,14 @@
   <img src="https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules" alt="Open GitHub issues">
 </p>
 
+> [!note]
+> I know there has not been an update for a few weeks. I have been battling
+> with my condition and focusing on getting better.
+>
+> I have also tested all the project recipes against ESPHome 2026.9 and have
+> not found any obvious issues. If you find one, please open an issue so I can
+> look into it. Many thanks.
+
 A practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
 
 > [!WARNING]
