@@ -2,7 +2,7 @@
 # DFRobot FireBeetle 2 ESP32-P4 AI Vision Board
 ################################################################################
 # Usage:
-#   Add the following code to package section in the device file
+#   Add the following code to the packages section in the device file
 # ------------------------------------------------------------------------------
 # packages:
 #   board: !include boards/esp32/p4_firebeetle_2_ai_vision.yaml
@@ -21,7 +21,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/boards/esp32/p4_firebeetle_2_ai_vision.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://wiki.dfrobot.com/dfr1172/
 # Reference: https://www.dfrobot.com/product-2915.html
@@ -65,12 +65,12 @@
 #     - Recommended ESPHome: 2026.8.x beta or newer
 #     - Config validated: ESPHome 2026.7.3 local CLI, 2026-08-24
 #     - Compile validated: ESPHome 2026.7.3 local CLI, 2026-08-24
-#     - Hardware validated: ESPHome 2026.8.0 serial upload, serial log, and web
-#       checks for P4 core, PSRAM, hosted C6 Wi-Fi/network stack, and onboard
-#       PDM microphone, 2026-08-24
-#     - Validation status: Beta hardware-validated for core/network/audio
-#       bring-up. Bluetooth is excluded until hosted C6 BLE runtime support is
-#       stable on this board.
+#     - Hardware validated: ESPHome 2026.8.0 serial upload, serial log,
+#       and web checks for P4 core, PSRAM, hosted C6 Wi-Fi/network
+#       stack, and onboard PDM microphone, 2026-08-24
+#     - Validation status: Beta hardware-validated for
+#       core/network/audio bring-up. Bluetooth is excluded until hosted
+#       C6 BLE runtime support is stable on this board.
 # ------------------------------------------------------------------------------
 # Spec:
 #     - ESP32-P4R32 RISC-V processor
@@ -79,7 +79,7 @@
 #     - onboard ESP32-C6 co-processor for hosted Wi-Fi
 #     - 32 MB PSRAM
 #     - onboard PDM microphone
-#
+# ------------------------------------------------------------------------------
 # Confirmed onboard pins:
 #     - LED: GPIO3
 #     - BOOT: GPIO35
@@ -100,10 +100,9 @@
 #     - ESP32-C6 WAKEUP: GPIO6
 #     - PDM microphone CLK: GPIO12
 #     - PDM microphone DATA: GPIO9
-#
 # ------------------------------------------------------------------------------
 # WARNING:
-# This code carries a "It works on my setup" disclaimer!
+# This code carries an "It works on my setup" disclaimer.
 # Meaning that it works on my setup but it may not work on yours.
 # Use at your own risk.
 ################################################################################

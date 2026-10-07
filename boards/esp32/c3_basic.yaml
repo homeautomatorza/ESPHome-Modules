@@ -2,7 +2,7 @@
 # Espressif ESP32-C3 Basic
 ################################################################################
 # Usage:
-#   Add the following code to package section in the device file
+#   Add the following code to the packages section in the device file
 # ------------------------------------------------------------------------------
 # packages:
 #   board: !include boards/esp32/c3_basic.yaml
@@ -14,22 +14,35 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/boards/esp32/c3_basic.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://docs.espressif.com/projects/arduino-esp32/en/latest/boards/ESP32-C3-DevKitM-1.html
-# ------------------------------------------------------------------------------
-# Specifications:
-#     - ESP32-C3 RISC-V 32-bit single core
-#     - 2.4 GHz Wi-Fi and Bluetooth LE
-#     - 4 MB flash
 # ------------------------------------------------------------------------------
 # Notes:
 #     - Minimal board package for ESP32-C3 devices where GPIO ownership belongs
 #       to device-specific packages.
 # ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: Not established
+#     - Recommended ESPHome: Not established; select a version after
+#       validation
+#     - Config validated: ESPHome 2026.8.1, SmartPad recipe, 2026-08-26
+#     - Compile validated: ESPHome 2026.8.1, SmartPad recipe, 2026-08-26
+#     - Hardware validated: SmartPad EM32 OTA, encrypted API, logs and
+#       web, 2026-08-26
+#     - Validation status: Hardware smoke validated for minimal platform
+#       package; relay and metering function tests pending
+#     - Evidence:
+#       recipes/projects/smartpad/em32_smart_plug/documents/validation.md
+# ------------------------------------------------------------------------------
+# Spec:
+#     - ESP32-C3 RISC-V 32-bit single core
+#     - 2.4 GHz Wi-Fi and Bluetooth LE
+#     - 4 MB flash
+# ------------------------------------------------------------------------------
 # WARNING:
-# This code carries a "It works on my setup" disclaimer!
+# This code carries an "It works on my setup" disclaimer.
 # Meaning that it works on my setup but it may not work on yours.
 # Use at your own risk.
 ################################################################################

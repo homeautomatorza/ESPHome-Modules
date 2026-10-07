@@ -2,7 +2,7 @@
 # HAZA Weather Station Board v1
 ################################################################################
 # Usage:
-#   Add the following code to package section in the device file
+#   Add the following code to the packages section in the device file
 # ------------------------------------------------------------------------------
 # packages:
 #   board: !include boards/esp32/haza_weather_station_v1.yaml
@@ -17,7 +17,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/boards/esp32/haza_weather_station_v1.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/status_led.html
@@ -35,11 +35,19 @@
 # Compatibility:
 #     - Minimum ESPHome: 2026.7.0
 #     - Recommended ESPHome: 2026.7.4 or newer
-#     - Config validated: ESPHome 2026.7.3
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Pending
-#     - Validation status: Beta. Project-level config and compile pass. Physical
-#       hardware validation is pending.
+#     - Config validated: ESPHome 2026.7.3 and 2026.8 beta, Weather
+#       Sense Basic, 2026-08-22
+#     - Compile validated: ESPHome 2026.7.3 and 2026.8 beta, Weather
+#       Sense Basic, 2026-08-22
+#     - Hardware validated: Weather Sense Basic serial upload, logs,
+#       web, BME280 and DS18B20, 2026-08-22
+#     - Validation status: Partial hardware validation; corrected LTR390
+#       and battery calibration pending
+#     - Evidence:
+#       recipes/projects/weather_sense/basic/documents/validation.md
+# ------------------------------------------------------------------------------
+# Spec:
+#     - Not recorded; consult the board reference before wiring.
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries an "It works on my setup" disclaimer.
