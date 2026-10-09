@@ -20,7 +20,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/boards/esp32/c3_super_mini.yaml
-# Version: 2026.0.0
+# Version: 2026.0.1b
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # Reference: https://esphome.io/components/esp32.html
 # Reference: https://esphome.io/components/status_led.html
@@ -36,15 +36,22 @@
 # ------------------------------------------------------------------------------
 # Notes:
 #     - Warning, this board does not use standard I2C and UART GPIO due to LED conflict!
+#     - UART TX uses GPIO21 and RX uses GPIO20.
+#     - GPIO10 is assigned to I2C SCL when the default bus is retained.
 # ------------------------------------------------------------------------------
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
-#     - Recommended ESPHome: 2026.7.3 or newer
-#     - Config validated: ESPHome 2026.7.3
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Room Sense Basic validation device,
-#       2026-08-02
-#     - Validation status: Hardware validated
+#     - Recommended ESPHome: 2026.9.1 or newer
+#     - Config validated: Tank Sense Basic promotion candidate, ESPHome
+#       2026.9.1, 2026-10-09; UART overridden to 9600 baud, SPI/LED removed
+#     - Compile validated: Running Tank Sense Basic ESPHome 2026.10.0b2
+#       firmware reported on 2026-10-09; exact build output not supplied
+#     - Hardware validated: Tank Sense Basic prototype reported complete on
+#       2026-10-09. UART RX on GPIO20, MCU temperature and Board Model observed.
+#     - Validation status: Beta; shared defaults not all tested in this project.
+#       UART TX and SPI were not exercised; LED remains deferred. No I2C
+#       peripherals attached. Earlier Room Sense Basic evidence dates to
+#       2026-08-02 and predates this revision.
 # ------------------------------------------------------------------------------
 # Spec:
 #     - ESP32C3FN4 RISC-V 32-bit Single Core (160 MHz)
@@ -79,7 +86,7 @@ esp32:
       CONFIG_USE_MINIMAL_MDNS: y
 
 # Internal LEDs
-# Note: disble if I2C is used
+# Note: disable if the project does not use the onboard status LED
 status_led:
   id: ${device_internal_name}_status_led
   pin:
@@ -96,7 +103,7 @@ i2c:
 # UART
 uart:
   id: ${device_internal_name}_uart_bus0
-  tx_pin: GPIO19
+  tx_pin: GPIO21
   rx_pin: GPIO20
   baud_rate: 256000
   parity: NONE
@@ -140,5 +147,12 @@ text_sensor:
       return {"Espressif ESP32 C3 Super Mini v1"};
     icon: mdi:cpu-32-bit
     entity_category: diagnostic
-    update_interval: ${device_sampling_time}
+    update_interval: never
     disabled_by_default: true
+
+# Publish constant board metadata once after component setup.
+esphome:
+  on_boot:
+    - priority: -100
+      then:
+        - component.update: ${device_internal_name}_board

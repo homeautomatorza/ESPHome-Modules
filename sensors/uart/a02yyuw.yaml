@@ -1,0 +1,47 @@
+################################################################################
+# A02YYUW UART Ultrasonic Distance Sensor
+################################################################################
+# Usage:
+#   Add this include to the device packages section; adjust its relative path.
+# packages:
+#   a02yyuw: !include
+#     file: sensors/uart/a02yyuw.yaml
+#     vars:
+#       uart_port: ${device_internal_name}_uart_bus0
+#       reporting_interval: ${device_sampling_time}
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - Ultrasonic distance in millimetres, with throttled reporting
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/uart/a02yyuw.yaml
+# Version: 2026.0.0b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/a02yyuw/
+# ------------------------------------------------------------------------------
+# Notes:
+#     - Requires an existing UART bus configured for 9600 baud, 8N1, with RX.
+#     - Required include variables: uart_port, reporting_interval.
+#     - UART pins and baud-rate overrides remain in the board/device configuration.
+#     - Throttle limits published readings; the sensor continues streaming data.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: Not established independently
+#     - Recommended ESPHome: 2026.9.1 or newer
+#     - Config validated: Tank Sense Basic candidate, ESPHome 2026.9.1,
+#       2026-10-09
+#     - Compile validated: Running Tank Sense Basic firmware ESPHome 2026.10.0b2,
+#       2026-10-09; no separate module build output supplied
+#     - Hardware validated: Tank Sense Basic prototype, 2026-10-09;
+#       raw and smoothed distance values visible in device web server
+#     - Validation status: Public beta; broader installations not validated
+################################################################################
+sensor:
+  - platform: "a02yyuw"
+    name: A02YYUW Distance
+    id: ${device_internal_name}_a02yyuw_distance
+    uart_id: ${uart_port}
+    filters:
+      - throttle: ${reporting_interval}

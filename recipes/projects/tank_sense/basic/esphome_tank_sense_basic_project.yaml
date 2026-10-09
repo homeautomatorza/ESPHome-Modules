@@ -1,0 +1,413 @@
+---
+author: Pascal Parent
+version: 2026.0.1b
+classification: project
+status: beta
+labels:
+  - recipe
+  - project
+  - tank_sense
+  - tank_sense_basic
+  - esp32_c3
+  - dallas
+  - xkc_y25
+  - a02yyuw
+  - staged_bringup
+minimum_esphome: 2026.7.0
+recommended_esphome: 2026.9.1
+---
+################################################################################
+# HAZA Tank Sense Basic Project
+################################################################################
+# Author: Pascal Parent
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/tank_sense/basic/README.md
+# Version: 2026.0.1b
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#     - Minimum ESPHome: 2026.7.0
+#     - Recommended ESPHome: 2026.9.1 or newer
+#     - Config validated: Promotion candidate ESPHome 2026.9.1, 2026-10-09
+#     - Compile validated: Running validation firmware ESPHome 2026.10.0b2,
+#       2026-10-09; exact build output was not supplied
+#     - Hardware validated: Pascal reported this prototype complete on
+#       2026-10-09. Serial startup and web-server readings supplied.
+#     - Validation status: Public beta; see documents/validation.md for scope.
+# ------------------------------------------------------------------------------
+# Confirmed Scope For This Stage:
+#     - ESP32-C3 Super Mini board package
+#     - DS18B20 / Dallas waterproof temperature probe package
+#     - XKC-Y25 contactless water level package on GPIO1 through a bidirectional
+#       logic level converter
+#     - A02YYUW UART ultrasonic distance sensor on GPIO20 RX at 9600 baud
+#     - common settings, time, WiFi, dynamic IP, and web server packages
+# ------------------------------------------------------------------------------
+# Installation Notes:
+#     - Mount A02YYUW above the water, facing down, then set calibration.
+#     - Mount XKC-Y25 near the bottom as an independent critical-low input.
+#     - Water Level true means liquid detected; false indicates a dry sensor.
+#     - No pump control or notification automation is included.
+#     - Status LED is intentionally disabled in this release.
+################################################################################
+
+################################################################################
+# Substitutions
+################################################################################
+substitutions:
+  device_internal_name: haza_tank_sense_basic
+  device_wifi_name: tank-sense-basic
+  device_friendly_name: HAZA Tank Sense Basic
+  device_sampling_time: 5s
+  device_timezone: Africa/Johannesburg
+
+  # Set the address of your own Dallas probe before compiling.
+  ds18b20_data_pin: GPIO0
+  ds18b20_address: "0x0000000000000000"
+  xkc_y25_data_pin: GPIO1
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../../../boards/esp32/c3_super_mini.yaml
+
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Sensor packages
+  # Temperature Sensor
+  ds18b20: !include
+    file: ../../../../sensors/one_wire/ds18b20.yaml
+    vars:
+      data_pin: ${ds18b20_data_pin}
+      sensor_address: ${ds18b20_address}
+  # Contactless Liquid Sensor
+  xkc_y25: !include
+    file: ../../../../sensors/binary/xkc_y25_t12v.yaml
+    vars:
+      pin: ${xkc_y25_data_pin}
+
+  # UART Ultrasonic Sensor
+  a02yyuw: !include
+    file: ../../../../sensors/uart/a02yyuw.yaml
+    vars:
+      uart_port: ${device_internal_name}_uart_bus0
+      reporting_interval: ${device_sampling_time}
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.7.0
+  comment: HAZA Tank Sense Basic water level and volume monitor
+
+  project:
+    name: haza.tank_sense_basic
+    version: 2026.0.1b
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+spi: !remove
+
+uart:
+  baud_rate: 9600
+
+################################################################################
+# Tank Calibration
+# Empty distance: sensor face to the bottom / defined empty level, in cm.
+# Full distance: sensor face to the highest usable water level, in cm.
+# L/cm: volume added by each centimetre of water height. No shape field required.
+# A constant L/cm is exact for a constant cross-section; otherwise an estimate.
+# Zero calibration defaults deliberately prevent plausible but invented readings.
+# Settings persist in flash; allow the normal preference-save interval before
+# removing power. Set empty distance, full distance, then litres per centimetre.
+################################################################################
+number:
+  - platform: template
+    name: Tank Empty Distance
+    id: ${device_internal_name}_empty_distance
+    entity_category: config
+    unit_of_measurement: "cm"
+    mode: box
+    min_value: 0
+    max_value: 450
+    step: 0.1
+    initial_value: 0
+    optimistic: true
+    restore_value: true
+    update_interval: never
+
+  - platform: template
+    name: Tank Full Distance
+    id: ${device_internal_name}_full_distance
+    entity_category: config
+    unit_of_measurement: "cm"
+    mode: box
+    min_value: 0
+    max_value: 450
+    step: 0.1
+    initial_value: 0
+    optimistic: true
+    restore_value: true
+    update_interval: never
+
+  - platform: template
+    name: Tank Litres per Centimetre
+    id: ${device_internal_name}_litres_per_cm
+    entity_category: config
+    unit_of_measurement: "L/cm"
+    mode: box
+    min_value: 0
+    max_value: 10000
+    step: 0.1
+    initial_value: 0
+    optimistic: true
+    restore_value: true
+    update_interval: never
+
+  - platform: template
+    name: Tank Low Threshold
+    id: ${device_internal_name}_low_threshold
+    entity_category: config
+    unit_of_measurement: "%"
+    mode: box
+    min_value: 0
+    max_value: 100
+    step: 1
+    initial_value: 20
+    optimistic: true
+    restore_value: true
+    update_interval: never
+
+  - platform: template
+    name: Tank High Threshold
+    id: ${device_internal_name}_high_threshold
+    entity_category: config
+    unit_of_measurement: "%"
+    mode: box
+    min_value: 0
+    max_value: 100
+    step: 1
+    initial_value: 90
+    optimistic: true
+    restore_value: true
+    update_interval: never
+
+  - platform: template
+    name: Tank Level Hysteresis
+    id: ${device_internal_name}_level_hysteresis
+    entity_category: config
+    unit_of_measurement: "%"
+    mode: box
+    min_value: 0
+    max_value: 25
+    step: 1
+    initial_value: 2
+    optimistic: true
+    restore_value: true
+    update_interval: never
+
+globals:
+  - id: ${device_internal_name}_last_distance_ms
+    type: uint32_t
+    restore_value: false
+    initial_value: '0'
+  - id: ${device_internal_name}_distance_seen
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+  - id: ${device_internal_name}_low_latched
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+  - id: ${device_internal_name}_high_latched
+    type: bool
+    restore_value: false
+    initial_value: 'false'
+
+sensor:
+  # Prototype connection workaround: discard failed / impossible Dallas reads.
+  # Keep the last accepted Celsius state in RAM; Fahrenheit uses that same state.
+  # On boot, temperature stays unknown until the first valid measurement.
+  - id: !extend ${device_internal_name}_ds18b20_temperature
+    filters:
+      - lambda: |-
+          if (!std::isfinite(x) || x < -55.0f || x > 125.0f) return {};
+          return x;
+
+  # Keep the module's distance as a diagnostic; tank logic stays in this project.
+  - id: !extend ${device_internal_name}_a02yyuw_distance
+    entity_category: diagnostic
+    on_value:
+      then:
+        - lambda: |-
+            if (std::isfinite(x) && x >= 30.0f && x <= 4500.0f) {
+              id(${device_internal_name}_last_distance_ms) = millis();
+              id(${device_internal_name}_distance_seen) = true;
+            } else {
+              id(${device_internal_name}_distance_seen) = false;
+            }
+
+  - platform: copy
+    source_id: ${device_internal_name}_a02yyuw_distance
+    name: Tank Smoothed Distance
+    id: ${device_internal_name}_smoothed_distance
+    entity_category: diagnostic
+    unit_of_measurement: mm
+    accuracy_decimals: 0
+    filters:
+      # Three reported readings: rejects a single spike, with some response lag.
+      - median:
+          window_size: 3
+          send_every: 1
+          send_first_at: 1
+
+  - platform: template
+    name: Tank Water Depth
+    id: ${device_internal_name}_water_depth
+    unit_of_measurement: "cm"
+    accuracy_decimals: 1
+    state_class: measurement
+    update_interval: never
+
+  - platform: template
+    name: Tank Fill
+    id: ${device_internal_name}_fill
+    unit_of_measurement: "%"
+    accuracy_decimals: 1
+    state_class: measurement
+    update_interval: never
+
+  - platform: template
+    name: Tank Estimated Volume
+    id: ${device_internal_name}_volume_litres
+    unit_of_measurement: "L"
+    accuracy_decimals: 1
+    state_class: measurement
+    update_interval: never
+
+  - platform: template
+    name: Tank Estimated Volume kL
+    id: ${device_internal_name}_volume_kilolitres
+    unit_of_measurement: "kL"
+    accuracy_decimals: 3
+    state_class: measurement
+    update_interval: never
+
+  - platform: template
+    name: Tank Reading Age
+    id: ${device_internal_name}_reading_age
+    unit_of_measurement: "s"
+    accuracy_decimals: 0
+    state_class: measurement
+    update_interval: never
+    entity_category: diagnostic
+
+binary_sensor:
+  - platform: template
+    name: Tank Calibration Valid
+    id: ${device_internal_name}_calibration_valid
+    entity_category: diagnostic
+
+  - platform: template
+    name: Tank Reading Valid
+    id: ${device_internal_name}_reading_valid
+    entity_category: diagnostic
+
+  - platform: template
+    name: Tank Distance Outside Calibration
+    id: ${device_internal_name}_distance_out_of_range
+    entity_category: diagnostic
+
+  - platform: template
+    name: Tank Low Level
+    id: ${device_internal_name}_low_level
+
+  - platform: template
+    name: Tank High Level
+    id: ${device_internal_name}_high_level
+
+text_sensor:
+  - platform: template
+    name: Tank Status
+    id: ${device_internal_name}_tank_status
+    update_interval: never
+
+# One five-second calculation tick also detects missing UART data. Calibration
+# changes take effect on the next tick. A 15-second timeout allows three periods.
+interval:
+  - interval: ${device_sampling_time}
+    then:
+      - lambda: |-
+          const float empty_cm = id(${device_internal_name}_empty_distance).state;
+          const float full_cm = id(${device_internal_name}_full_distance).state;
+          const float litres_per_cm = id(${device_internal_name}_litres_per_cm).state;
+          const float low = id(${device_internal_name}_low_threshold).state;
+          const float high = id(${device_internal_name}_high_threshold).state;
+          const float hysteresis = id(${device_internal_name}_level_hysteresis).state;
+          const bool calibration_ok = std::isfinite(empty_cm) &&
+              std::isfinite(full_cm) && std::isfinite(litres_per_cm) &&
+              empty_cm <= 450.0f && full_cm >= 3.0f && empty_cm > full_cm &&
+              litres_per_cm > 0.0f && std::isfinite(low) && std::isfinite(high) &&
+              std::isfinite(hysteresis) && low >= 0.0f && high <= 100.0f &&
+              low < high && hysteresis >= 0.0f &&
+              low + hysteresis < high - hysteresis;
+          const bool seen = id(${device_internal_name}_distance_seen);
+          const uint32_t age_ms = millis() - id(${device_internal_name}_last_distance_ms);
+          const float raw_mm = id(${device_internal_name}_a02yyuw_distance).state;
+          const float smoothed_mm = id(${device_internal_name}_smoothed_distance).state;
+          const bool reading_ok = seen && age_ms <= 15000U &&
+              std::isfinite(raw_mm) && raw_mm >= 30.0f && raw_mm <= 4500.0f &&
+              std::isfinite(smoothed_mm) && smoothed_mm >= 30.0f && smoothed_mm <= 4500.0f;
+          id(${device_internal_name}_calibration_valid).publish_state(calibration_ok);
+          id(${device_internal_name}_reading_valid).publish_state(reading_ok);
+          id(${device_internal_name}_reading_age).publish_state(seen ? age_ms / 1000.0f : NAN);
+          if (!calibration_ok || !reading_ok) {
+            id(${device_internal_name}_water_depth).publish_state(NAN);
+            id(${device_internal_name}_fill).publish_state(NAN);
+            id(${device_internal_name}_volume_litres).publish_state(NAN);
+            id(${device_internal_name}_volume_kilolitres).publish_state(NAN);
+            id(${device_internal_name}_distance_out_of_range).invalidate_state();
+            id(${device_internal_name}_low_level).invalidate_state();
+            id(${device_internal_name}_high_level).invalidate_state();
+            id(${device_internal_name}_low_latched) = false;
+            id(${device_internal_name}_high_latched) = false;
+            id(${device_internal_name}_tank_status).publish_state(
+                !calibration_ok ? "Not calibrated / invalid settings" : "No valid sensor reading");
+            return;
+          }
+          const float distance_cm = smoothed_mm / 10.0f;
+          const float usable_height_cm = empty_cm - full_cm;
+          const bool outside = distance_cm < full_cm || distance_cm > empty_cm;
+          const float depth_cm = std::max(0.0f, std::min(empty_cm - distance_cm, usable_height_cm));
+          const float fill = 100.0f * depth_cm / usable_height_cm;
+          const float litres = depth_cm * litres_per_cm;
+          id(${device_internal_name}_water_depth).publish_state(depth_cm);
+          id(${device_internal_name}_fill).publish_state(fill);
+          id(${device_internal_name}_volume_litres).publish_state(litres);
+          id(${device_internal_name}_volume_kilolitres).publish_state(litres / 1000.0f);
+          id(${device_internal_name}_distance_out_of_range).publish_state(outside);
+          id(${device_internal_name}_low_latched) = id(${device_internal_name}_low_latched)
+              ? fill < low + hysteresis : fill <= low;
+          id(${device_internal_name}_high_latched) = id(${device_internal_name}_high_latched)
+              ? fill > high - hysteresis : fill >= high;
+          id(${device_internal_name}_low_level).publish_state(id(${device_internal_name}_low_latched));
+          id(${device_internal_name}_high_level).publish_state(id(${device_internal_name}_high_latched));
+          id(${device_internal_name}_tank_status).publish_state(outside ? "Outside calibrated range" :
+              id(${device_internal_name}_low_latched) ? "Low" :
+              id(${device_internal_name}_high_latched) ? "High" : "Normal");
