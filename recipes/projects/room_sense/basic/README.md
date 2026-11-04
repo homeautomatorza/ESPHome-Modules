@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../../../../.github/images/readme/room-sense-basic-hero.svg" width="100%" alt="HAZA Room Sense Basic: ESP32-C3 room sensor with temperature, humidity, and light sensing">
+  <img src="assets/room-sense-basic-hero.svg" width="100%" alt="HAZA Room Sense Basic: ESP32-C3 room sensor with temperature, humidity, and light sensing">
 </p>
 
 > [!WARNING]
@@ -32,7 +32,10 @@ temperature, humidity, and light.
 - Compile validation: Passed on ESPHome `2026.7.3`
 - Physical validation: Passed on `Room Sense Basic validation device`,
   2026-08-02
-- Documentation approval: Pending
+- Documentation approval: Approved by Pascal, 2026-11-04
+- Maintenance: Complete and frozen for feature work. Future ESPHome validation
+  checks and their results may be recorded; other changes require Pascal to
+  reopen the project.
 
 Full validation notes live in [validation.md](documents/validation.md).
 
@@ -94,9 +97,9 @@ test, and trust.
 
 | Item | Recommended Part | Image | Alternates |
 | --- | --- | --- | --- |
-| Controller | ESP32-C3 Super Mini | ![ESP32-C3 Super Mini](../../../../.github/images/boards/esp32_c3_super_mini.png) | Any other suitable ESP32 |
-| Temperature and humidity | AHT20 module | ![AHT20 temperature and humidity sensor](../../../../.github/images/sensors/i2c/aht20.png) | BME280, SHT30, AHT10 |
-| Illuminance | BH1750 module | ![BH1750 illuminance sensor](../../../../.github/images/sensors/i2c/bh1750.png) | VEML7700, TSL2561 |
+| Controller | ESP32-C3 Super Mini | ![ESP32-C3 Super Mini](assets/esp32_c3_super_mini.png) | Any other suitable ESP32 |
+| Temperature and humidity | AHT20 module | ![AHT20 temperature and humidity sensor](assets/aht20.png) | BME280, SHT30, AHT10 |
+| Illuminance | BH1750 module | ![BH1750 illuminance sensor](assets/bh1750.png) | VEML7700, TSL2561 |
 | From the electronics workshop | Jumper wires, breadboard, and USB data cable | [Recommended starter hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware) | |
 
 > [!WARNING]
@@ -124,9 +127,7 @@ version.
 
 ## Wiring
 
-```text
-[Image placeholder: assets/fritzing.png]
-```
+![Room Sense Basic Fritzing wiring diagram with an ESP32-C3 Super Mini, AHT20 and BH1750](assets/fritzing.png)
 
 Use the wiring table when checking the diagram.
 
@@ -156,14 +157,15 @@ Use the wiring table when checking the diagram.
 
 > [!TIP]
 > I2C devices can share the same SDA and SCL lines. Use one wire colour for SDA
-> (for example, purple) and another for SCL (for example, yellow). It avoids
+> (for example, Green) and another for SCL (for example, Blue). It avoids
 > confusion and possible damage from crossed wires. I also use red for positive
 > and black for negative power.
 
 ## Setup
 
-1. Copy or import the
-   [recipe YAML](esphome_room_sense_basic_project.yaml).
+1. Open the [recipe YAML](esphome_room_sense_basic_project.yaml) in a checkout of
+   this repository. Its package paths expect the recipe to stay in this folder.
+   If you copy it elsewhere, adjust the package paths before validating.
 2. Set the device substitutions for your room.
     ```yaml
     substitutions:
@@ -172,8 +174,9 @@ Use the wiring table when checking the diagram.
       device_friendly_name: John's Bedroom Sense Basic
       device_sampling_time: 30s
     ```
-3. Confirm that `sample_secrets.yaml` has the required secret names in your own
-   `secrets.yaml`.
+3. Use the repository's [sample secrets file](../../../../sample_secrets.yaml)
+   as a reference and add the required names and your own values to the
+   `secrets.yaml` used by your device configuration. Keep those values private.
 4. Validate the configuration in ESPHome.
 5. Compile the firmware.
 6. Erase the old flash and perform the first USB serial upload by following
@@ -251,12 +254,6 @@ deployment.
 Use this screen to confirm the device integrated correctly and the expected
 entities are visible in Home Assistant.
 
-### Additional Images To Add
-
-```text
-[Image placeholder: close-up of assembled board and sensors]
-```
-
 ## Calibration And Tuning
 
 No calibration is expected for the Basic version.
@@ -283,7 +280,17 @@ See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
-- HAZA Room Sense Plus: Basic plus eCO2 and TVOC.
-- HAZA Room Sense Air: Plus plus PM2.5 or particulate sensing.
-- HAZA Room Sense Presence: movement and presence focused variant.
-- HAZA Room Sense Max: reserved for the full combined room sensor.
+Choose the variant that adds the sensing you need. These builds use different
+sensor and board combinations; check each guide's wiring, packages and
+validation notes before changing your Basic build.
+
+- [Room Sense Plus](../plus/README.md): adds eCO2 and TVOC sensing, with ENS160
+  and SGP30 recipe options.
+- [Room Sense Air](../air/README.md): combines comfort, light and indoor-air
+  sensing with SPS30 particulate measurements.
+- [Room Sense Motion](../motion/README.md): adds HC-SR501 PIR movement sensing
+  to the comfort and light baseline.
+- [Room Sense Presence](../presence/README.md): combines PIR movement with
+  LD2410C mmWave presence sensing.
+- [Room Sense Max](../max/README.md): brings comfort, light, indoor-air,
+  particulate, movement and presence sensing together in the combined build.

@@ -4,6 +4,14 @@ This page records validation evidence for the Room Sense Basic project.
 
 Config and compile checks matter, but they are not physical hardware tests.
 
+## Maintenance Boundary
+
+Pascal marked Room Sense Basic complete and frozen for feature work on
+2026-11-04. Future ESPHome validation checks and their results may be recorded
+here. Changes to hardware, wiring, features or firmware behaviour require Pascal
+to reopen the project explicitly. Documentation approval does not extend the
+historical hardware test to later ESPHome versions.
+
 ## Summary
 
 | Layer | Status | Evidence |
@@ -14,7 +22,7 @@ Config and compile checks matter, but they are not physical hardware tests.
 | BH1750 code revalidation | Passed | Human-readable illuminance label update compiled and was reinstalled successfully by OTA, 2026-08-16. |
 | Wi-Fi signal label review | Passed | Human-readable RSSI label update compiled, OTA installed, and returned expected values, 2026-08-16. |
 | Live sensor values | Passed | ESPHome web server and Home Assistant showed expected values without reported errors. |
-| Documentation approval | Pending | Draft documentation still needs Pascal review. |
+| Documentation approval | Approved | Approved by Pascal on 2026-11-04 after supplying the corrected Fritzing diagram. Publication also approved by Pascal. |
 
 ## Validated Package Stack
 
@@ -83,14 +91,20 @@ Supporting screenshots:
 - [ESPHome web server view](../assets/device-web-server.png)
 - [Home Assistant device view](../assets/home-assistant-device.png)
 
-## Remaining Documentation Evidence
+## Documentation Evidence And Approval
 
-Still to add or approve:
+Status confirmed by Pascal during documentation review:
 
-- Updated ESPHome web server and Home Assistant screenshots for the validated
-  `2026.0.1` build.
-- Fritzing wiring diagram.
-- Final wiring table confirmation against the physical build.
-- BOM component photos.
-- Final device or installed-location photo, if useful.
-- Pascal documentation approval.
+- Updated ESPHome web server and Home Assistant screenshots: complete.
+- Fritzing wiring diagram: corrected version supplied by Pascal and replaced
+  with a transparent PNG on 2026-11-04. Exterior wire gaps and logo edges were
+  cleaned with a pixel mask; breadboard, components and internal wiring pixels
+  were preserved. Sensor power is labelled
+  3.3 V; the unused upper rail is labelled 5 V.
+- Final wiring table confirmation against the physical build: complete,
+  confirmed by Pascal.
+- BOM component photos: complete.
+- Final device or installed-location photo: omitted; the build was dismantled
+  and this optional photo is not required.
+- Documentation approval: documentation and publication approved by Pascal on
+  2026-11-04. This approval does not record a new firmware or hardware test.
