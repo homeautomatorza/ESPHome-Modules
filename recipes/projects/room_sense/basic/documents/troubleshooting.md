@@ -42,7 +42,8 @@ the board or test it by itself.
 
 Check:
 
-- ESPHome version is close to the validated version, `2026.7.3`.
+- The recorded validation used ESPHome `2026.7.3`. For newer releases, check
+  breaking changes before updating.
 - The package paths match where the YAML file lives.
 - Your `secrets.yaml` contains the required keys.
 - You did not mix dynamic-IP and fixed-IP substitutions without adding
@@ -59,12 +60,27 @@ If the log says:
 ERROR ESP requests password, but no password given!
 ```
 
-the firmware currently running on the device is asking for an OTA password. The
-API encryption key is not the same thing as the OTA password.
+the firmware currently running on the device still requires its existing OTA
+password. The API encryption key cannot replace that password for this upload.
 
-Fix options:
+To migrate to encrypted OTA using the API encryption key:
 
-- Add the existing OTA password to the migration build.
+1. Keep the existing OTA password in the migration configuration and retain the
+   API encryption key. Build and install with ESPHome `2026.9.0` or newer.
+   Confirm the device log reports `Encryption: offered, plaintext accepted`.
+2. Once the device runs firmware that offers OTA encryption, add `encryption:`
+   under the `esphome` OTA platform, remove its `password:`, then build and
+   install again. The OTA encryption key is inherited from the API configuration.
+   Confirm the device log reports `Encryption: required`.
+
+The recorded `2026.7.3` validation predates encrypted OTA. API encryption alone
+does not mean this recipe requires encrypted OTA; that also needs the OTA
+`encryption:` setting. See the
+[ESPHome OTA migration guide](https://esphome.io/components/ota/esphome/#enabling-encryption-on-an-existing-device)
+for the full procedure.
+
+If the existing OTA password is unavailable:
+
 - Use the ESPHome web-server OTA path if the old firmware supports it.
 - Flash once over USB/serial.
 
