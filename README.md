@@ -10,19 +10,9 @@
   <img src="https://img.shields.io/github/license/homeautomatorza/ESPHome-Modules" alt="GitHub license">
   <img src="https://img.shields.io/github/stars/homeautomatorza/ESPHome-Modules?style=flat" alt="GitHub stars">
   <img src="https://img.shields.io/github/contributors/homeautomatorza/ESPHome-Modules" alt="GitHub contributors">
-  <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/main" alt="Last commit on main">
+    <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/main" alt="Last commit on dev">
   <img src="https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules" alt="Open GitHub issues">
 </p>
-
-> [!note]
-> I know there has not been an update for a few weeks. I have been battling
-> with my condition and focusing on getting better.
->
-> I have also tested all the project recipes against ESPHome 2026.9 and have
-> not found any obvious issues. If you find one, please open an issue so I can
-> look into it. Many thanks.
-
-A practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
 
 > [!WARNING]
 > **Disclaimer:** This project is shared as-is, with the usual "it works in my
@@ -33,11 +23,19 @@ A practical best-practice framework for ESPHome that helps makers build IoT devi
 > power, move water, open a gate, affect safety, or ruin your afternoon, test it
 > properly first.
 
-> [!NOTE]
+
+> [!note]
 > The `main` branch is updated when enough work has landed on `dev` to make a
 > stable public snapshot. If you want the latest bleeding-edge work, use the
 > [`dev` branch](https://github.com/homeautomatorza/ESPHome-Modules/tree/dev). I
-> update it regularly.
+> update it regularly, the "last commit" pill bellow indicates the last time it was updated.   
+>
+><img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/dev" alt="Last commit on dev">
+>
+> I have tested all the project recipes against ESPHome 2026.10 and have 
+> not found any obvious issues. If you find one, please open an issue so I can
+> look into it. Many thanks.
+
 
 > [!IMPORTANT]
 > ## Documentation Rebuild In Progress
@@ -55,13 +53,21 @@ A practical best-practice framework for ESPHome that helps makers build IoT devi
 > module's validation notes before using it in a real build.
 >
 > Status:
-> - [ ] Wiki general pages
-> - [ ] Wiki board pages
+> - [ ] Internal recipe pages [In Process]
+> - [ ] Wiki general pages [In Process]
+> - [x] Wiki board pages [In Review]
 > - [ ] Wiki common component pages
 > - [ ] Wiki peripheral pages
 > - [ ] Wiki sensor pages
-> - [ ] Wiki recipe pages
-> - [ ] Internal recipe pages
+> - [ ] Wiki recipe pages [Online copy of Internal recipe page]
+
+## Introduction
+
+The Home Automator ESPHome Modular Framework is a practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
+
+I use this framework and repository for my projects and grow it as I have time and as I create new projects so expect it to grow for the forseeable future.
+
+Regarding my use of Artificial Inteligence please read my [AI DECLARATION](/AI_DECLARATION.md).
 
 ---
 
