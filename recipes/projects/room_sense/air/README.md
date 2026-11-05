@@ -17,7 +17,7 @@ BH1750, and BME280; then SGP30; then SPS30; then movement and presence.
 
 <summary><b>Current Status</b></summary><br>
 
-- YAML recipe: `esphome_room_sense_air_project.yaml`
+- YAML recipe: [`esphome_room_sense_air_project.yaml`](esphome_room_sense_air_project.yaml)
 - Board: ESP32-C6 Super Mini
 - Current stage: Stage 3 SPS30 hardware validation passed
 - Config validation: Passed on ESPHome `2026.7.3`
@@ -100,11 +100,14 @@ smaller enclosure, or do not yet need particulate sensing.
 
 ## Wiring
 
+Disconnect power before changing wiring. Check the exact hardware's supply and
+signal levels against the controller GPIO limits before connecting it.
+
+
 Pascal will provide the Fritzing diagram after the staged hardware checks.
 
-```text
-[Image placeholder: assets/wiring-breadboard.png]
-```
+- Pending: assets/wiring-breadboard.png.
+
 
 Current stage:
 
@@ -136,7 +139,8 @@ Expected I2C addresses:
 
 ## Setup
 
-1. Copy or import the [recipe YAML](esphome_room_sense_air_project.yaml).
+1. Open the [recipe YAML](esphome_room_sense_air_project.yaml) in this folder. Keep the relative package layout intact;
+   adapt includes before validating if you copy only the YAML elsewhere.
 2. Review the device substitutions and enable only the stage you have wired.
 3. Confirm the required secret names exist in your own `secrets.yaml`.
 4. Validate the configuration, then compile the firmware.
@@ -165,12 +169,11 @@ Expected I2C addresses:
 
 To add during documentation cleanup:
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Air stage 3 - captured, pending asset file]
-[Image placeholder: Home Assistant device page for Room Sense Air stage 3]
-[Image placeholder: close-up of the C6, BH1750, BME280, SGP30, and SPS30 wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+- Pending: ESPHome web server view for Room Sense Air stage 3 - captured, pending asset file.
+- Pending: Home Assistant device page for Room Sense Air stage 3.
+- Pending: close-up of the C6, BH1750, BME280, SGP30, and SPS30 wiring.
+- Pending: Fritzing wiring diagram.
+
 
 ## Home Assistant Entities
 
@@ -231,6 +234,11 @@ See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
-- Room Sense Basic for temperature, humidity, and light only.
-- Room Sense Plus for gas estimates without particulate sensing.
-- Room Sense Max for the full air, movement, and presence stack.
+Check each guide's wiring, packages and validation notes before changing your
+build; these variants use different sensor and board combinations.
+
+- [Room Sense Basic](../basic/README.md): temperature, humidity and light sensing.
+- [Room Sense Plus](../plus/README.md): eCO2 and TVOC sensing, with ENS160 and SGP30 recipe options.
+- [Room Sense Motion](../motion/README.md): comfort and light sensing with HC-SR501 PIR movement detection.
+- [Room Sense Presence](../presence/README.md): comfort and light sensing with PIR movement and LD2410C mmWave presence detection.
+- [Room Sense Max](../max/README.md): the combined comfort, light, indoor-air, particulate, movement and presence build.

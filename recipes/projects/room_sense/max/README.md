@@ -20,7 +20,7 @@ space, power, and setup time.
 
 <summary><b>Current Status</b></summary><br>
 
-- YAML recipe: `esphome_room_sense_max_project.yaml`
+- YAML recipe: [`esphome_room_sense_max_project.yaml`](esphome_room_sense_max_project.yaml)
 - Board: ESP32-C6 Super Mini for this validation device
 - Current stage: Hardware-validated
 - Config validation: Passed with ESPHome 2026.7.3
@@ -110,11 +110,14 @@ if you want a simpler build or only need part of this capability.
 
 ## Wiring
 
+Disconnect power before changing wiring. Check the exact hardware's supply and
+signal levels against the controller GPIO limits before connecting it.
+
+
 Pascal will provide the Fritzing diagram after the combined hardware check.
 
-```text
-[Image placeholder: assets/wiring-breadboard.png]
-```
+- Pending: assets/wiring-breadboard.png.
+
 
 Current validation wiring:
 
@@ -154,7 +157,8 @@ Expected I2C addresses:
 
 ## Setup
 
-1. Copy or import the [recipe YAML](esphome_room_sense_max_project.yaml).
+1. Open the [recipe YAML](esphome_room_sense_max_project.yaml) in this folder. Keep the relative package layout intact;
+   adapt includes before validating if you copy only the YAML elsewhere.
 2. Review every substitution, GPIO, UART pin, sensor address, and power requirement.
 3. Confirm the required secret names exist in your own `secrets.yaml`.
 4. Validate and compile the smallest wired stage first.
@@ -186,12 +190,11 @@ Expected I2C addresses:
 
 To add during documentation cleanup:
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Max]
-[Image placeholder: Home Assistant device page for Room Sense Max]
-[Image placeholder: close-up of the C6, BH1750, BME280, SGP30, SPS30, PIR, and LD2410C wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+- Pending: ESPHome web server view for Room Sense Max.
+- Pending: Home Assistant device page for Room Sense Max.
+- Pending: close-up of the C6, BH1750, BME280, SGP30, SPS30, PIR, and LD2410C wiring.
+- Pending: Fritzing wiring diagram.
+
 
 ## Home Assistant Entities
 
@@ -253,6 +256,11 @@ See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
-- Room Sense Basic for the smallest useful build.
-- Room Sense Plus and Air for air-focused variants.
-- Room Sense Motion and Presence for occupancy-focused variants.
+Check each guide's wiring, packages and validation notes before changing your
+build; these variants use different sensor and board combinations.
+
+- [Room Sense Basic](../basic/README.md): temperature, humidity and light sensing.
+- [Room Sense Plus](../plus/README.md): eCO2 and TVOC sensing, with ENS160 and SGP30 recipe options.
+- [Room Sense Air](../air/README.md): comfort, light and indoor-air sensing with SPS30 particulate measurements.
+- [Room Sense Motion](../motion/README.md): comfort and light sensing with HC-SR501 PIR movement detection.
+- [Room Sense Presence](../presence/README.md): comfort and light sensing with PIR movement and LD2410C mmWave presence detection.

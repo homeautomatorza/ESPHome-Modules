@@ -3,7 +3,7 @@
 </p>
 
 > [!WARNING]
-> **Disclaimer:** This project is being built from a real wired Study device.
+> **Disclaimer:** This project is being built from a real wired validation device.
 > It passed on that validation device, but it still carries the normal
 > "it works in my environment" warning until more builds have repeated it.
 
@@ -18,7 +18,7 @@ Then it adds a simple HC-SR501 PIR sensor for movement.
 
 <summary><b>Current Status</b></summary><br>
 
-- YAML recipe: `esphome_room_sense_motion_project.yaml`
+- YAML recipe: [`esphome_room_sense_motion_project.yaml`](esphome_room_sense_motion_project.yaml)
 - Board: ESP32-C6 Super Mini for this validation device
 - Likely future board: ESP32-C3 for a smaller PIR-focused build
 - Current stage: C6 PIR hardware validation passed
@@ -74,7 +74,7 @@ and the difference between movement and occupancy.
 
 | Stage | Adds | Status |
 | --- | --- | --- |
-| 1 | ESP32-C6 Super Mini, BH1750, BME280, HC-SR501 PIR | Hardware validated on the C6 Study validation device |
+| 1 | ESP32-C6 Super Mini, BH1750, BME280, HC-SR501 PIR | Hardware validated on the C6 validation device |
 | 2 | ESP32-C3 variant | Planned |
 | 3 | LD2410C presence | Separate Presence project |
 
@@ -101,11 +101,14 @@ still matters.
 
 ## Wiring
 
+Disconnect power before changing wiring. Check the exact hardware's supply and
+signal levels against the controller GPIO limits before connecting it.
+
+
 Pascal will provide the Fritzing diagram after the staged hardware check.
 
-```text
-[Image placeholder: assets/wiring-breadboard.png]
-```
+- Pending: assets/wiring-breadboard.png.
+
 
 Current validation wiring:
 
@@ -121,7 +124,7 @@ Current validation wiring:
 | BME280 | SCL | GPIO18 | Shared I2C bus. |
 | HC-SR501 | VCC | Module-safe supply | Check your PIR module voltage requirements. |
 | HC-SR501 | GND | GND | Common ground with the ESP32-C6. |
-| HC-SR501 | OUT | GPIO1 | Matches the previous Study wiring. |
+| HC-SR501 | OUT | GPIO1 | Matches the recorded validation wiring. |
 
 Expected I2C addresses:
 
@@ -130,7 +133,8 @@ Expected I2C addresses:
 
 ## Setup
 
-1. Copy or import the [recipe YAML](esphome_room_sense_motion_project.yaml).
+1. Open the [recipe YAML](esphome_room_sense_motion_project.yaml) in this folder. Keep the relative package layout intact;
+   adapt includes before validating if you copy only the YAML elsewhere.
 2. Review the device substitutions and confirm the PIR GPIO matches your wiring.
 3. Confirm the required secret names exist in your own `secrets.yaml`.
 4. Validate the configuration, then compile the firmware.
@@ -158,12 +162,11 @@ Expected I2C addresses:
 
 To add during documentation cleanup:
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Motion stage 1]
-[Image placeholder: Home Assistant device page for Room Sense Motion stage 1]
-[Image placeholder: close-up of the C6, BH1750, BME280, and PIR wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+- Pending: ESPHome web server view for Room Sense Motion stage 1.
+- Pending: Home Assistant device page for Room Sense Motion stage 1.
+- Pending: close-up of the C6, BH1750, BME280, and PIR wiring.
+- Pending: Fritzing wiring diagram.
+
 
 ## Home Assistant Entities
 
@@ -211,6 +214,11 @@ See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
-- Room Sense Basic for environmental sensing without movement.
-- Room Sense Presence for PIR plus mmWave still-presence sensing.
-- Room Sense Max for the full room-sensing stack.
+Check each guide's wiring, packages and validation notes before changing your
+build; these variants use different sensor and board combinations.
+
+- [Room Sense Basic](../basic/README.md): temperature, humidity and light sensing.
+- [Room Sense Plus](../plus/README.md): eCO2 and TVOC sensing, with ENS160 and SGP30 recipe options.
+- [Room Sense Air](../air/README.md): comfort, light and indoor-air sensing with SPS30 particulate measurements.
+- [Room Sense Presence](../presence/README.md): comfort and light sensing with PIR movement and LD2410C mmWave presence detection.
+- [Room Sense Max](../max/README.md): the combined comfort, light, indoor-air, particulate, movement and presence build.

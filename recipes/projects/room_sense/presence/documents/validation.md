@@ -61,7 +61,7 @@ Known warnings:
   wiring.
 - ESPHome warns that GPIO4 is a strapping pin. In this staged validation build,
   GPIO4 is used as ESP32-C6 UART RX for the LD2410C, following the previous
-  Study wiring pattern.
+  recorded validation wiring pattern.
 
 ## Baseline Evidence
 

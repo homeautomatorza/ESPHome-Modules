@@ -4,14 +4,14 @@ This page records validation evidence for the staged Room Sense Motion project.
 
 Room Sense Motion starts with an ESP32-C6 Super Mini, BH1750, BME280, and an
 HC-SR501 PIR movement sensor. A C3 version is likely a better long-term fit, but
-the first validation target is the already wired C6 Study device.
+the first validation target is the already wired C6 private validation device.
 
 ## Summary
 
 | Layer | Status | Evidence |
 | --- | --- | --- |
-| Config validation | Passed | Public recipe and local Study build passed config validation with ESPHome 2026.7.3. |
-| Compile validation | Passed | Public recipe and local Study build compiled successfully on 2026-08-17. |
+| Config validation | Passed | Public recipe and private validation build passed config validation with ESPHome 2026.7.3. |
+| Compile validation | Passed | Public recipe and private validation build compiled successfully on 2026-08-17. |
 | Physical upload | Passed | Serial push succeeded on the Room Sense Motion validation device after the name change. |
 | Live sensor values | Passed | Logs and ESPHome web server confirmed BME280, BH1750, WiFi diagnostics, and HC-SR501 movement on/off states. |
 | Documentation approval | Pending | Draft documentation still needs Pascal review. |
@@ -29,7 +29,7 @@ Public recipe:
 - Config hash: `0xb6e2d6fc`
 - Build time: `2026-08-17 18:17:22 +0200`
 
-Local Study validation file:
+Local private validation file:
 
 - Config command: `.venv/bin/esphome config study-sense-motion.yaml`
 - Compile command: `.venv/bin/esphome compile study-sense-motion.yaml`

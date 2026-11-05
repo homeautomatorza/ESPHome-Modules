@@ -4,13 +4,14 @@
 
 <p align="center">
   <a href="https://github.com/homeautomatorza/ESPHome-Modules/wiki/changelog"><img src="https://img.shields.io/badge/version-2026.0.0-success.svg" alt="Version 2026.0.0"></a>
-  <a href="https://esphome.io/"><img src="https://img.shields.io/badge/ESPHome-2026.7.0_+-19BCF2.svg" alt="ESPHome 2026.7.0 or newer"></a>
+  <a href="https://esphome.io/"><img src="https://img.shields.io/badge/ESPHome-2026.9.0_+-19BCF2.svg" alt="ESPHome 2026.9.0 or newer"></a>
   <a href="https://www.home-assistant.io/"><img src="https://img.shields.io/badge/Home_Assistant-2026.0.0_+-00C9FF.svg" alt="Home Assistant 2026.0.0 or newer"></a>
   <br>
   <img src="https://img.shields.io/github/license/homeautomatorza/ESPHome-Modules" alt="GitHub license">
   <img src="https://img.shields.io/github/stars/homeautomatorza/ESPHome-Modules?style=flat" alt="GitHub stars">
-  <img src="https://img.shields.io/github/contributors/homeautomatorza/ESPHome-Modules" alt="GitHub contributors">
-    <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/main" alt="Last commit on dev">
+  <img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/main" alt="Last commit on main">
+  <img src="https://img.shields.io/github/commit-activity/y/homeautomatorza/ESPHome-Modules" alt="Commit Activity">
+  <img src="https://img.shields.io/badge/maintained-yes-brightgreen" alt="Maintained">
   <img src="https://img.shields.io/github/issues/homeautomatorza/ESPHome-Modules" alt="Open GitHub issues">
 </p>
 
@@ -28,11 +29,11 @@
 > The `main` branch is updated when enough work has landed on `dev` to make a
 > stable public snapshot. If you want the latest bleeding-edge work, use the
 > [`dev` branch](https://github.com/homeautomatorza/ESPHome-Modules/tree/dev). I
-> update it regularly, the "last commit" pill bellow indicates the last time it was updated.   
+> update it regularly; the "last commit" pill below indicates the last time it was updated.
 >
 ><img src="https://img.shields.io/github/last-commit/homeautomatorza/ESPHome-Modules/dev" alt="Last commit on dev">
 >
-> I have tested all the project recipes against ESPHome 2026.10 and have 
+> I have tested all the project recipes against ESPHome 2026.10 and have
 > not found any obvious issues. If you find one, please open an issue so I can
 > look into it. Many thanks.
 
@@ -44,7 +45,7 @@
 > still being rebuilt around it. The YAML modules, cookbook projects, validation
 > notes, and wiki pages are being cleaned up in public as the framework settles.
 >
-> I am aware that the wiki is currently broken, I will fix it as soon as possible.
+> The wiki is being rebuilt alongside the recipe guides.
 > Much of the current documentation was AI-assisted and is being reviewed in
 > stages. Thanks for your patience.
 >
@@ -65,9 +66,9 @@
 
 The Home Automator ESPHome Modular Framework is a practical best-practice framework for ESPHome that helps makers build IoT devices faster, with reusable modules, clearer patterns, less guesswork for beginners, and guidance for troubleshooting common issues.
 
-I use this framework and repository for my projects and grow it as I have time and as I create new projects so expect it to grow for the forseeable future.
+I use this framework and repository for my projects and grow it as I have time and as I create new projects, so expect it to grow for the foreseeable future.
 
-Regarding my use of Artificial Inteligence please read my [AI DECLARATION](/AI_DECLARATION.md).
+Regarding my use of Artificial Intelligence, please read my [AI DECLARATION](/AI_DECLARATION.md).
 
 ---
 
@@ -81,7 +82,7 @@ every folder.
 | Check requirements | [System requirements](https://github.com/homeautomatorza/ESPHome-Modules/wiki/system-requirements) | Lists the minimum ESPHome, board, editor, flashing, secrets, and substitution needs. |
 | Prepare the bench | [Starter hardware](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-hardware) and [starter tools](https://github.com/homeautomatorza/ESPHome-Modules/wiki/recommended-starter-tools) | Covers a sensible first parts box, basic test tools, soldering gear, and what can wait. |
 | See a real build | [Room Sense Basic](recipes/projects/room_sense/basic/README.md) | Small room sensor project using shared board, network, and sensor packages. |
-| Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense/basic/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
+| Check the evidence | [Room Sense Basic validation](recipes/projects/room_sense/basic/documents/validation.md) | Records config validation, compile validation, physical upload, and live sensor-value checks. |
 | Browse reusable parts | [Module catalogue](https://github.com/homeautomatorza/ESPHome-Modules/wiki/module-catalogue) | Shows the boards, common packages, peripherals, and sensors as documentation is rebuilt. |
 | Install the framework | [Installation guide](https://github.com/homeautomatorza/ESPHome-Modules/wiki/installation) | Covers ZIP download, local clone, and remote package use. |
 

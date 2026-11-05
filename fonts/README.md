@@ -4,3 +4,6 @@ Store project font files here.
 
 This project uses the Material Design Icons webfont:
 [Templarian/MaterialDesign-Webfont](https://github.com/Templarian/MaterialDesign-Webfont).
+
+Font setup and licensing notes live in the
+[font wiki guide](https://github.com/homeautomatorza/ESPHome-Modules/wiki/fonts-index).

@@ -19,7 +19,7 @@ we can see the difference between movement and still presence.
 
 <summary><b>Current Status</b></summary><br>
 
-- YAML recipe: `esphome_room_sense_presence_project.yaml`
+- YAML recipe: [`esphome_room_sense_presence_project.yaml`](esphome_room_sense_presence_project.yaml)
 - Board: ESP32-C6 Super Mini for this validation device
 - Current stage: Hardware validated
 - Config validation: Passed with ESPHome 2026.7.3
@@ -104,11 +104,14 @@ or start with Basic if this is your first ESPHome sensor build.
 
 ## Wiring
 
+Disconnect power before changing wiring. Check the exact hardware's supply and
+signal levels against the controller GPIO limits before connecting it.
+
+
 Pascal will provide the Fritzing diagram after the staged hardware check.
 
-```text
-[Image placeholder: assets/wiring-breadboard.png]
-```
+- Pending: assets/wiring-breadboard.png.
+
 
 Current validation wiring:
 
@@ -124,7 +127,7 @@ Current validation wiring:
 | BME280 | SCL | GPIO18 | Shared I2C bus. |
 | HC-SR501 | VCC | Module-safe supply | Check your PIR module voltage requirements. |
 | HC-SR501 | GND | GND | Common ground with the ESP32-C6. |
-| HC-SR501 | OUT | GPIO1 | Matches the previous Study wiring. |
+| HC-SR501 | OUT | GPIO1 | Matches the recorded validation wiring. |
 | HLK-LD2410C | VCC | Module-safe supply | Check your LD2410C module voltage requirements. |
 | HLK-LD2410C | GND | GND | Common ground with the ESP32-C6. |
 | HLK-LD2410C | OUT | GPIO0 | GPIO presence output. |
@@ -138,7 +141,8 @@ Expected I2C addresses:
 
 ## Setup
 
-1. Copy or import the [recipe YAML](esphome_room_sense_presence_project.yaml).
+1. Open the [recipe YAML](esphome_room_sense_presence_project.yaml) in this folder. Keep the relative package layout intact;
+   adapt includes before validating if you copy only the YAML elsewhere.
 2. Review the device substitutions, UART pins, and LD2410C GPIO presence pin.
 3. Confirm the required secret names exist in your own `secrets.yaml`.
 4. Validate the configuration, then compile the firmware.
@@ -167,12 +171,11 @@ Expected I2C addresses:
 
 To add during documentation cleanup:
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Presence LD2410C stage]
-[Image placeholder: Home Assistant device page for Room Sense Presence]
-[Image placeholder: close-up of the C6, BH1750, BME280, PIR, and LD2410C wiring]
-[Image placeholder: Fritzing wiring diagram]
-```
+- Pending: ESPHome web server view for Room Sense Presence LD2410C stage.
+- Pending: Home Assistant device page for Room Sense Presence.
+- Pending: close-up of the C6, BH1750, BME280, PIR, and LD2410C wiring.
+- Pending: Fritzing wiring diagram.
+
 
 ## Home Assistant Entities
 
@@ -229,6 +232,11 @@ See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
-- Room Sense Motion for PIR-only movement sensing.
-- Room Sense Basic for the environmental baseline.
-- Room Sense Max for presence plus the full air-quality stack.
+Check each guide's wiring, packages and validation notes before changing your
+build; these variants use different sensor and board combinations.
+
+- [Room Sense Basic](../basic/README.md): temperature, humidity and light sensing.
+- [Room Sense Plus](../plus/README.md): eCO2 and TVOC sensing, with ENS160 and SGP30 recipe options.
+- [Room Sense Air](../air/README.md): comfort, light and indoor-air sensing with SPS30 particulate measurements.
+- [Room Sense Motion](../motion/README.md): comfort and light sensing with HC-SR501 PIR movement detection.
+- [Room Sense Max](../max/README.md): the combined comfort, light, indoor-air, particulate, movement and presence build.

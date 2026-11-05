@@ -23,7 +23,7 @@ temperature and humidity before making ventilation decisions.
 
 <summary><b>Current Status</b></summary><br>
 
-- YAML recipe: `esphome_room_sense_plus_project.yaml`
+- YAML recipe: [`esphome_room_sense_plus_project.yaml`](esphome_room_sense_plus_project.yaml)
 - Alternate YAML recipe: `esphome_room_sense_plus_project_alternate.yaml`
 - Config validation: Passed on ESPHome `2026.7.3`
 - Compile validation: Passed on ESPHome `2026.7.3`
@@ -106,13 +106,12 @@ The device exposes:
 
 Add clean component photos here as they become available.
 
-```text
-[Image placeholder: ESP32-C3 Super Mini on a clean background]
-[Image placeholder: AHT20 temperature and humidity sensor]
-[Image placeholder: BH1750 illuminance sensor]
-[Image placeholder: ENS160 VOC/eCO2 sensor]
-[Image placeholder: assembled Room Sense Plus validation device]
-```
+- Pending: ESP32-C3 Super Mini on a clean background.
+- Pending: AHT20 temperature and humidity sensor.
+- Pending: BH1750 illuminance sensor.
+- Pending: ENS160 VOC/eCO2 sensor.
+- Pending: assembled Room Sense Plus validation device.
+
 
 | Item | Recommended Part | Image | Viable Alternatives | Notes |
 | --- | --- | --- | --- | --- |
@@ -145,11 +144,16 @@ logging, or particulate measurements. That is not what this project claims.
 
 ## Wiring
 
-Pascal will provide the Fritzing diagram for the final build.
+Disconnect power before changing wiring. Check the exact hardware's supply and
+signal levels against the controller GPIO limits before connecting it.
 
-```text
-[Image placeholder: assets/wiring-breadboard.png]
-```
+
+![Room Sense Plus Fritzing wiring diagram with an ESP32-C3 Super Mini, AHT20, BH1750 and ENS160](assets/fritzing.png)
+
+> [!WARNING]
+> The supplied diagram connects the sensors to the rail labelled 5 V. The
+> table below specifies 3.3 V sensor power. Confirm the supply and logic
+> requirements of your exact modules before following the diagram.
 
 Use the wiring table when checking the diagram.
 
@@ -181,15 +185,23 @@ Expected I2C addresses:
 
 ## Setup
 
-1. Compile the recipe YAML from this folder.
-2. Confirm all three I2C sensors appear at the expected addresses.
-3. Upload the firmware.
-4. Check the ESPHome web server.
-5. Add or review the device in Home Assistant.
-6. Compare the readings with the room state and note what looks sensible.
+1. Open the [main recipe](esphome_room_sense_plus_project.yaml) or the
+   [SGP30 alternate](esphome_room_sense_plus_project_alternate.yaml) in this folder.
+   Keep its relative package layout intact; adapt includes if you copy the YAML.
+2. Review device substitutions, the selected board and sensor addresses.
+3. Provide the required secret bindings in your device's own `secrets.yaml`.
+4. Validate the configuration, then compile.
+5. For a new or repurposed board, follow the erase-first guidance in
+   [First Firmware Upload](https://github.com/homeautomatorza/ESPHome-Modules/wiki/first-firmware-upload).
+6. Upload, then confirm the expected I2C sensors in the logs and web server.
+7. Add or review the device in Home Assistant and compare its readings with the room state.
 
 If you are replacing an existing ESPHome device, match any existing OTA password
-for the first migration upload, or use web OTA/serial flashing.
+for the first migration upload. To move to encrypted OTA using the API key,
+first install firmware built with ESPHome `2026.9.0` or newer while retaining
+that password, then enable OTA `encryption:` and remove the password for the
+next upload. See [OTA troubleshooting](documents/troubleshooting.md#ota-upload-asks-for-a-password)
+for the migration and recovery options.
 
 <details>
 
@@ -217,13 +229,11 @@ The SGP30 alternate uses:
 
 To add during physical validation:
 
-```text
-[Image placeholder: ESPHome web server view for Room Sense Plus]
-[Image placeholder: Home Assistant device page for Room Sense Plus]
-[Image placeholder: close-up of assembled board and sensors]
-[Image placeholder: device installed in the room]
-[Image placeholder: Fritzing wiring diagram]
-```
+- Pending: ESPHome web server view for Room Sense Plus.
+- Pending: Home Assistant device page for Room Sense Plus.
+- Pending: close-up of assembled board and sensors.
+- Pending: device installed in the room.
+
 
 ## Home Assistant Entities
 
@@ -283,7 +293,8 @@ Placement still matters:
 - SGP30 readings are also practical indoor-air indicators, not certified
   measurements.
 - PM2.5, movement, and presence are not part of Plus.
-- Component images and final wiring diagrams are still being added.
+- Component images are still being added; the wiring diagram's power supply
+  needs review against the table above.
 
 ## Validation Evidence
 
@@ -299,8 +310,11 @@ See [changelog.md](documents/changelog.md).
 
 ## Related Projects And Next Variants
 
-- HAZA Room Sense Basic: temperature, humidity, dew point, and illuminance.
-- HAZA Room Sense Plus: Basic plus eCO2 and TVOC.
-- HAZA Room Sense Air: Plus plus PM2.5 or particulate sensing.
-- HAZA Room Sense Presence: movement and presence focused variant.
-- HAZA Room Sense Max: reserved for the full combined room sensor.
+Check each guide's wiring, packages and validation notes before changing your
+build; these variants use different sensor and board combinations.
+
+- [Room Sense Basic](../basic/README.md): temperature, humidity and light sensing.
+- [Room Sense Air](../air/README.md): comfort, light and indoor-air sensing with SPS30 particulate measurements.
+- [Room Sense Motion](../motion/README.md): comfort and light sensing with HC-SR501 PIR movement detection.
+- [Room Sense Presence](../presence/README.md): comfort and light sensing with PIR movement and LD2410C mmWave presence detection.
+- [Room Sense Max](../max/README.md): the combined comfort, light, indoor-air, particulate, movement and presence build.
