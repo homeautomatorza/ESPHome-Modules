@@ -1,17 +1,17 @@
-# HAZA Room Sense Plus Troubleshooting
+# Room Sense Plus Troubleshooting
 
 This page lists the first things to check when the Room Sense Plus build does
 not behave as expected.
 
-Room Sense Plus uses the same base checks as Room Sense Basic, then adds ENS160
-specific checks for eCO2, TVOC, and air quality readings.
+Room Sense Plus uses the same base checks as Room Sense Basic, then adds ENS160-specific
+checks for eCO2, TVOC, and air quality readings.
 
 ## Device Does Not Boot
 
 Check:
 
 - USB cable and power source.
-- 3.3V and GND are not swapped.
+- 3.3 V and GND are not swapped.
 - SDA/SCL are not shorted.
 - GPIO9 wiring is not preventing boot on the ESP32-C3 Super Mini.
 - The board still boots with the I2C sensors disconnected.
@@ -29,7 +29,7 @@ Expected addresses:
 
 Check:
 
-- All sensors are powered from 3.3V.
+- All sensors are powered from 3.3 V.
 - All grounds are common.
 - SDA goes to GPIO9.
 - SCL goes to GPIO10.
@@ -43,8 +43,9 @@ before blaming the shared package.
 
 Check:
 
-- The recorded validation used ESPHome `2026.7.3`. For newer releases, check
-  breaking changes before updating.
+- Historical recipe validation used ESPHome `2026.7.3`; the production
+  update passed on ESPHome `2026.10.1` on `2026-11-07`. Check breaking changes
+  when moving beyond the recorded versions.
 - The package paths match where the YAML file lives.
 - Your `secrets.yaml` contains the required keys.
 - You did not mix dynamic-IP and fixed-IP substitutions without adding
@@ -60,8 +61,10 @@ Check:
   airflow unless that is the thing you are testing.
 - The values are treated as indoor-air indicators, not lab-grade measurements.
 
-The ENS160 package still needs physical validation in this project, so treat
-unexpected readings as evidence to investigate rather than as a finished claim.
+The C3/ENS160 production build passed OTA, startup-log, web-server and Home
+Assistant checks on `2026-11-07`. Those checks confirm operation and exposed
+values; unexpected readings still need investigation rather than an assumption
+that the sensor is calibrated.
 
 ## OTA Upload Asks For A Password
 
@@ -85,7 +88,7 @@ To migrate to encrypted OTA using the API encryption key:
 
 The recorded `2026.7.3` validation predates encrypted OTA. The shared package
 does not currently require OTA encryption. See
-[OTA encryption and migration](../../../../../wiki/common/core/settings.md#ota-encryption-and-migration)
+[OTA encryption and migration](https://github.com/homeautomatorza/ESPHome-Modules/wiki/common-core-settings#ota-encryption-and-migration)
 for the configuration example, log checks and official migration guide.
 
 If the existing OTA password is unavailable:
