@@ -1,6 +1,6 @@
 ---
 author: Pascal Parent
-version: 2026.0.0
+version: 2026.0.1
 classification: project
 status: hardware_validated
 labels:
@@ -13,12 +13,12 @@ minimum_esphome: 2026.7.0
 recommended_esphome: 2026.7.3
 ---
 ################################################################################
-# HAZA Room Sense Plus Project
+# Room Sense Plus Project
 ################################################################################
 # Author: Pascal Parent
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/main/recipes/projects/room_sense/plus/README.md
-# Version: 2026.0.0
+# Version: 2026.0.1 (file/documentation revision; runtime project version unchanged)
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # ------------------------------------------------------------------------------
 # WARNING:
@@ -29,11 +29,13 @@ recommended_esphome: 2026.7.3
 # Compatibility:
 #     - Minimum ESPHome: 2026.7.0
 #     - Recommended ESPHome: 2026.7.3 or newer
-#     - Config validated: ESPHome 2026.7.3
+#     - Config validated: ESPHome 2026.10.0 (frozen recipe, 2026-11-07);
+#       historical ESPHome 2026.7.3 validation retained in documents/validation.md
 #     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Private validation device, 2026-08-16
+#     - Hardware validated: Private C3/ENS160 production device, 2026-11-07
+#     - Production firmware: ESPHome 2026.10.1; project metadata 2026.0.0
 #     - Validation status: ENS160 recipe passed compile, OTA upload, and web
-#       visual confirmation
+#       and Home Assistant visual confirmation
 # ------------------------------------------------------------------------------
 # Bill of Materials:
 #     - Board:
@@ -56,9 +58,9 @@ recommended_esphome: 2026.7.3
 #     - https://esphome.io/components/sensor/ens160.html
 # ------------------------------------------------------------------------------
 # Usage:
-#   Compile this project from its recipe folder inside the repository. If you
-#   copy only this YAML file into an ESPHome root folder, adjust the package
-#   paths to match the new location before compiling.
+#   This C3/ENS160 release pins shared packages to the production-tested Git
+#   revision below. Copy the YAML into your ESPHome configuration folder and
+#   supply its secret bindings locally. Do not change the pin for this release.
 # ------------------------------------------------------------------------------
 # This project exposes:
 #   - room temperature and humidity
@@ -74,47 +76,86 @@ recommended_esphome: 2026.7.3
 substitutions:
   device_internal_name: haza_room_sense_plus
   device_wifi_name: haza-room-sense-plus
-  device_friendly_name: HAZA Room Sense Plus
+  device_friendly_name: Room Sense Plus
   device_sampling_time: 30s
+  github_url: https://github.com/homeautomatorza/ESPHome-Modules
+  github_ref: 79c989b279b55249b76417bd184105343a8d5798
+  github_refresh: 1d
 
 ################################################################################
 # Packages
 ################################################################################
 packages:
   # Board package
-  board: !include ../../../../boards/esp32/c3_super_mini.yaml
+  board:
+    url: ${github_url}
+    ref: ${github_ref}
+    file: boards/esp32/c3_super_mini.yaml
+    refresh: ${github_refresh}
 
   # Core packages
-  settings: !include ../../../../common/core/settings.yaml
-  time: !include ../../../../common/time/home_assistant.yaml
+  settings:
+    url: ${github_url}
+    ref: ${github_ref}
+    file: common/core/settings.yaml
+    refresh: ${github_refresh}
+  time:
+    url: ${github_url}
+    ref: ${github_ref}
+    file: common/time/home_assistant.yaml
+    refresh: ${github_refresh}
 
   # Network packages
-  wifi_base: !include ../../../../common/network/wifi.yaml
-  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
-  webserver: !include ../../../../common/network/webserver.yaml
+  wifi_base:
+    url: ${github_url}
+    ref: ${github_ref}
+    file: common/network/wifi.yaml
+    refresh: ${github_refresh}
+  wifi_dynamic:
+    url: ${github_url}
+    ref: ${github_ref}
+    file: common/network/wifi_dynamicip.yaml
+    refresh: ${github_refresh}
+  webserver:
+    url: ${github_url}
+    ref: ${github_ref}
+    file: common/network/webserver.yaml
+    refresh: ${github_refresh}
 
   # Sensor packages
-  bh1750: !include
-    file: ../../../../sensors/i2c/bh1750.yaml
-    vars:
-      i2c_address: 0x23
+  bh1750:
+    url: ${github_url}
+    ref: ${github_ref}
+    refresh: ${github_refresh}
+    files:
+      - path: sensors/i2c/bh1750.yaml
+        vars:
+          i2c_address: 0x23
 
-  aht20: !include
-    file: ../../../../sensors/i2c/aht2x_3x.yaml
-    vars:
-      i2c_address: 0x38
+  aht20:
+    url: ${github_url}
+    ref: ${github_ref}
+    refresh: ${github_refresh}
+    files:
+      - path: sensors/i2c/aht2x_3x.yaml
+        vars:
+          i2c_address: 0x38
 
-  ens160: !include
-    file: ../../../../sensors/i2c/ens160.yaml
-    vars:
-      i2c_address: 0x53
+  ens160:
+    url: ${github_url}
+    ref: ${github_ref}
+    refresh: ${github_refresh}
+    files:
+      - path: sensors/i2c/ens160.yaml
+        vars:
+          i2c_address: 0x53
 
 ################################################################################
 # ESPHome Overrides / Project Metadata
 ################################################################################
 esphome:
   min_version: 2026.7.0
-  comment: HAZA Room Sense Plus project
+  comment: Room Sense Plus project
 
   project:
     name: haza.room_sense_plus
