@@ -18,7 +18,7 @@
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/sht40.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.0
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/sht4x.html
@@ -31,10 +31,10 @@
 # Compatibility:
 #     - Minimum ESPHome: 2026.6.0
 #     - Recommended ESPHome: 2026.6.0 or newer
-#     - Config validated: ESPHome 2026.7.3
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Config validated: ESPHome 2026.7.3 and 2026.10.0
+#     - Compile validated: ESPHome 2026.7.3; running 2026.11.0b3 build observed
+#     - Hardware validated: ESP32-C6 + SHT40, web/HA readings, 2026-11-11
+#     - Validation status: Hardware tested; approved by Pascal, 2026-11-12
 ################################################################################
 sensor:
   - platform: sht4x

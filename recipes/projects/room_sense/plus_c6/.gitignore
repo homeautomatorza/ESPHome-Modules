@@ -1,0 +1,8 @@
+# Private project working folders: back up to private Gitea only.
+# Git ignore rules apply to every remote. Private backup stages reviewed files
+# explicitly; GitHub publication must exclude these folders from its candidate tree.
+/desktop_sources/
+/fritzing/
+/validation_artifacts/
+/images/
+.DS_Store

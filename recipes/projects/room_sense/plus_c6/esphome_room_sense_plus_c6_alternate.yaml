@@ -1,0 +1,100 @@
+################################################################################
+# Room Sense Plus C6 Alt - SHT40 + VEML7700 + SGP40
+################################################################################
+# Author: Pascal Parent
+# Version: 2026.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/recipes/projects/room_sense/plus_c6/README.md
+#
+# Hardware: ESP32-C6 Super Mini, SHT40 at 0x44; sampling every 30 seconds.
+# I2C: SDA GPIO14, SCL GPIO18, from the shared board package.
+# VEML7700 at 0x10: illuminance, full spectrum and estimated infrared.
+# SGP40 VOC Index at 0x59, compensated by SHT40 temperature and humidity.
+# Reporting uses device_sampling_time (30s); SGP40 samples internally at 1Hz.
+# Config validation: passed ESPHome 2026.10.0, 2026-11-11 (three sensors).
+# Compile evidence: Pascal's running ESPHome 2026.11.0b3 build, 2026-11-11.
+# Hardware validation: all three sensors and VOC description observed in web/HA.
+# Approved by Pascal: 2026-11-12. Validation scope is recorded in documents/validation.md.
+#
+# Provides SHT40 Celsius/Fahrenheit and humidity, encrypted Home Assistant API,
+# OTA, authenticated web server, time and standard board/framework diagnostics.
+# GPIO15 status LED, UART and SPI are intentionally removed. RGB LED retained.
+# Review wiring and voltage before use.
+# Shared packages resolve relative to this project worktree.
+# Reference: https://esphome.io/components/sensor/sht4x/
+# Reference: https://esphome.io/components/sensor/veml7700/
+################################################################################
+
+substitutions:
+  device_internal_name: room_sense_plus_c6_alt
+  device_wifi_name: room-sense-plus-c6-alt
+  device_friendly_name: Room Sense Plus C6 Alternate
+  device_sampling_time: 30s
+
+################################################################################
+# Packages
+################################################################################
+packages:
+  # Board package
+  board: !include ../../../../boards/esp32/c6_super_mini.yaml
+
+  # Core packages
+  settings: !include ../../../../common/core/settings.yaml
+  time: !include ../../../../common/time/home_assistant.yaml
+
+  # Network packages
+  wifi_base: !include ../../../../common/network/wifi.yaml
+  wifi_dynamic: !include ../../../../common/network/wifi_dynamicip.yaml
+  webserver: !include ../../../../common/network/webserver.yaml
+
+  # Sensor packages
+  sht40: !include
+    file: ../../../../sensors/i2c/sht40.yaml
+    vars:
+      i2c_address: 0x44
+
+  veml7700: !include
+    file: ../../../../sensors/i2c/veml7700.yaml
+    vars:
+      i2c_address: 0x10
+
+  sgp40: !include
+    file: ../../../../sensors/i2c/sgp40.yaml
+    vars:
+      humidity: ${device_internal_name}_sht40_humidity
+      temperature: ${device_internal_name}_sht40_temperature_c
+
+################################################################################
+# ESPHome Overrides / Project Metadata
+################################################################################
+esphome:
+  min_version: 2026.10.0
+  comment: Room Sense Plus C6 Alt - SHT40 + VEML7700 + SGP40
+
+  project:
+    name: homeautomatorza.room_sense_plus_c6_alt
+    version: 2026.0.0
+
+################################################################################
+# Remove Or Override Package Defaults
+################################################################################
+status_led: !remove
+uart: !remove
+spi: !remove
+
+################################################################################
+# Add Custom Peripherals
+################################################################################
+# Add custom peripheral YAML here when a reusable package is not viable.
+
+################################################################################
+# Add Custom Sensors
+################################################################################
+# Add custom sensor YAML here when a reusable package is not viable.
+
+
+################################################################################
+# Add Custom Local Logic
+################################################################################
+# Add custom local logic here when it belongs to this project rather than a
+# reusable package.
