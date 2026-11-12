@@ -17,6 +17,7 @@ The family exists to answer practical questions:
 | --- | --- | --- |
 | [Basic](basic/README.md) | Hardware-validated | Temperature, humidity, dew point, and illuminance device. |
 | [Plus](plus/README.md) | Hardware-validated | Room Basic plus eCO2 and TVOC device. |
+| [Plus C6 Alt](plus_c6/README.md) | Approved, hardware/HA observed | ESP32-C6 with SHT40, VEML7700 and SGP40 VOC Index plus description. |
 | [Air](air/README.md) | Hardware-validated | Room Plus plus Particulate Matter (PM2.5/PM10). |
 | [Motion](motion/README.md) | Hardware-validated | Room Basic plus PIR. |
 | [Presence](presence/README.md) | Hardware-validated | Room Motion plus Presence. |

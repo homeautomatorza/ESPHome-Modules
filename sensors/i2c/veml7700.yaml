@@ -1,0 +1,75 @@
+################################################################################
+# VEML7700 Illuminance, Full Spectrum and Estimated Infrared
+################################################################################
+# Usage:
+#   Add this include to the packages section; adjust the path for your device.
+# ------------------------------------------------------------------------------
+# packages:
+#   veml7700: !include
+#     file: sensors/i2c/veml7700.yaml
+#     vars:
+#       i2c_address: 0x10
+# ------------------------------------------------------------------------------
+# This package exposes:
+#   - VEML7700 Illuminance (ALS channel, lx)
+#   - VEML7700 Full Spectrum (WHITE channel, lx; disabled by default in HA)
+#   - VEML7700 Infrared (estimated channel difference, lx; disabled by default in HA)
+# ------------------------------------------------------------------------------
+# Author: Pascal Parent
+# Company: Home Automator (ZA)
+# Web: https://www.youtube.com/@homeautomatorza
+# Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/veml7700.yaml
+# Wiki: https://github.com/homeautomatorza/ESPHome-Modules/wiki/sensors-i2c-veml7700
+# Version: 2026.0.0
+# Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
+# Reference: https://esphome.io/components/sensor/veml7700/
+# Reference: https://www.vishay.com/docs/84286/veml7700.pdf
+# ------------------------------------------------------------------------------
+# Notes:
+#   - Requires device_internal_name, device_sampling_time and i2c_address.
+#   - Requires an existing I2C bus. This package assigns no GPIOs or secrets.
+#   - VEML7700 uses fixed 7-bit address 0x10; pass it through the include vars.
+#   - Automatic gain/integration time and lux compensation use ESPHome defaults.
+#   - Infrared is max(WHITE lux - ALS lux, 0), not a dedicated IR measurement.
+#     Zero is valid; it does not prove the absence of physical infrared.
+#   - disabled_by_default affects Home Assistant entity enablement; the local
+#     web server can still display these readings.
+# ------------------------------------------------------------------------------
+# Compatibility:
+#   - Minimum ESPHome: 2026.10.0 (earliest config version tested for this package)
+#   - Recommended ESPHome: 2026.10.0 or newer
+#   - Config validated: ESPHome 2026.10.0, 2026-11-11
+#   - Compile validated: Pascal's running ESPHome 2026.11.0b3 build, 2026-11-11
+#   - Hardware validated: ESP32-C6 Super Mini + VEML7700, 2026-11-11
+#   - Validation status: Hardware tested; approved by Pascal, 2026-11-12
+#   - Evidence: All three outputs observed at 30s alongside SHT40 on shared I2C.
+#     Extracted payload matches the tested device block after address substitution.
+#     Calibration and long-term stability are not established by this check.
+# ------------------------------------------------------------------------------
+# WARNING:
+# This code carries an "It works on my setup" disclaimer.
+# Meaning that it works on my setup but it may not work on yours.
+# Use at your own risk.
+################################################################################
+sensor:
+  - platform: veml7700
+    address: ${i2c_address}
+    update_interval: ${device_sampling_time}
+    ambient_light:
+      id: ${device_internal_name}_veml7700_illuminance
+      name: VEML7700 Illuminance
+      icon: mdi:sun-wireless-outline
+      device_class: illuminance
+      state_class: measurement
+    full_spectrum:
+      id: ${device_internal_name}_veml7700_full_spectrum
+      name: VEML7700 Full Spectrum
+      icon: mdi:sunglasses
+      state_class: measurement
+      disabled_by_default: true
+    infrared:
+      id: ${device_internal_name}_veml7700_infrared
+      name: VEML7700 Infrared
+      icon: mdi:sun-wireless-outline
+      state_class: measurement
+      disabled_by_default: true

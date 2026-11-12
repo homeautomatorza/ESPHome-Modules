@@ -43,6 +43,7 @@ when those signals are useful. <br><br>
 | --- | --- | --- |
 | [Room Sense Basic](room_sense/basic/README.md) | Hardware-validated | Temperature, humidity, dew point, and illuminance device. |
 | [Room Sense Plus](room_sense/plus/README.md) | Hardware-validated | Room Basic plus eCO2 and TVOC device. |
+| [Room Sense Plus C6 Alt](room_sense/plus_c6/README.md) | Approved, hardware/HA observed | C6 room sensor with temperature, humidity, light and VOC Index plus description. |
 | [Room Sense Air](room_sense/air/README.md) | Hardware-validated | Room Plus plus particulate matter (PM2.5/PM10). |
 | [Room Sense Motion](room_sense/motion/README.md) | Hardware-validated | Room Basic plus PIR. |
 | [Room Sense Presence](room_sense/presence/README.md) | Hardware-validated | Room Motion plus Presence. |

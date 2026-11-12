@@ -13,28 +13,39 @@
 #       temperature: ${device_internal_name}_source_temperature
 # ------------------------------------------------------------------------------
 # This package exposes:
-#   - sensor entities
+#   - VOC Index sensor
+#   - VOC Index Description text sensor
 # ------------------------------------------------------------------------------
 # Author: Pascal Parent
 # Company: Home Automator (ZA)
 # Web: https://www.youtube.com/@homeautomatorza
 # Source: https://github.com/homeautomatorza/ESPHome-Modules/blob/dev/sensors/i2c/sgp40.yaml
-# Version: 2026.0.0b
+# Version: 2026.0.1
 # Licence: CC0 1.0 https://creativecommons.org/publicdomain/zero/1.0/
 # References: https://esphome.io/components/sensor/index.html
 # References: https://esphome.io/components/sensor/sgp4x.html
+# References: https://sensirion.com/media/documents/02232963/6294E043/Info_Note_VOC_Index.pdf
+# ------------------------------------------------------------------------------
+# Notes:
+#   - Description compares with the default recent-average index of 100.
+#   - It is a relative VOC interpretation, not a concentration or safety rating.
+#   - If algorithm index_offset is overridden, update the description mapping.
+#   - Description refreshes with VOC readings; polling provides startup status.
 # ------------------------------------------------------------------------------
 # WARNING:
 # This code carries a "It works on my setup" disclaimer!
 # Meaning that it works on my setup but it may not work on yours.
 # ------------------------------------------------------------------------------
 # Compatibility:
-#     - Minimum ESPHome: 2026.6.0
+#     - Minimum ESPHome: 2026.8.1
 #     - Recommended ESPHome: 2026.8.1 or newer
-#     - Config validated: ESPHome 2026.7.3 and 2026.8.1
-#     - Compile validated: ESPHome 2026.7.3
-#     - Hardware validated: Not yet
-#     - Validation status: Needs validation
+#     - Config validated: ESPHome 2026.7.3, 2026.8.1; current package 2026.10.0
+#     - Description config validated: ESPHome 2026.10.0, 2026-11-11
+#     - Compile validated: ESPHome 2026.7.3; running 2026.11.0b3 build observed
+#     - Hardware validated: ESP32-C6 + SHT40 compensation, 2026-11-11
+#     - Description: Waiting and below-baseline states observed in web/HA;
+#       remaining mapping branches checked in C++. Approved 2026-11-12.
+#     - Validation status: Hardware tested; approved by Pascal, 2026-11-12
 ################################################################################
 sensor:
   - platform: sgp4x
@@ -42,7 +53,29 @@ sensor:
       id: ${device_internal_name}_voc_index
       name: "VOC Index"
       state_class: measurement
+      on_value:
+        then:
+          - component.update: ${device_internal_name}_voc_index_description
     compensation:
       humidity_source: ${humidity}
       temperature_source: ${temperature}
+    update_interval: ${device_sampling_time}
+
+text_sensor:
+  - platform: template
+    id: ${device_internal_name}_voc_index_description
+    name: VOC Index Description
+    icon: mdi:air-filter
+    lambda: |-
+      const float voc = id(${device_internal_name}_voc_index).state;
+      if (isnan(voc) || voc < 1.0f || voc > 500.0f) {
+        return std::string("Waiting for VOC reading");
+      }
+      if (voc < 100.0f) {
+        return std::string("Below usual VOC level");
+      }
+      if (voc > 100.0f) {
+        return std::string("Above usual VOC level");
+      }
+      return std::string("At usual VOC level");
     update_interval: ${device_sampling_time}
